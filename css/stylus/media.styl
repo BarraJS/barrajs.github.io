@@ -3,23 +3,41 @@
 @media	(max-width:	768px)
 	//header
 	.barHeader
+		display none
 		size(100%,50px)
 		h1 a
 			left 50px
 		nav
 			display none
+		.cont
+			margin-top 0
+			.sobre
+				display	 none
 	//talks
 	.talks,.organizers
-		ul li
-			size(40%,auto)
-			margin 10px 0px
-			.box
-				padding 5px
+		ul
+			text-align center
+			li
+				margin 0
+				.box
+					padding 5px
+	.talks
+		margin-top -95px
+	.organizers section
+		margin 15px
+		width auto
 	//horarios
-	.horarios tbody td 
+	.horarios tbody td
 		img
 			position relative
 		.desc
 			float left
-		
-			
+		.foto
+			display none
+	//mapa
+	.maps .descMaps
+		top 50%
+
+
+
+

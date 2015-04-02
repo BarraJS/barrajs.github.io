@@ -1,62 +1,137 @@
 @import 'variables'
-	
+
 //taks--**--
-.talks
+.talks, .organizers
 		background blue
-		text-align center
-		space(0,10px)
-		ul li
-			display inline-table
-			margin 10px 20px
-			.box
-				display: table;
-				background: white;
-				text-align left
-				space(0 auto,10px)
-				h3
-					space(0,0)
-					color blue
-				span
-					font(14px,yellow,normal)
+		space(0,10px 0)
+		ul
+			space(20px 0, 0)
+			text-align left
+			li
+				display inline-block
+				margin 0 21px
+				width 220px
+				height 220px
+				overflow hidden
+				position relative
+				cursor pointer
+				a
+					position absolute
+					width 100%
+					height 100%
+					bottom 100%
+					color transparent
+					top 0
+					left 0
+					z-index 20
+			  	.overlay
+			  		background rgba(0,0,0,.6)
+					width 100%
+					height 100%
+					top 0
+					left 0
+					position absolute
+					opacity 0
+					-webkit-transition all .5s
+					-o-transition all .5s
+					transition all .5s
+				.detail
+					color #fff
+					padding 10px
+					position absolute
+					top 0
+					left 0
+					z-index 10
+					opacity 0
+					-webkit-transition all .5s
+					-o-transition all .5s
+					transition all .5s
+					.role
+						display inline-block
+						width 100%
+					.empresa
+						display inline-block
+						width 100%
+						margin-bottom 15px
+				img
+					max-width 100%
+			li:first-child
+				margin-left 0;
+			li:last-child
+				margin-right 0;
+			li:hover
+				.detail,.overlay
+					opacity 1;
+
+
 
 //horarios--**--
 .horarios
 	size(100%,auto)
 	text-align left
+	margin-top 20px
+	text-align left
 	//thead
 	thead
 		font(21px,blue,bold)
 		.th1
-			size(15%,auto)
+			size(5%,auto)
 		.th2
-			size(25%,auto)
+			size(35%,auto)
 		.th3
 			size(60%,auto)
 	tbody
 		tr:nth-child(even)
 			background	white
-		tr:nth-child(odd) 
+		tr:nth-child(odd)
 			background light-gray
 
 		td
-			padding 15px 25px
-			img
-				size(45px,auto)
-				border-radius: 20px;
-				position absolute
+			padding 10px
+			.photo
+				size(60px, 60px)
+				display inline-block
+				overflow hidden
+				vertical-align top
+				img
+					width 100%
+					height auto
 			.desc
-				float right
+				display inline-block
+				max-width 70%
+				vertical-align top
+				h3
+					color #313540
+					margin 0
 
 //maps--**--
 .maps
+	display inline-block
+	width 100%
+	position relative
 	.descMaps
-		background: rgba(0,0,0,0.8);
-		size(100%,auto)
-		color: white;
-		position: absolute;
-		max-width: 700px;
-		text-align: center;
-		right: 0;
+		background rgba(49,53,64,0.9)
+		width 400px
+		height auto
+		color #fff
+		position absolute
+		max-width 700px
+		text-align center
+		right 0
+		-webkit-transition all .25s
+		-o-transition all .25s
+		transition all .25s
+		top 20%
+	.map-overlay
+		background transparent
+		position relative
+		width 100%
+		height 400px
+		top 400px
+		margin-top -400px
+		color transparent
+		text-align center
+		cursor pointer
 	iframe
 		size(100%,400px)
 
@@ -68,11 +143,5 @@
 		text-decoration none
 		margin 0px 20px
 
-.organizers
-	p
-		space(0,0)
-		background none
-		
-	img
-		size(160px,auto)
-			
+.sponsor
+	margin-top 30px

@@ -1,20 +1,22 @@
 @import 'variables'
-	
-//header	
+
+//header
 header
-	background url(../image/banner.jpg)
+	background url(../image/banner2.jpg)
 	background-size cover
+	background-position 0 -95px
 	min-height 450px
 	//barHeader
 	.barHeader
-		background rgba(0,0,0,0.75)
+		background rgba(49,53,64,0.9)
 		position fixed
 		width 100%
-		z-index 1
+		z-index 100
+		top 0
 		//logo
 		.logo
-			column(1/6) 
-			h1 
+			column(1/6)
+			h1
 				space(0,0)
 				a
 					background url(../image/logoMin.png) no-repeat
@@ -23,7 +25,7 @@ header
 					size(49px,28px)
 					top: 12px;
 					position: relative;
-		//nav	
+		//nav
 		nav
 			column(5/6)
 			li
@@ -32,16 +34,17 @@ header
 					text-decoration: none;
 					font(16px,white,normal)
 					space(0,10px)
-	
+
 	.cont
-		center(500px)	
-		position relative
-		top 80px
-		display table
+		width 100%
+		height 450px
+		background rgba(0,0,0,.5)
+		margin-top 50px
 		h1
 			background url(../image/logo.png) no-repeat
 			size(399px,149px)
 			text-indent	-999999px
+			margin 0 auto
 		a
 			background yellow
 			font(30px,white,normal)
@@ -52,7 +55,38 @@ header
 		p
 			font(16px,white,normal)
 			text-align center
-		
-		
-	
+			margin-left 95px
+		.btn
+			text-decoration none
+			padding 10px 60px
+			font-size 22px
+			color white
+			text-align center
+			text-shadow 0 1px 2px rgba(0, 0, 0, 0.25)
+			background #3498db
+			border 0
+			border-bottom 2px solid #2a8bcc
+			cursor pointer
+			-webkit-box-shadow inset 0 -2px #2a8bcc
+			box-shadow inset 0 -2px #2a8bcc
+			cursor pointer
+			line-height normal
+			margin 35px auto
+			display table
+			position relative
+			text-transform uppercase
+		.btn:active
+			top 1px
+			outline none
+			-webkit-box-shadow none
+			box-shadow none
+		.sobre
+			font-weight normal
+			font-size 24px
+			margin 0 auto
+			max-width 60%
+			padding-top 35px
+
+
+
 

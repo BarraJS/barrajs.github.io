@@ -1,0 +1,3354 @@
+CREATE PROCEDURE [aec_afiliado_client_adm_select] @tipo int, @email nvarchar(100) = NULL, @site int, @apelido nvarchar(200) = NULL, @nascdia int, @nascmes int, @nascano int, @nivel int AS
+DECLARE @SQL nvarchar(4000), @WhereClause nvarchar(700)
+SET @SQL = N'SELECT id, apelido, email, nivel, datacad, subid FROM usuarios WITH (NOLOCK)'
+SET @WhereClause = N' WHERE nivel >= 4 AND nivel <= 6 AND apelido LIKE "%" + ISNULL(@apelido$, "%") + "%"'
+IF @tipo = 1
+    SET @WhereClause = @WhereClause + ' AND friendemail = LOWER(@email$)'
+ELSE
+    SET @WhereClause = @WhereClause + ' AND site = @site$'
+IF @nascdia >= 0
+    SET @WhereClause = @WhereClause + ' AND nascdia = @nascdia$'
+IF @nascmes >= 0
+    SET @WhereClause = @WhereClause + ' AND nascmes = @nascmes$'
+IF @nascano >= 0
+    SET @WhereClause = @WhereClause + ' AND nascano = @nascano$'
+IF @nivel >= 0
+    SET @WhereClause = @WhereClause + ' AND nivel = @nivel$'
+SET @SQL = @SQL + @WhereClause + ' ORDER BY apelido'
+EXEC sp_executesql @SQL, N'@tipo$ int, @email$ nvarchar(100), @site$ int, @apelido$ nvarchar(20), @nascdia$ int, @nascmes$ int, @nascano$ int, @nivel$ int',
+@tipo$ = @tipo,
+@email$ = @email,
+@site$ = @site,
+@apelido$ = @apelido,
+@nascdia$ = @nascdia,
+@nascmes$ = @nascmes,
+@nascano$ = @nascano,
+@nivel$ = @nivel
+GO
+SET ANSI_NULLS OFF
+GO
+SET QUOTED_IDENTIFIER OFF
+GO
+
+
+
+
+
+
+
+-- CREATE PROCEDURE [aec_afiliado_adm_select] @id int, @nome nvarchar(100) = NULL, @email nvarchar(100) = NULL, @site int, @tipo int, @pais int AS
+-- DECLARE @SQL nvarchar(4000), @WhereClause nvarchar(700)
+-- SET @SQL = N'SELECT id, nome, email, percentual FROM afiliados WITH (NOLOCK)'
+-- SET @WhereClause = N' WHERE nome LIKE "%" + ISNULL(@nome$, "%") + "%" AND email LIKE "%" + ISNULL(@email$, "%") + "%"'
+-- IF @id >= 0
+--     SET @WhereClause = @WhereClause + ' AND id = @id$'
+-- IF @site >= 0
+--     SET @WhereClause = @WhereClause + ' AND site = @site$'
+-- IF @tipo >= 0
+--     SET @WhereClause = @WhereClause + ' AND tipo = @tipo$'
+-- IF @pais >= 0
+--     SET @WhereClause = @WhereClause + ' AND pais = @pais$'
+-- SET @SQL = @SQL + @WhereClause + ' ORDER BY nome'
+-- EXEC sp_executesql @SQL, N'@id$ int, @nome$ nvarchar(100), @email$ nvarchar(100), @site$ int, @tipo$ int, @pais$ int',
+-- @id$ = @id,
+-- @nome$ = @nome,
+-- @email$ = @email,
+-- @site$ = @site,
+-- @tipo$ = @tipo,
+-- @pais$ = @pais
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_musicas_adm_select] @nome nvarchar(200) = NULL, @id_artista int, @nomecd nvarchar(200) = NULL AS
+-- DECLARE @SQL nvarchar(4000), @WhereClause nvarchar(700)
+-- SET @SQL = N'SELECT musicas.id AS id, artistas.nome AS artista, musicas.nome AS nome, musicas.nomecd AS nomecd FROM musicas WITH (NOLOCK), artistas WITH (NOLOCK)'
+-- SET @WhereClause = N' WHERE musicas.id_artista = artistas.id AND musicas.nome LIKE "%" + ISNULL(@nome$, "%") + "%"'
+-- IF @id_artista >= 0
+--     SET @WhereClause = @WhereClause + ' AND musicas.id_artista = @id_artista$'
+-- IF LEN(@nomecd) > 0
+--     SET @WhereClause = @WhereClause + ' AND musicas.nomecd LIKE "%" + ISNULL(@nomecd$, "%") + "%"'
+-- SET @SQL = @SQL + @WhereClause + ' ORDER BY musicas.nome'
+-- EXEC sp_executesql @SQL, N'@nome$ nvarchar(200), @id_artista$ int, @nomecd$ nvarchar(200)',
+-- @nome$ = @nome,
+-- @id_artista$ = @id_artista,
+-- @nomecd$ = @nomecd
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_bad_data_adm_select] @id int, @n nvarchar(50) = NULL AS
+-- DECLARE @SQL nvarchar(4000), @WhereClause nvarchar(700)
+-- SET @SQL = N'SELECT id, n FROM bad_data WITH (NOLOCK)'
+-- SET @WhereClause = N' WHERE n LIKE "%" + ISNULL(@n$, "%") + "%"'
+-- IF @id >= 0
+--     SET @WhereClause = @WhereClause + ' AND id = @id$'
+-- SET @SQL = @SQL + @WhereClause + ' ORDER BY n'
+-- EXEC sp_executesql @SQL, N'@id$ int, @n$ nvarchar(50)',
+-- @id$ = @id,
+-- @n$ = @n
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_adm_select] @cob_id int, @recorrencia int, @client_id int, @apelido nvarchar(200) = NULL, @nome nvarchar(100) = NULL, @email nvarchar(100) = NULL, @nivel int, @status int, @id_forma_pag int AS
+-- DECLARE @SQL nvarchar(4000), @WhereClause nvarchar(700)
+-- SET @SQL = N'SELECT cobrancas.id AS id, cobrancas.id_usr AS id_usr, cobrancas.valor AS valor, cobrancas.moeda AS moeda, cobrancas.recorrencia AS recorrencia, cobrancas.id_forma_pag AS id_forma_pag, usuarios.id AS id_usr, usuarios.apelido AS nome_usr, usuarios.email AS email_usr, usuarios.site AS site FROM cobrancas WITH (NOLOCK), usuarios WITH (NOLOCK)'
+-- SET @WhereClause = N' WHERE cobrancas.id_usr = usuarios.id'
+-- IF @cob_id >= 0
+--     SET @WhereClause = @WhereClause + ' AND cobrancas.id = @cob_id$'
+-- IF @recorrencia = -1 OR @recorrencia = 0
+--      SET @WhereClause = @WhereClause + ' AND cobrancas.recorrencia = @recorrencia$'
+-- ELSE
+--     BEGIN
+--     IF @recorrencia = 1
+--          SET @WhereClause = @WhereClause + ' AND cobrancas.recorrencia > 0'
+--     END
+-- IF @client_id >= 0
+--     SET @WhereClause = @WhereClause + ' AND cobrancas.id_usr = @client_id$'
+-- IF @apelido IS NOT NULL
+--     SET @WhereClause = @WhereClause + ' AND (cobrancas.id_usr IN (SELECT id FROM usuarios WITH (NOLOCK) WHERE apelido LIKE ' + CHAR(39) + '%' + CHAR(39) + ' + @apelido$ + ' + CHAR(39) + '%' + CHAR(39) + '))'
+-- IF @nome IS NOT NULL
+--     SET @WhereClause = @WhereClause + ' AND (cobrancas.id_usr IN (SELECT id FROM usuarios WITH (NOLOCK) WHERE nome LIKE ' + CHAR(39) + '%' + CHAR(39) + ' + @nome$ + ' + CHAR(39) + '%' + CHAR(39) + ') OR cobrancas.id_usr IN (SELECT id FROM usuarios WHERE sobrenome LIKE ' + CHAR(39) + '%' + CHAR(39) + ' + @nome$ + ' + CHAR(39) + '%' + CHAR(39) + '))'
+-- IF @email IS NOT NULL
+--     SET @WhereClause = @WhereClause + ' AND (cobrancas.id_usr IN (SELECT id FROM usuarios WITH (NOLOCK) WHERE email LIKE ' + CHAR(39) + '%' + CHAR(39) + ' + @email$ + ' + CHAR(39) + '%' + CHAR(39) + '))'
+-- IF @nivel >= 0
+--     SET @WhereClause = @WhereClause + ' AND (cobrancas.id_usr IN (SELECT id FROM usuarios WITH (NOLOCK) WHERE nivel = @nivel$))'
+-- IF @status >= -1
+--      SET @WhereClause = @WhereClause + ' AND cobrancas.status = @status$'
+-- IF @id_forma_pag >= 0
+--      SET @WhereClause = @WhereClause + ' AND cobrancas.id_forma_pag = @id_forma_pag$'
+-- SET @SQL = @SQL + @WhereClause + ' ORDER BY cobrancas.id DESC'
+-- EXEC sp_executesql @SQL, N'@cob_id$ int, @recorrencia$ int, @client_id$ int, @apelido$ nvarchar(20), @nome$ nvarchar(100), @email$ nvarchar(100), @nivel$ int, @status$ int, @id_forma_pag$ int',
+-- @cob_id$ = @cob_id,
+-- @recorrencia$ = @recorrencia,
+-- @client_id$ = @client_id,
+-- @apelido$ = @apelido,
+-- @nome$ = @nome,
+-- @email$ = @email,
+-- @nivel$ = @nivel,
+-- @status$ = @status,
+-- @id_forma_pag$ = @id_forma_pag
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_calendar_adm_select] @id_usr int, @nivel int, @dia int, @mes int, @ano int AS
+-- SET NOCOUNT ON;
+-- DECLARE @SQL nvarchar(4000), @WhereClause nvarchar(2000)
+-- SET @SQL = N'SELECT id, id_usr, nivel, data FROM calendario WITH (NOLOCK)'
+-- SET @WhereClause = N' WHERE id <> 0'
+-- IF @id_usr >= 0
+--     SET @WhereClause = @WhereClause + ' AND id_usr = @id_usr$'
+-- IF @nivel >= 0
+--     SET @WhereClause = @WhereClause + ' AND nivel = @nivel$'
+-- IF @dia >= 0
+--     SET @WhereClause = @WhereClause + ' AND DAY(data) = @dia$'
+-- IF @mes >= 0
+--     SET @WhereClause = @WhereClause + ' AND MONTH(data) = @mes$'
+-- IF @ano >= 0
+--     SET @WhereClause = @WhereClause + ' AND YEAR(data) = @ano$'
+-- SET @SQL = @SQL + @WhereClause + ' ORDER BY data'
+-- EXEC sp_executesql @SQL, N'@id_usr$ int, @nivel$ int, @dia$ int, @mes$ int, @ano$ int',
+-- @id_usr$ = @id_usr,
+-- @nivel$ = @nivel,
+-- @dia$ = @dia,
+-- @mes$ = @mes,
+-- @ano$ = @ano
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_card_adm_select] @b int, @num1 nvarchar(5) = NULL, @num2 nvarchar(5) = NULL, @num3 nvarchar(5) = NULL, @num4 nvarchar(5) = NULL AS
+-- DECLARE @SQL nvarchar(1000), @WhereClause nvarchar(700)
+-- SET @SQL = N'SELECT data.u AS u, data.d AS d, data.b AS b, data.m AS m, data.a AS a, data.c AS c, data.n AS n, usuarios.apelido AS apelido FROM data WITH (NOLOCK), usuarios WITH (NOLOCK)'
+-- SET @WhereClause = N' WHERE usuarios.id = data.u'
+-- IF LEN(@num1) > 0
+--     SET @WhereClause = @WhereClause + ' AND SUBSTRING(data.d,2,5) LIKE "%" + ISNULL(@num1$, "%") + "%"'
+-- IF LEN(@num2) > 0
+--     SET @WhereClause = @WhereClause + ' AND SUBSTRING(data.d,8,5) LIKE "%" + ISNULL(@num2$, "%") + "%"'
+-- IF LEN(@num3) > 0
+--     SET @WhereClause = @WhereClause + ' AND SUBSTRING(data.d,14,5) LIKE "%" + ISNULL(@num3$, "%") + "%"'
+-- IF LEN(@num4) > 0
+--     SET @WhereClause = @WhereClause + ' AND SUBSTRING(data.d,20,5) LIKE "%" + ISNULL(@num4$, "%") + "%"'
+-- IF @b >= 0
+--     SET @WhereClause = @WhereClause + ' AND data.b = @b$'
+-- SET @SQL = @SQL + @WhereClause + ' ORDER BY data.u DESC'
+-- EXEC sp_executesql @SQL, N'@b$ int, @num1$ nvarchar(5), @num2$ nvarchar(5), @num3$ nvarchar(5), @num4$ nvarchar(5)',
+-- @b$ = @b,
+-- @num1$ = @num1,
+-- @num2$ = @num2,
+-- @num3$ = @num3,
+-- @num4$ = @num4
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_testemunhos_adm_select] @id int, @titulo nvarchar(100) = NULL, @tipo int, @resumo nvarchar(300) = NULL, @texto nvarchar(300) = NULL AS
+-- DECLARE @SQL nvarchar(4000), @WhereClause nvarchar(700)
+-- SET @SQL = N'SELECT id, titulo, tipo, resumo FROM testemunhos WITH (NOLOCK)'
+-- SET @WhereClause = N' WHERE titulo LIKE "%" + ISNULL(@titulo$, "%") + "%" AND resumo LIKE "%" + ISNULL(@resumo$, "%") + "%" AND texto LIKE "%" + ISNULL(@texto$, "%") + "%"'
+-- IF @id >= 0
+--     SET @WhereClause = @WhereClause + ' AND id = @id$'
+-- IF @tipo >= 0
+--     SET @WhereClause = @WhereClause + ' AND tipo = @tipo$'
+-- SET @SQL = @SQL + @WhereClause + ' ORDER BY titulo'
+-- EXEC sp_executesql @SQL, N'@id$ int, @titulo$ nvarchar(100), @tipo$ int, @resumo$ nvarchar(300), @texto$ nvarchar(300)',
+-- @id$ = @id,
+-- @titulo$ = @titulo,
+-- @tipo$ = @tipo,
+-- @resumo$ = @resumo,
+-- @texto$ = @texto
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_adm_select] @id int, @apelido nvarchar(200) = NULL, @nome nvarchar(100) = NULL, @sobrenome nvarchar(100) = NULL, @email nvarchar(100) = NULL, @friendemail nvarchar(100) = NULL, @nascdia int, @nascmes int, @nascano int, @nivel int, @site int, @display int, @pais int, @sexo int, @ord int AS
+-- DECLARE @SQL nvarchar(4000), @WhereClause nvarchar(700)
+-- SET @SQL = N'SELECT DISTINCT usuarios.id, usuarios.apelido, usuarios.email, usuarios.nivel FROM usuarios WITH (NOLOCK) LEFT JOIN usuarios_historico_apelidos_emails WITH (NOLOCK) ON usuarios.id = usuarios_historico_apelidos_emails.id_usr'
+-- SET @WhereClause = N' WHERE usuarios.id <> 0'
+-- IF @id >= 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.id = @id$'
+-- IF LEN(@apelido) > 0
+--     SET @WhereClause = @WhereClause + ' AND (usuarios.apelido LIKE ISNULL(@apelido$, "%") + "%" OR (((usuarios_historico_apelidos_emails.texto LIKE ISNULL(@apelido$, "%") + "%") OR (usuarios_historico_apelidos_emails.texto LIKE ISNULL(@apelido$, "%") + "%")) AND usuarios_historico_apelidos_emails.tipo = 1))'
+-- IF LEN(@nome) > 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.nome LIKE ISNULL(@nome$, "%") + "%"'
+-- IF LEN(@sobrenome) > 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.sobrenome LIKE ISNULL(@sobrenome$, "%") + "%"'
+-- IF LEN(@email) > 0
+--     SET @WhereClause = @WhereClause + ' AND (usuarios.email LIKE ISNULL(@email$, "%") + "%" OR (((usuarios_historico_apelidos_emails.texto LIKE ISNULL(@email$, "%") + "%") OR (usuarios_historico_apelidos_emails.texto_antigo LIKE ISNULL(@email$, "%") + "%")) AND usuarios_historico_apelidos_emails.tipo = 2))'
+-- IF LEN(@friendemail) > 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.friendemail LIKE ISNULL(@friendemail$, "%") + "%"'
+-- IF @nascdia >= 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.nascdia = @nascdia$'
+-- IF @nascmes >= 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.nascmes = @nascmes$'
+-- IF @nascano >= 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.nascano = @nascano$'
+-- IF @nivel >= 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.nivel = @nivel$'
+-- IF @site >= 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.site = @site$'
+-- IF @display >= 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.display = @display$'
+-- IF @pais >= 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.pais = @pais$'
+-- IF @sexo >= 0
+--     SET @WhereClause = @WhereClause + ' AND usuarios.sexo = @sexo$'
+-- IF @ord = 2
+--     SET @SQL = @SQL + @WhereClause + ' ORDER BY usuarios.apelido'
+-- ELSE
+--     BEGIN
+--     IF @ord = 3
+--         SET @SQL = @SQL + @WhereClause + ' ORDER BY usuarios.email'
+--     ELSE
+--         BEGIN
+--         IF @ord = 4
+--             SET @SQL = @SQL + @WhereClause + ' ORDER BY usuarios.nivel'
+--         ELSE
+--             SET @SQL = @SQL + @WhereClause + ' ORDER BY usuarios.id'
+--         END
+--     END
+-- EXEC sp_executesql @SQL, N'@id$ int, @apelido$ nvarchar(20), @nome$ nvarchar(100), @sobrenome$ nvarchar(100), @email$ nvarchar(100), @friendemail$ nvarchar(100), @nascdia$ int, @nascmes$ int, @nascano$ int, @nivel$ int, @site$ int, @display$ int, @pais$ int, @sexo$ int',
+-- @id$ = @id,
+-- @apelido$ = @apelido,
+-- @nome$ = @nome,
+-- @sobrenome$ = @sobrenome,
+-- @email$ = @email,
+-- @friendemail$ = @friendemail,
+-- @nascdia$ = @nascdia,
+-- @nascmes$ = @nascmes,
+-- @nascano$ = @nascano,
+-- @nivel$ = @nivel,
+-- @site$ = @site,
+-- @display$ = @display,
+-- @pais$ = @pais,
+-- @sexo$ = @sexo
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_card_details_select] @id int AS
+-- SELECT d, b, m, a, c, n
+-- FROM data WITH (NOLOCK)
+-- WHERE u = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_card_date_select] @month int, @year int AS
+-- SELECT usuarios.id AS id, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.apelido AS apelido, usuarios.email AS email, usuarios.site AS site, usuarios.lang AS lang, usuarios.nivel AS nivel, usuarios.fotos AS fotos, usuarios.sexo AS sexo, cobrancas.recorrencia AS recorrencia, cobrancas.flag_parcelada AS flag_parcelada
+-- FROM data WITH (NOLOCK), cobrancas WITH (NOLOCK), usuarios WITH (NOLOCK)
+-- WHERE data.u = usuarios.id AND usuarios.id = cobrancas.id_usr AND cobrancas.status >= 0 AND data.m = @month AND data.a = @year AND usuarios.nivel <> 2 AND usuarios.nivel <> 3 AND usuarios.notificacao_sistema >= 1
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_cancel_subscription] @id int, @devocional_cancel int AS
+-- BEGIN TRANSACTION
+-- -- Passa cliente pagante para inativo e inativa a cobranca dele
+-- UPDATE cobrancas WITH (ROWLOCK) SET status_old = status, status = -1, datainativa = GetDate(), retry_count = 0, datanext = NULL WHERE id_usr = @id AND recorrencia <> -1
+-- IF @devocional_cancel = 1
+--     UPDATE usuarios WITH (ROWLOCK) SET nivel = 3, devocional = 0 WHERE id = @id
+-- ELSE
+--     UPDATE usuarios WITH (ROWLOCK) SET nivel = 3 WHERE id = @id
+-- -- Atualiza favoritos se o cliente esta sendo inativado
+-- UPDATE usuarios WITH (ROWLOCK) SET num_favoritos = num_favoritos - 1 WHERE id IN (SELECT id_usr FROM usuariosxfavoritos WITH (NOLOCK) WHERE id_fav = @id)
+-- UPDATE usuarios WITH (ROWLOCK) SET num_favoritos_subject = num_favoritos_subject - 1 WHERE id IN (SELECT id_fav FROM usuariosxfavoritos WITH (NOLOCK) WHERE id_usr = @id)
+-- DELETE FROM calendario WHERE id_usr = @id
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_cache_all_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id, nivel FROM usuarios WITH (NOLOCK) ORDER BY id DESC
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_bloqueados_single_select] @id int AS
+-- SELECT usuariosxbloqueados.id_usr AS id_usr, usuariosxbloqueados.id_bloq AS id_bloq
+-- FROM usuariosxbloqueados WITH (NOLOCK)
+-- WHERE usuariosxbloqueados.id_usr = @id OR usuariosxbloqueados.id_bloq = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_bloqueados_select] @id int, @lang int AS
+-- BEGIN
+-- SELECT usuarios.id AS id, usuarios.apelido AS apelido, usuarios.nascano AS nascano, usuarios.nascmes AS nascmes, usuarios.nascdia AS nascdia,
+-- usuarios.sexo AS sexo, paises_nomes.nome AS pais, estados.nome AS estado, estados.tipo AS estado_tipo, cidades.nome AS cidade,
+-- usuarios.datacad AS datacad, usuarios.fotos AS fotos, usuariosxsessoes.datalast AS datalast, 0, ''
+-- FROM usuarios WITH (NOLOCK) LEFT JOIN cidades WITH (NOLOCK) ON cidades.id = usuarios.cidade LEFT JOIN estados WITH (NOLOCK) ON estados.id = usuarios.estado AND estados.tipo > 0 LEFT JOIN paises_nomes WITH (NOLOCK) ON paises_nomes.id_pais = usuarios.pais AND paises_nomes.lang = @lang, usuariosxsessoes WITH (NOLOCK), usuariosxbloqueados WITH (NOLOCK)
+-- WHERE usuarios.id = usuariosxsessoes.id_usr AND usuarios.id = usuariosxbloqueados.id_bloq AND usuariosxbloqueados.id_usr = @id AND usuarios.nivel <> 2 AND usuarios.nivel <> 3
+-- ORDER BY usuarios.apelido
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_bloqueados_pair_select] @id int, @id_bloq int AS
+-- SELECT usuariosxbloqueados.id AS id, usuariosxbloqueados.id_usr AS id_usr, usuariosxbloqueados.id_bloq AS id_bloq
+-- FROM usuariosxbloqueados WITH (NOLOCK)
+-- WHERE (usuariosxbloqueados.id_usr = @id AND usuariosxbloqueados.id_bloq = @id_bloq) OR (usuariosxbloqueados.id_usr = @id_bloq AND usuariosxbloqueados.id_bloq = @id)
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_bloqueados_insert] @id int, @id_bloq int AS
+-- DELETE FROM usuariosxbloqueados WITH (ROWLOCK) WHERE id_usr = @id AND id_bloq = @id_bloq
+-- INSERT INTO usuariosxbloqueados (id_usr, id_bloq, datacad) VALUES (@id, @id_bloq, GetDate())
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_bloqueados_delete] @id int, @id_bloq int AS
+-- DELETE FROM usuariosxbloqueados WITH (ROWLOCK)
+-- WHERE id_usr = @id AND id_bloq = @id_bloq
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_bloqueados_count_select] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT COUNT(id) AS count_bloq FROM usuariosxbloqueados WITH (NOLOCK) WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_authenticate_receive_select] @id int, @session_code varchar(500) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT usuarios.nivel AS nivel, usuarios.sexo AS sexo, usuarios.apelido AS apelido FROM usuarios WITH (NOLOCK),usuariosxsessoes WITH (NOLOCK) WHERE usuarios.id = @id AND usuarios.id = usuariosxsessoes.id_usr AND usuariosxsessoes.session_code = @session_code AND usuariosxsessoes.session_code <> '' AND usuariosxsessoes.datalast >= DateAdd( n, -240, GetDate() )
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_apelido_data_select] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT dataapelido FROM usuarios WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_all_select] AS
+-- SELECT usuarios.apelido AS apelido, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.email AS email, usuarios.site AS site, usuarios.lang AS lang
+-- FROM usuarios WITH (NOLOCK) LEFT OUTER JOIN usuarios_x_datamailcheck WITH (NOLOCK) ON usuarios.email = usuarios_x_datamailcheck.email
+-- WHERE usuarios.email <> '' AND usuarios.email <> NULL AND usuarios.nivel <> 2 AND usuarios.nivel <> 3 AND usuarios.notificacao_datas_especiais >= 1 AND usuarios_x_datamailcheck.datamailcheck Is Null
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_addinfo_update] @id int, @oldnivel int, @nivel int, @msgs int, @musicas int, @site int, @display int, @friendemail varchar(100), @lang int, @notificacao_sistema int, @notificacao_datas_especiais int, @exibir_codigo int, @problematico int, @scammer int, @num_avisos int, @cpf bigint, @email_confirmed int, @infor text AS
+-- BEGIN TRANSACTION
+-- -- Passa cliente inativo contribuinte pra cobranca inativa
+-- IF (@nivel <> 2 And @nivel <> 3) AND (@oldnivel = 2 OR @oldnivel = 3)
+--     UPDATE cobrancas WITH (ROWLOCK) SET status_old = status, status = -1, datainativa = GetDate(), retry_count = 0, datanext = NULL WHERE id_usr = @id AND recorrencia = -1 and status <> -1
+-- -- Passa cliente pagante para gratuito e inativa a cobranca dele
+-- IF (@nivel <= 4 OR @nivel >= 7) AND (@oldnivel = 5 OR @oldnivel = 6)
+--     UPDATE cobrancas WITH (ROWLOCK) SET status_old = status, status = -1, datainativa = GetDate(), retry_count = 0, datanext = NULL WHERE id_usr = @id
+-- -- Passa cliente gratuito pra pagante com cobranca pendente
+-- IF (@nivel = 5 OR @nivel = 6) AND (@oldnivel <= 4 OR @oldnivel >= 7)
+--     UPDATE cobrancas WITH (ROWLOCK) SET status = 3, retry_count = 0 WHERE id_usr = @id
+-- -- Atualiza favoritos se o cliente esta sendo ativado
+-- IF (@nivel <> 2 AND @nivel <> 3) AND (@oldnivel = 2 OR @oldnivel = 3)
+--     BEGIN
+--     UPDATE usuarios WITH (ROWLOCK) SET num_favoritos = num_favoritos + 1 WHERE id IN (SELECT id_usr FROM usuariosxfavoritos WITH (NOLOCK) WHERE id_fav = @id)
+--     UPDATE usuarios WITH (ROWLOCK) SET num_favoritos_subject = num_favoritos_subject + 1 WHERE id IN (SELECT id_fav FROM usuariosxfavoritos WITH (NOLOCK) WHERE id_usr = @id)
+--     END
+-- -- Atualiza favoritos se o cliente esta sendo inativado
+-- IF (@nivel = 2 OR @nivel = 3) AND (@oldnivel <> 2 AND @oldnivel <> 3)
+--     BEGIN
+--     UPDATE usuarios WITH (ROWLOCK) SET num_favoritos = num_favoritos - 1 WHERE id IN (SELECT id_usr FROM usuariosxfavoritos WITH (NOLOCK) WHERE id_fav = @id)
+--     UPDATE usuarios WITH (ROWLOCK) SET num_favoritos_subject = num_favoritos_subject - 1 WHERE id IN (SELECT id_fav FROM usuariosxfavoritos WITH (NOLOCK) WHERE id_usr = @id)
+--     END
+-- UPDATE usuarios WITH (ROWLOCK) SET nivel = @nivel, msgs = @msgs, musicas = @musicas, site = @site, display = @display, friendemail = @friendemail, lang = @lang, notificacao_sistema = @notificacao_sistema, notificacao_datas_especiais = @notificacao_datas_especiais, exibir_codigo = @exibir_codigo, problematico = @problematico, scammer = @scammer, num_avisos = @num_avisos, cpf = @cpf, email_confirmed = @email_confirmed, infor = @infor WHERE id = @id
+-- IF (@scammer = 1)
+--     UPDATE usuariosxscammers WITH (ROWLOCK) SET flag_processed = 1 WHERE id_usr = @id
+-- IF @nivel = 2 OR @nivel = 3
+--     DELETE FROM calendario WHERE id_usr = @id
+-- IF @problematico = 1
+--     BEGIN
+--     IF @nivel = 2 OR @nivel = 3
+--         DELETE FROM usuariosxbloqueados WHERE id_usr = @id or id_bloq = @id
+--     END
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_addinfo_select] @id int AS
+-- BEGIN
+-- SELECT cobrancas.id AS id_cob, usuarios.nivel AS nivel, usuarios.estado AS estado, usuarios.email AS email, usuarios.notificacao_sistema AS notificacao_sistema, usuarios.notificacao_datas_especiais AS notificacao_datas_especiais, usuarios.msgs AS msgs, usuarios.musicas AS musicas, usuarios.site AS site, usuarios.display AS display, usuarios.datacad AS datacad, usuariosxsessoes.dataprev AS dataprev, usuariosxsessoes.datalast AS datalast, usuarios.problematico AS problematico, usuarios.scammer AS scammer, usuarios.num_avisos AS num_avisos, usuarios.num_favoritos AS num_favoritos, usuarios.num_favoritos_subject AS num_favoritos_subject, usuarios.exibir_codigo AS exibir_codigo, usuarios.cpf AS cpf, usuarios.lang AS lang, usuarios.friendemail AS friendemail, usuariosxsessoes.registration_code AS registration_code, usuarios.flag_registering AS flag_registering, usuarios.email_confirmed AS email_confirmed, usuarios.infor AS infor
+-- FROM usuarios WITH (NOLOCK) LEFT JOIN cobrancas WITH (NOLOCK) ON usuarios.id = cobrancas.id_usr, usuariosxsessoes WITH (NOLOCK)
+-- WHERE usuarios.id = usuariosxsessoes.id_usr AND usuarios.id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_activate_update] @id int, @senha varchar(15) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DECLARE @nivel int, @cob int
+--     -- Inativa cobrança de contribuição que o usuario inativo pode ter
+--     UPDATE cobrancas WITH (ROWLOCK) SET status_old = status, status = -1, datainativa = GetDate(), retry_count = 0, datanext = NULL  WHERE id_usr = @id AND recorrencia = -1
+--     -- Verifica se cobranca inativa tinha uma data futura de recorrencia e era ok quando foi inativada
+--     SELECT @cob = id FROM cobrancas WITH (NOLOCK) WHERE id_usr = @id AND status = -1 AND status_old = 1 AND recorrencia >= 0 AND DateDiff(day, GetDate(), datanext) > 0
+--     IF @cob IS NOT NULL
+--         BEGIN
+--         SET @nivel = 6
+--         UPDATE cobrancas WITH (ROWLOCK) SET status = 1, retry_count = 0 WHERE id = @cob
+--         END
+--     ELSE
+--         SET @nivel = 4
+--     UPDATE usuarios WITH (ROWLOCK) SET senha = @senha, nivel = @nivel, num_favoritos = (SELECT COUNT(usuariosxfavoritos.id) AS count_fav FROM usuarios AS usuarios_int WITH (NOLOCK), usuariosxfavoritos WITH (NOLOCK) WHERE usuariosxfavoritos.id_usr = @id AND usuariosxfavoritos.id_fav = usuarios_int.id AND usuarios_int.nivel >= 4) WHERE id = @id
+--     UPDATE usuarios WITH (ROWLOCK) SET num_favoritos = num_favoritos + 1 WHERE id IN (SELECT id_usr FROM usuariosxfavoritos WITH (NOLOCK) WHERE id_fav = @id)
+--     UPDATE usuarios WITH (ROWLOCK) SET num_favoritos_subject = num_favoritos_subject + 1 WHERE id IN (SELECT id_fav FROM usuariosxfavoritos WITH (NOLOCK) WHERE id_usr = @id)
+--     UPDATE usuariosxsessoes WITH (ROWLOCK) SET dataprev = datalast, datalast = GetDate() WHERE id_usr = @id
+--     RETURN @nivel
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_testemunhos_update] @id int, @titulo varchar(100), @tipo int, @lang int, @resumo varchar(300), @texto text AS
+-- UPDATE testemunhos
+-- SET titulo = @titulo, tipo = @tipo, lang = @lang, resumo = @resumo, texto = @texto
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_testemunhos_select] @tipo int, @lang int AS
+-- SELECT id, titulo, fotos, resumo
+-- FROM testemunhos WITH (NOLOCK)
+-- WHERE tipo = @tipo AND lang = @lang
+-- ORDER BY lang, id DESC
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_testemunhos_photos_update] @id int, @fotos int AS
+-- UPDATE testemunhos
+-- SET fotos = @fotos
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_testemunhos_insert] @titulo varchar(100), @tipo int, @lang int, @resumo varchar(300), @texto text AS
+-- INSERT INTO testemunhos (titulo, tipo, fotos, lang, resumo, texto)
+-- VALUES (@titulo, @tipo, 0, @lang, @resumo, @texto)
+-- SELECT id
+-- FROM testemunhos WITH (NOLOCK)
+-- WHERE titulo = @titulo AND tipo = @tipo AND resumo = @resumo
+-- ORDER BY id DESC
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_testemunhos_home_select] @lang int AS
+-- SELECT TOP 4 id, titulo, fotos, resumo
+-- FROM testemunhos WITH (NOLOCK)
+-- WHERE tipo = 1 AND fotos > 0 AND lang = @lang
+-- ORDER BY NEWID()
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_testemunhos_details_select] @id int AS
+-- SELECT titulo, tipo, fotos, lang, resumo, texto
+-- FROM testemunhos WITH (NOLOCK)
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_testemunhos_delete] @id int AS
+-- DELETE FROM testemunhos
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_scammer_update] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuarios WITH (ROWLOCK) SET nivel = 3, problematico = 1, scammer = 1 WHERE id = @id
+--     UPDATE usuariosxscammers WITH (ROWLOCK) SET flag_processed = 1 WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_scammer_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT DISTINCT usuarios.id AS id, usuarios.apelido AS apelido, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.email AS email, usuarios.sexo AS sexo, usuarios.nivel AS nivel, usuarios.pais AS pais, usuarios.nacionalidade AS nacionalidade, usuarios.fotos AS fotos, usuariosxscammers.filter_name AS filter_name
+--     FROM usuarios WITH (NOLOCK), usuariosxscammers WITH (NOLOCK)
+--     WHERE usuarios.id = usuariosxscammers.id_usr AND usuariosxscammers.flag_processed = 0
+--     ORDER BY usuarios.id DESC
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_scammer_limpeza_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT DISTINCT id_usr
+--     FROM usuariosxscammers WITH (NOLOCK)
+--     WHERE usuariosxscammers.flag_processed = 1
+--     ORDER BY id_usr
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_scammer_limpeza_delete] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM usuariosxscammers WHERE (flag_processed = 1 AND DateDiff(hh,datacad,GetDate()) > 1) Or (DateDiff(d,datacad,GetDate()) > 30)
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_scammer_ip_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT ip FROM scammers_x_ips ORDER BY datacad DESC
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_scammer_ip_manutencao_delete] @dias_armazenados int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM scammers_x_ips WHERE DateDiff(d,datacad,GetDate()) > @dias_armazenados
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_scammer_ip_insert] @id int, @ip varchar(50) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     INSERT INTO scammers_x_ips (id_usr, ip, datacad) VALUES (@id, @ip, GETDATE())
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_scammer_insert] @id int, @filter_name varchar(100) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     INSERT INTO usuariosxscammers (id_usr,filter_name,datacad,flag_processed) VALUES (@id,@filter_name,GETDATE(),0)
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_scammer_filters_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id, name, value FROM scammer_filters ORDER BY name
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_scammer_filters_insert] @doc ntext AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DECLARE @idoc int
+--     BEGIN TRANSACTION
+--     DELETE FROM scammer_filters
+--     -- Create an internal representation (virtual table) of the XML document...
+--     EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+--     -- Perform INSERTS
+--     INSERT INTO scammer_filters (name,value)
+--     (SELECT name,value
+--     FROM OPENXML (@idoc, '/scammer_filters/filter',2)
+--     WITH (name varchar(100), value varchar(4000)) ox2)
+--     -- Remove the 'virtual table' now...
+--     EXEC sp_xml_removedocument @idoc
+--     COMMIT TRANSACTION
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_scammer_delete] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM usuariosxscammers WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_programmable_text_select] @type int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id, text FROM programmable_texts WHERE type = @type
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_programmable_text_insert] @type int, @texto text AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     INSERT INTO programmable_texts (type,text) VALUES (@type,@texto)
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_programmable_text_delete] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM programmable_texts WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_photos_select] AS
+-- SELECT id, apelido, site, lang, email, nome, sobrenome, notificacao_sistema
+-- FROM usuarios WITH (READPAST)
+-- WHERE fotos = -1 AND nivel <> 2 AND nivel <> 3
+-- ORDER BY nivel DESC, datafotos
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_photos_manutencao_select] AS
+-- SELECT id
+-- FROM usuarios WITH (READPAST)
+-- WHERE fotos > 0
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_paises_select] @lang int AS
+-- SELECT id_pais, nome
+-- FROM paises_nomes WITH (NOLOCK)
+-- WHERE lang = @lang
+-- ORDER BY nome
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_paises_qtd_select] @site int, @lang int AS
+-- SELECT DISTINCT paises_nomes.nome AS nome,
+-- (SELECT count(usuarios.id) FROM usuarios WITH (NOLOCK) WHERE usuarios.pais = paises_nomes.id_pais AND usuarios.nivel <> 2 AND usuarios.nivel <> 3 AND usuarios.site = @site) AS qtd
+-- FROM paises_nomes WITH (NOLOCK)
+-- WHERE paises_nomes.lang = @lang
+-- ORDER BY paises_nomes.nome
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_paises_nome_select] @lang int, @nome varchar(50) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id_pais FROM paises_nomes WITH (NOLOCK) WHERE lang = @lang AND LOWER(nome) = LOWER(@nome)
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_paises_details_select] @id int, @lang int AS
+-- SELECT id_pais, nome
+-- FROM paises_nomes WITH (NOLOCK)
+-- WHERE lang = @lang And id_pais = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_musicas_update] @id int, @nome varchar(200), @artista int, @tipo int, @link varchar(300), @nomecd varchar(200), @creditos varchar(200) AS
+-- UPDATE musicas
+-- SET nome = @nome, id_artista = @artista, tipo = @tipo, link = @link, nomecd = @nomecd, creditos = @creditos
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_musicas_send] @sender int AS
+-- UPDATE usuarios WITH (ROWLOCK) SET musicas = musicas + 1 WHERE id = @sender
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_musicas_select] AS
+-- SELECT musicas.id AS id_musica, artistas.id AS id_artista, musicas.nome AS musica, artistas.nome AS artista, artistas.link AS link
+-- FROM musicas WITH (NOLOCK), artistas WITH (NOLOCK)
+-- WHERE musicas.id_artista = artistas.id AND musicas.tipo > 2
+-- ORDER BY artistas.nome, musicas.nome
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_musicas_insert] @nome varchar(200), @artista int, @tipo int, @link varchar(300), @nomecd varchar(200), @creditos varchar(200) AS
+-- INSERT INTO musicas (nome, id_artista, tipo, link, nomecd, creditos)
+-- VALUES (@nome, @artista, @tipo, @link, @nomecd, @creditos)
+-- SELECT musicas.id AS id, musicas.tipo AS tipo, musicas.nome AS nome, artistas.nome AS artista
+-- FROM musicas, artistas
+-- WHERE artistas.id = @artista AND musicas.id_artista = @artista AND musicas.tipo = @tipo AND musicas.link = @link AND musicas.nome = @nome AND musicas.nomecd = @nomecd AND musicas.creditos = @creditos
+-- ORDER BY id DESC
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_musicas_details_select] @id int AS
+-- SELECT musicas.id AS id, musicas.nome AS musica, musicas.tipo AS tipo, musicas.link AS link, musicas.nomecd AS nomecd, musicas.creditos AS creditos, musicas.id_artista AS id_artista, artistas.nome AS artista
+-- FROM musicas WITH (NOLOCK), artistas WITH (NOLOCK)
+-- WHERE musicas.id_artista = artistas.id And musicas.id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_musicas_delete] @id int AS
+-- DELETE FROM musicas
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_boletos_current_day_check_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     Select id from cobrancas where id_forma_pag = 2 and MONTH(datacad) = MONTH(GETDATE()) and YEAR(datacad) = YEAR(GETDATE()) and DAY(datacad) = DAY(GETDATE()) and status = 1
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_atualiza_cobranca_mensal] @id int, @valor money, @moeda smallint, @recorrencia int, @id_forma_pag int, @flag_parcelada int AS
+-- DECLARE @id_cob int, @status int
+-- -- BEGIN TRANSACTION
+-- -- Pega o id da cobranca da pessoa
+-- SELECT @id_cob = cobrancas.id FROM cobrancas WITH (NOLOCK) WHERE cobrancas.id_usr = @id
+-- -- atualiza ou cadastra uma nova cobranca com o valor, recorrencia e forma de pagamento escolhidos pela pessoa
+-- IF @id_cob IS NOT NULL
+--     UPDATE cobrancas WITH (ROWLOCK) SET valor = @valor, moeda = @moeda, recorrencia = @recorrencia, id_forma_pag = @id_forma_pag, flag_parcelada = @flag_parcelada, gerada_por = 1 WHERE id = @id_cob
+-- ELSE
+--     BEGIN
+--     IF @id_forma_pag = 1
+--         SET @status = 2
+--     ELSE
+--         SET @status = 3
+--     INSERT INTO cobrancas (id_usr, valor, moeda, recorrencia, id_forma_pag, flag_parcelada, gerada_por, status, dataini, retry_count) VALUES (@id, @valor, @moeda, @recorrencia, @id_forma_pag, @flag_parcelada, 1, @status, GetDate(), 0)
+--     END
+-- -- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_ativas_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT cobrancas.id AS id_cob, cobrancas.valor AS valor_cob, cobrancas.moeda AS moeda, usuario.id AS id_usr, usuario.email AS email, usuario.lang AS lang, usuario.site AS site
+--     FROM cobrancas WITH (NOLOCK) RIGHT JOIN usuarios AS usuario WITH (NOLOCK) ON cobrancas.id_usr = usuario.id WHERE usuario.nivel = 6 OR usuario.nivel = 5
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_afiliado_month_select] @tipo int, @email varchar(100), @site int, @month int, @year int AS
+-- DECLARE @datevar datetime
+-- SET @datevar = convert(datetime, convert(varchar(2),@month) + '/01/' + convert(varchar(4),@year), 101)
+-- IF @tipo = 1
+--     BEGIN
+--     SELECT cobrancas_passadas.datacad AS datacad, cobrancas_passadas.recorrencia AS recorrencia, cobrancas_passadas.valor AS valor, cobrancas_passadas.flag_parcelada AS flag_parcelada, cobrancas_passadas.rodada_por
+--     FROM usuarios WITH (NOLOCK), cobrancas_passadas WITH (NOLOCK)
+--     WHERE cobrancas_passadas.id_usr = usuarios.id AND usuarios.friendemail = LOWER(@email) AND cobrancas_passadas.status = 1 AND
+--     (
+--     -- Cobrancas nao-parceladas
+--     (Year(cobrancas_passadas.datacad) = @year And Month(cobrancas_passadas.datacad) = @month And cobrancas_passadas.flag_parcelada = 0)
+--     OR
+--     -- Cobrancas parceladas geradas pelo usuario ou cobrancas parceladas anteriores a 06/2014, quando mudamos as cobrancas parceladas pra recorrerem mensalmente
+--     (DATEDIFF(m,cobrancas_passadas.datacad,@datevar) < cobrancas_passadas.recorrencia And DATEDIFF(m,cobrancas_passadas.datacad,@datevar) > 0 And cobrancas_passadas.flag_parcelada > 0 And ((cobrancas_passadas.rodada_por <> 2) Or ((YEAR(cobrancas_passadas.datacad) < 2014) Or (YEAR(cobrancas_passadas.datacad) = 2014 And MONTH(cobrancas_passadas.datacad) <= 5))))
+--     OR
+--     -- Cobrancas parceladas geradas pela recorrencia ou cobrancas parceladas posteriores a 06/2014
+--     (Year(cobrancas_passadas.datacad) = @year And Month(cobrancas_passadas.datacad) = @month And cobrancas_passadas.flag_parcelada > 0 And ((cobrancas_passadas.rodada_por = 2) Or ((YEAR(cobrancas_passadas.datacad) > 2014) Or (YEAR(cobrancas_passadas.datacad) = 2014 And MONTH(cobrancas_passadas.datacad) > 5))))
+--     )
+--     ORDER BY cobrancas_passadas.id
+--     SELECT usuarios.datacad AS datacad
+--     FROM usuarios WITH (NOLOCK)
+--     WHERE usuarios.friendemail = LOWER(@email) AND usuarios.nivel >= 4 AND Month(usuarios.datacad) = @month AND Year(usuarios.datacad) = @year
+--     ORDER BY usuarios.datacad
+--     END
+-- ELSE
+--     BEGIN
+--     SELECT cobrancas_passadas.datacad AS datacad, cobrancas_passadas.recorrencia AS recorrencia, cobrancas_passadas.valor AS valor, cobrancas_passadas.flag_parcelada AS flag_parcelada, cobrancas_passadas.rodada_por
+--     FROM usuarios WITH (NOLOCK), cobrancas_passadas WITH (NOLOCK)
+--     WHERE cobrancas_passadas.id_usr = usuarios.id AND usuarios.site = @site AND cobrancas_passadas.status = 1 AND
+--     (
+--     -- Cobrancas nao-parceladas
+--     (Year(cobrancas_passadas.datacad) = @year And Month(cobrancas_passadas.datacad) = @month And cobrancas_passadas.flag_parcelada = 0)
+--     OR
+--     -- Cobrancas parceladas geradas pelo usuario ou cobrancas parceladas anteriores a 06/2014, quando mudamos as cobrancas parceladas pra recorrerem mensalmente
+--     (DATEDIFF(m,cobrancas_passadas.datacad,@datevar) < cobrancas_passadas.recorrencia And DATEDIFF(m,cobrancas_passadas.datacad,@datevar) > 0 And cobrancas_passadas.flag_parcelada > 0 And ((cobrancas_passadas.rodada_por <> 2) Or ((YEAR(cobrancas_passadas.datacad) < 2014) Or (YEAR(cobrancas_passadas.datacad) = 2014 And MONTH(cobrancas_passadas.datacad) <= 5))))
+--     OR
+--     -- Cobrancas parceladas geradas pela recorrencia ou cobrancas parceladas posteriores a 06/2014
+--     (Year(cobrancas_passadas.datacad) = @year And Month(cobrancas_passadas.datacad) = @month And cobrancas_passadas.flag_parcelada > 0 And ((cobrancas_passadas.rodada_por = 2) Or ((YEAR(cobrancas_passadas.datacad) > 2014) Or (YEAR(cobrancas_passadas.datacad) = 2014 And MONTH(cobrancas_passadas.datacad) > 5))))
+--     )
+--     ORDER BY cobrancas_passadas.id
+--     SELECT usuarios.datacad AS datacad, usuarios.lang AS lang
+--     FROM usuarios WITH (NOLOCK)
+--     WHERE usuarios.site = @site AND usuarios.nivel >= 4 AND Month(usuarios.datacad) = @month AND Year(usuarios.datacad) = @year
+--     ORDER BY usuarios.datacad
+--     END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_bad_data_update] @id int, @n varchar(50) AS
+-- UPDATE bad_data WITH (ROWLOCK) SET n = @n WHERE id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_bad_data_insert] @n varchar(50) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     INSERT INTO bad_data (n, datacad) VALUES (@n, GETDATE())
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_bad_data_details_select] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT n, datacad FROM bad_data WITH (NOLOCK) WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_bad_data_delete] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM bad_data WITH (ROWLOCK) WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_bad_data_check_select] @n varchar(50) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id FROM bad_data WITH (NOLOCK) WHERE n = @n
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cidades_select] @estado int AS
+-- SELECT id, main, nome
+-- FROM cidades WITH (NOLOCK)
+-- WHERE estado = @estado
+-- ORDER BY nome
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cidades_details_select] @id int AS
+-- SELECT id
+-- FROM cidades WITH (NOLOCK)
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cidades_all_select] AS
+-- SELECT cidades.id AS id, cidades.nome AS nome, cidades.estado AS estado, cidades.main AS main, estados.tipo AS tipo, estados.pais AS pais
+-- FROM cidades WITH (NOLOCK), estados WITH (NOLOCK)
+-- WHERE cidades.estado = estados.id
+-- ORDER BY estado, nome
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_calendar_user_select] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id, data FROM calendario WITH (NOLOCK) WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_calendar_user_insert] @id int AS
+-- BEGIN
+-- DECLARE @datanext date
+-- BEGIN TRANSACTION
+-- SELECT @datanext = datanext FROM cobrancas WITH (NOLOCK) WHERE cobrancas.id_usr = @id
+-- UPDATE cobrancas WITH (ROWLOCK) SET status_old = status, status = -1, datainativa = GetDate(), retry_count = 0, datanext = NULL WHERE id_usr = @id
+-- UPDATE usuarios WITH (ROWLOCK) SET nivel = 7 WHERE id = @id
+-- INSERT INTO calendario (id_usr, nivel, data) VALUES (@id, 4, @datanext)
+-- COMMIT TRANSACTION
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_calendar_update] @id int, @id_usr int, @nivel int, @dia varchar(2), @mes varchar(2), @ano varchar(4) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DECLARE @datevar datetime
+--     SET @datevar = convert(datetime, @mes + '/' + @dia + '/' + @ano, 101)
+--     UPDATE calendario WITH (ROWLOCK) SET id_usr = @id_usr, nivel = @nivel, data = @datevar WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_calendar_process_update] @id_usr int, @oldnivel int, @newnivel int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     IF @newnivel = 2 OR @newnivel = 3 OR @newnivel >= 7
+--         UPDATE cobrancas WITH (ROWLOCK) SET status_old = status, status = -1, datainativa = GetDate(), retry_count = 0, datanext = NULL WHERE id_usr = @id_usr
+--     IF @newnivel = 5 OR @newnivel = 6
+--         UPDATE cobrancas WITH (ROWLOCK) SET status = 3, retry_count = 0 WHERE id_usr = @id_usr
+--     -- Atualiza cliente
+--     UPDATE usuarios WITH (ROWLOCK) SET nivel = @newnivel WHERE id = @id_usr
+--     -- Limpa calendario
+--     DELETE FROM calendario WITH (ROWLOCK) WHERE id_usr = @id_usr AND DateDiff(d,GetDate(),calendario.data) <= 0
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_calendar_process_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT usuarios.id AS id, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.apelido AS apelido, usuarios.email AS email, usuarios.nivel AS oldnivel, usuarios.site AS site, usuarios.lang AS lang, usuarios.notificacao_sistema AS notificacao_sistema, calendario.nivel AS newnivel FROM usuarios WITH (NOLOCK), calendario WITH (NOLOCK) WHERE usuarios.id = calendario.id_usr AND DateDiff(d,GetDate(),calendario.data) <= 0
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_calendar_insert] @id_usr int, @nivel int, @dia varchar(2), @mes varchar(2), @ano varchar(4) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DECLARE @datevar datetime
+--     SET @datevar = convert(datetime, @mes + '/' + @dia + '/' + @ano, 101)
+--     INSERT INTO calendario (id_usr, nivel, data) VALUES (@id_usr, @nivel, @datevar)
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_calendar_details_select] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id_usr, nivel, data FROM calendario WITH (NOLOCK) WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_calendar_delete] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM calendario WITH (ROWLOCK) WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_artist_update] @id int, @link varchar(250) AS
+-- UPDATE artistas
+-- SET link = @link
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_artist_songs_select] @id int, @tipo_musica int AS
+-- SELECT id, nome
+-- FROM musicas WITH (NOLOCK)
+-- WHERE id_artista = @id AND tipo >= @tipo_musica
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_artist_select] AS
+-- SELECT id, nome
+-- FROM artistas WITH (NOLOCK)
+-- ORDER BY nome
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_artist_insert] @nome varchar(200), @link varchar(250) AS
+-- INSERT INTO artistas (nome, link) VALUES (@nome, @link)
+-- SELECT id FROM artistas WITH (NOLOCK) WHERE nome = @nome AND link = @link ORDER BY id DESC
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_artist_details_select] @id int, @nome varchar(200) AS
+-- SELECT id, nome, link
+-- FROM artistas WITH (NOLOCK)
+-- WHERE id = @id OR nome = @nome
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_artist_delete] @id int AS
+-- DELETE FROM artistas
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_artist_adm_select] @nome varchar(200) AS
+-- SELECT id, nome
+-- FROM artistas WITH (NOLOCK)
+-- WHERE nome LIKE '%' + ISNULL(@nome, '%') + '%'
+-- ORDER BY nome
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_alteracao_fotos_select] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT data FROM alteracao_fotos WITH (NOLOCK) WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_alteracao_fotos_manutencao_delete] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM alteracao_fotos
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_alteracao_fotos_insert] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     INSERT into alteracao_fotos (id_usr, data) VALUES (@id, GetDate())
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_alteracao_fotos_delete] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM alteracao_fotos WITH (ROWLOCK) WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_update] @id int, @adm int, @tipo int, @site int, @nome varchar(100), @email varchar(100), @senha varchar(15), @pais int, @percentual int, @valorunico money, @info text AS
+-- BEGIN TRANSACTION
+-- IF @tipo = 1
+--     UPDATE usuarios WITH (ROWLOCK) SET friendemail = @email WHERE friendemail = (SELECT email FROM afiliados WITH (NOLOCK) WHERE id = @id)
+-- IF @adm = 1
+--     UPDATE afiliados WITH (ROWLOCK) SET tipo = @tipo, site = @site, nome = @nome, email = LOWER(@email), senha = @senha, pais = @pais, percentual = @percentual, valorunico = @valorunico, info = @info WHERE id = @id
+-- ELSE
+--     UPDATE afiliados WITH (ROWLOCK) SET nome = @nome, email = LOWER(@email), pais = @pais WHERE id = @id
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_select] AS
+-- SELECT afiliados.id AS id, afiliados.site AS site, afiliados.nome AS nome, afiliados.email AS email, afiliados.percentual AS percentual, afiliados.valorunico AS valorunico, afiliados.tipo AS tipo,
+-- (SELECT count(usuarios.id) FROM usuarios WITH (NOLOCK) WHERE usuarios.friendemail = afiliados.email AND usuarios.nivel >= 4 AND Month(usuarios.datacad) = Month(DateAdd(d,-1 * Day(GetDate()),GetDate())) And Year(usuarios.datacad) = Year(DateAdd(d,-1 * Day(GetDate()),GetDate()))) AS qtd_parceiro
+-- FROM afiliados WITH (NOLOCK)
+-- WHERE afiliados.tipo = 1
+-- ORDER BY afiliados.id
+
+-- SELECT afiliados.id AS id, afiliados.site AS site, afiliados.nome AS nome, afiliados.email AS email, afiliados.percentual AS percentual, afiliados.valorunico AS valorunico, afiliados.tipo AS tipo,
+-- (SELECT count(usuarios.id) FROM usuarios WITH (NOLOCK) WHERE usuarios.site = afiliados.site AND usuarios.nivel >= 4 AND Month(usuarios.datacad) = Month(DateAdd(d,-1 * Day(GetDate()),GetDate())) And Year(usuarios.datacad) = Year(DateAdd(d,-1 * Day(GetDate()),GetDate()))) AS qtd_site
+-- FROM afiliados WITH (NOLOCK)
+-- WHERE afiliados.tipo = 2
+-- ORDER BY afiliados.site
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_qtd_select] @tipo int, @email varchar(100), @site int AS
+-- IF @tipo = 1
+--     SELECT nivel FROM usuarios WITH (NOLOCK) WHERE nivel >= 4 AND nivel <= 6 AND friendemail = LOWER(@email)
+-- ELSE
+--     SELECT nivel FROM usuarios WITH (NOLOCK) WHERE nivel >= 4 AND nivel <= 6 AND site = @site
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_pass_update] @id int, @senha varchar(15) AS
+-- UPDATE afiliados WITH (ROWLOCK)
+-- SET senha = @senha
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_notificacao_user_list_select] @month int, @year int AS
+-- DECLARE @datevar datetime
+-- SET @datevar = convert(datetime, convert(varchar(2),@month) + '/01/' + convert(varchar(4),@year), 101)
+-- SELECT usuarios.friendemail AS friendemail, usuarios.site AS site, cobrancas_passadas.recorrencia AS recorrencia, cobrancas_passadas.valor AS valor, cobrancas_passadas.flag_parcelada AS flag_parcelada, cobrancas_passadas.rodada_por AS rodada_por, cobrancas_passadas.datacad AS datacad
+-- FROM usuarios WITH (NOLOCK), cobrancas_passadas WITH (NOLOCK)
+-- WHERE usuarios.id = cobrancas_passadas.id_usr AND cobrancas_passadas.status = 1 AND
+-- (
+-- -- Cobrancas nao-parceladas
+-- (Year(cobrancas_passadas.datacad) = @year And Month(cobrancas_passadas.datacad) = @month And cobrancas_passadas.flag_parcelada = 0)
+-- OR
+-- -- Cobrancas parceladas geradas pelo usuario ou cobrancas parceladas anteriores a 06/2014, quando mudamos as cobrancas parceladas pra recorrerem mensalmente
+-- (DATEDIFF(m,cobrancas_passadas.datacad,@datevar) < cobrancas_passadas.recorrencia And DATEDIFF(m,cobrancas_passadas.datacad,@datevar) > 0 And cobrancas_passadas.flag_parcelada > 0 And ((cobrancas_passadas.rodada_por <> 2) Or ((YEAR(cobrancas_passadas.datacad) < 2014) Or (YEAR(cobrancas_passadas.datacad) = 2014 And MONTH(cobrancas_passadas.datacad) <= 5))))
+-- OR
+-- -- Cobrancas parceladas geradas pela recorrencia ou cobrancas parceladas posteriores a 06/2014
+-- (Year(cobrancas_passadas.datacad) = @year And Month(cobrancas_passadas.datacad) = @month And cobrancas_passadas.flag_parcelada > 0 And ((cobrancas_passadas.rodada_por = 2) Or ((YEAR(cobrancas_passadas.datacad) > 2014) Or (YEAR(cobrancas_passadas.datacad) = 2014 And MONTH(cobrancas_passadas.datacad) > 5))))
+-- )
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_notificacao_totalprev_update] @id int, @total money AS
+-- UPDATE afiliados WITH (ROWLOCK) SET totalprev = @total WHERE id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_login_update] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE afiliados WITH (ROWLOCK) SET datalast = GetDate() WHERE id =  @id
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_login_select] @tipo int, @site int, @email varchar(100) AS
+-- SELECT id, senha FROM afiliados WITH (NOLOCK) WHERE email = LOWER(@email) AND tipo = @tipo AND site = @site
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_insert] @nome varchar(100), @email varchar(100), @senha varchar(15), @tipo int, @site int, @pais int, @percentual int, @valorunico money, @info text AS
+-- INSERT INTO afiliados (nome, email, senha, tipo, site, pais, percentual, valorunico, info, datalast, datacad)
+-- VALUES (@nome, LOWER(@email), @senha, @tipo, @site, @pais, @percentual, @valorunico, @info, GetDate(), GetDate())
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_details_select] @id int, @email varchar(100) AS
+-- SELECT id, nome, email, senha, pais, percentual, valorunico, tipo, site, info
+-- FROM afiliados WITH (NOLOCK)
+-- WHERE id = @id OR LOWER(email) = LOWER(@email)
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_delete] @id int AS
+-- DELETE FROM afiliados WITH (ROWLOCK) WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_afiliado_client_details_select] @id int, @tipo int, @email varchar(100), @site int, @lang int AS
+-- IF @tipo = 1
+--     BEGIN
+--     SELECT cobrancas.datacad AS datacad_cobranca, cobrancas.recorrencia AS recorrencia,
+--     usuarios.apelido AS apelido, usuarios.subid AS subid, usuarios.sexo AS sexo, usuarios.nascano AS nascano, usuarios.nascmes AS nascmes, usuarios.nascdia AS nascdia, usuarios.nivel AS nivel, usuarios.datacad AS datacad_usr, usuarios.fotos AS fotos,
+--     cidades.nome AS cidade, estados.nome AS estado, paises_nomes.nome AS pais
+--     FROM cobrancas WITH (NOLOCK) RIGHT JOIN usuarios WITH (NOLOCK) ON (cobrancas.id_usr = usuarios.id) LEFT JOIN cidades WITH (NOLOCK) ON cidades.id = usuarios.cidade LEFT JOIN estados WITH (NOLOCK) ON estados.id = usuarios.estado LEFT JOIN paises_nomes WITH (NOLOCK) ON paises_nomes.id_pais = usuarios.pais AND paises_nomes.lang = @lang
+--     WHERE usuarios.friendemail = LOWER(@email) AND usuarios.nivel >= 4 AND usuarios.nivel <= 6 AND usuarios.id = @id
+--     END
+-- ELSE
+--     BEGIN
+--     SELECT cobrancas.datacad AS datacad_cobranca, cobrancas.recorrencia AS recorrencia,
+--     usuarios.apelido AS apelido, usuarios.subid AS subid, usuarios.sexo AS sexo, usuarios.nascano AS nascano, usuarios.nascmes AS nascmes, usuarios.nascdia AS nascdia, usuarios.nivel AS nivel, usuarios.datacad AS datacad_usr, usuarios.fotos AS fotos,
+--     cidades.nome AS cidade, estados.nome AS estado, paises_nomes.nome AS pais
+--     FROM cobrancas WITH (NOLOCK) RIGHT JOIN usuarios WITH (NOLOCK) ON (cobrancas.id_usr = usuarios.id) LEFT JOIN cidades WITH (NOLOCK) ON cidades.id = usuarios.cidade LEFT JOIN estados WITH (NOLOCK) ON estados.id = usuarios.estado LEFT JOIN paises_nomes WITH (NOLOCK) ON paises_nomes.id_pais = usuarios.pais AND paises_nomes.lang = @lang
+--     WHERE usuarios.site = @site AND usuarios.nivel >= 4 AND usuarios.nivel <= 6 AND usuarios.id = @id
+--     END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_musicas_active_update] @id int AS
+-- UPDATE musicas
+-- SET tipo = 3
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_estados_select] @pais int AS
+-- SELECT id, nome, tipo
+-- FROM estados WITH (NOLOCK)
+-- WHERE pais = @pais
+-- ORDER BY nome
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_estados_qtd_select] @site int, @lang int AS
+-- SELECT estados.nome AS nome, paises_nomes.nome AS pais,
+-- (SELECT count(usuarios.id) FROM usuarios WITH (NOLOCK) WHERE usuarios.estado = estados.id AND usuarios.nivel <> 2 AND usuarios.nivel <> 3 AND usuarios.site = @site) AS qtd
+-- FROM estados WITH (NOLOCK), paises_nomes WITH (NOLOCK)
+-- WHERE estados.pais = paises_nomes.id_pais AND paises_nomes.lang = @lang
+-- ORDER BY estados.pais, estados.nome
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_estados_details_select] @id int AS
+-- SELECT id, pais
+-- FROM estados WITH (NOLOCK)
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_estados_all_select] AS
+-- SELECT id, nome, pais, tipo
+-- FROM estados WITH (NOLOCK)
+-- ORDER BY pais, nome
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_perfis_interessantes_manutencao_delete] @dias int AS
+-- DELETE FROM usuarios_x_datamail WHERE datamail < DateAdd(day,@dias,GetDate())
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_perfis_interessantes_batch_unsubscribe] @doc ntext AS
+-- DECLARE @idoc int
+-- -- Create an internal representation (virtual table) of the XML document...
+-- EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+-- -- Perform UPDATES
+-- UPDATE usuarios WITH (ROWLOCK) SET newsletter = 0 WHERE email IN
+-- (SELECT LOWER(email)
+-- FROM OPENXML (@idoc, '/users/user',2)
+-- WITH (email varchar(100)))
+-- -- Remove the 'virtual table' now...
+-- EXEC sp_xml_removedocument @idoc
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_notificacao_mensagens_batch_unsubscribe] @doc ntext AS
+-- DECLARE @idoc int
+-- -- Create an internal representation (virtual table) of the XML document...
+-- EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+-- -- Perform UPDATES
+-- UPDATE usuarios WITH (ROWLOCK) SET notificacao_mensagens = 0 WHERE email IN
+-- (SELECT LOWER(email)
+-- FROM OPENXML (@idoc, '/users/user',2)
+-- WITH (email varchar(100)))
+-- -- Remove the 'virtual table' now...
+-- EXEC sp_xml_removedocument @idoc
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_notificacao_favoritos_batch_unsubscribe] @doc ntext AS
+-- DECLARE @idoc int
+-- -- Create an internal representation (virtual table) of the XML document...
+-- EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+-- -- Perform UPDATES
+-- UPDATE usuarios WITH (ROWLOCK) SET notificacao_favoritos = 0 WHERE email IN
+-- (SELECT LOWER(email)
+-- FROM OPENXML (@idoc, '/users/user',2)
+-- WITH (email varchar(100)))
+-- -- Remove the 'virtual table' now...
+-- EXEC sp_xml_removedocument @idoc
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_notificacao_datas_especiais_batch_unsubscribe] @doc ntext AS
+-- DECLARE @idoc int
+-- -- Create an internal representation (virtual table) of the XML document...
+-- EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+-- -- Perform UPDATES
+-- UPDATE usuarios WITH (ROWLOCK) SET notificacao_datas_especiais = 0 WHERE email IN
+-- (SELECT LOWER(email)
+-- FROM OPENXML (@idoc, '/users/user',2)
+-- WITH (email varchar(100)))
+-- -- Remove the 'virtual table' now...
+-- EXEC sp_xml_removedocument @idoc
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_non_delivery_temp_manutencao_delete] @dias int AS
+-- DELETE FROM usuarios_x_datamailcheck WHERE datamailcheck < DateAdd(day,-1 * @dias,GetDate())
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_non_delivery_batch_temp_inactivate] @doc ntext AS
+-- DECLARE @idoc int
+-- -- Create an internal representation (virtual table) of the XML document...
+-- EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+-- -- Perform INSERTS
+-- INSERT INTO usuarios_x_datamailcheck (email, datamailcheck)
+-- SELECT LOWER(email), GETDATE()
+-- FROM OPENXML (@idoc, '/users/user',2)
+-- WITH (email varchar(100))
+-- -- Remove the 'virtual table' now...
+-- EXEC sp_xml_removedocument @idoc
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_non_delivery_batch_inactivate] @doc text AS
+-- DECLARE @idoc int
+-- -- Create an internal representation (virtual table) of the XML document...
+-- EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+-- -- Perform UPDATES
+-- -- Atualiza lista de favoritos
+-- UPDATE usuarios WITH (ROWLOCK) SET num_favoritos = num_favoritos - 1 WHERE id IN (SELECT id_usr FROM usuariosxfavoritos WITH (NOLOCK) WHERE id_fav IN (SELECT id FROM usuarios WHERE nivel <> 2 AND nivel <> 3 AND nivel < 6 AND email IN (SELECT LOWER(email) FROM OPENXML (@idoc, '/users/user',2) WITH (email varchar(100)))))
+-- UPDATE usuarios WITH (ROWLOCK) SET num_favoritos_subject = num_favoritos_subject - 1 WHERE id IN (SELECT id_fav FROM usuariosxfavoritos WITH (NOLOCK) WHERE id_usr IN (SELECT id FROM usuarios WHERE nivel <> 2 AND nivel <> 3 AND nivel < 6 AND email IN (SELECT LOWER(email) FROM OPENXML (@idoc, '/users/user',2) WITH (email varchar(100)))))
+-- -- Inativa usuarios gratuitos com email invalido
+-- UPDATE usuarios WITH (ROWLOCK) SET nivel = 2, email_confirmed = 0 WHERE nivel < 6 AND email IN
+-- (SELECT LOWER(email)
+-- FROM OPENXML (@idoc, '/users/user',2)
+-- WITH (email varchar(100)))
+-- -- Usuarios com email invalido passam pra temporary failure tambem. Assim, pagantes com email invalido passam pra temporary failure e nao recebem devocionais, etc
+-- INSERT INTO usuarios_x_datamailcheck (email, datamailcheck)
+-- SELECT LOWER(email), GETDATE()
+-- FROM OPENXML (@idoc, '/users/user',2)
+-- WITH (email varchar(100))
+-- -- Remove the 'virtual table' now...
+-- EXEC sp_xml_removedocument @idoc
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_devocionais_batch_unsubscribe] @doc ntext AS
+-- DECLARE @idoc int
+-- -- Create an internal representation (virtual table) of the XML document...
+-- EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+-- -- Perform UPDATES
+-- UPDATE usuarios WITH (ROWLOCK) SET devocional = 0 WHERE email IN
+-- (SELECT LOWER(email)
+-- FROM OPENXML (@idoc, '/users/user',2)
+-- WITH (email varchar(100)))
+-- -- Remove the 'virtual table' now...
+-- EXEC sp_xml_removedocument @idoc
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_contato_update] @doc ntext AS
+-- DECLARE @idoc int
+-- BEGIN TRANSACTION
+-- DELETE FROM emails_contato
+-- -- Create an internal representation (virtual table) of the XML document...
+-- EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+-- -- Perform INSERTS
+-- INSERT INTO emails_contato (email,secao,lang)
+-- (SELECT email,secao,lang
+-- FROM OPENXML (@idoc, '/aec_emails_contato/contato',2)
+-- WITH (email varchar(50), secao int, lang int))
+-- -- Remove the 'virtual table' now...
+-- EXEC sp_xml_removedocument @idoc
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_contato_select] @lang int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT email, secao, lang FROM emails_contato WITH (NOLOCK) WHERE lang = @lang ORDER BY secao
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_emails_contato_details_select] @secao int, @lang int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT email FROM emails_contato WITH (NOLOCK) WHERE secao = @secao AND lang = @lang
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_skin_select] @lang int AS
+-- SELECT id, nome
+-- FROM desc_skin_nomes WITH (NOLOCK)
+-- WHERE lang = @lang
+-- ORDER BY id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_skin_details_select] @id int, @lang int AS
+-- SELECT id
+-- FROM desc_skin_nomes WITH (NOLOCK)
+-- WHERE lang = @lang AND id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_religious_style_select] @lang int AS
+-- SELECT id, nome
+-- FROM desc_religious_style_nomes WITH (NOLOCK)
+-- WHERE lang = @lang
+-- ORDER BY id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_religious_style_qtd_select] @site int, @lang int AS
+-- SELECT desc_religious_style_nomes.nome AS nome,
+-- (SELECT count(usuariosxperfil.id) FROM usuarios WITH (NOLOCK), usuariosxperfil WITH (NOLOCK) WHERE usuariosxperfil.id_usr = usuarios.id AND usuarios.site = @site AND usuariosxperfil.religious_style = desc_religious_style_nomes.id AND usuarios.nivel >= 4) AS qtd
+-- FROM desc_religious_style_nomes WITH (NOLOCK)
+-- WHERE desc_religious_style_nomes.lang = @lang
+-- ORDER BY desc_religious_style_nomes.id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_religious_style_details_select] @id int, @lang int AS
+-- SELECT id
+-- FROM desc_religious_style_nomes WITH (NOLOCK)
+-- WHERE lang = @lang AND id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_religious_importance_select] @lang int AS
+-- SELECT id, nome
+-- FROM desc_religious_importance_nomes WITH (NOLOCK)
+-- WHERE lang = @lang
+-- ORDER BY id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_religious_importance_details_select] @id int, @lang int AS
+-- SELECT id
+-- FROM desc_religious_importance_nomes WITH (NOLOCK)
+-- WHERE lang = @lang AND id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_religious_frequency_select] @lang int AS
+-- SELECT id, nome
+-- FROM desc_religious_frequency_nomes WITH (NOLOCK)
+-- WHERE lang = @lang
+-- ORDER BY id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_religious_frequency_qtd_select] @site int, @lang int AS
+-- SELECT desc_religious_frequency_nomes.nome AS nome,
+-- (SELECT count(usuariosxperfil.id) FROM usuarios WITH (NOLOCK), usuariosxperfil WITH (NOLOCK) WHERE usuariosxperfil.id_usr = usuarios.id AND usuarios.site = @site AND usuariosxperfil.religious_frequency = desc_religious_frequency_nomes.id AND usuarios.nivel >= 4) AS qtd
+-- FROM desc_religious_frequency_nomes WITH (NOLOCK)
+-- WHERE desc_religious_frequency_nomes.lang = @lang
+-- ORDER BY desc_religious_frequency_nomes.id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_religious_frequency_details_select] @id int, @lang int AS
+-- SELECT id
+-- FROM desc_religious_frequency_nomes WITH (NOLOCK)
+-- WHERE lang = @lang AND id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_religion_update] @id int, @doc ntext AS
+-- DECLARE @idoc int
+-- BEGIN TRANSACTION
+-- DELETE FROM desc_religion_nomes WHERE id = @id
+-- -- Create an internal representation (virtual table) of the XML document...
+-- EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+-- -- Perform INSERTS
+-- INSERT INTO desc_religion_nomes (id,nome,lang)
+-- (SELECT @id, nome, lang
+-- FROM OPENXML (@idoc, '/aec_desc_religion/religion',2)
+-- WITH (nome varchar(50),lang int))
+-- -- Remove the 'virtual table' now...
+-- EXEC sp_xml_removedocument @idoc
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_religion_select] @lang int AS
+-- SELECT id, nome
+-- FROM desc_religion_nomes WITH (NOLOCK)
+-- WHERE lang = @lang
+-- ORDER BY nome
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_religion_qtd_select] @site int, @lang int AS
+-- SELECT desc_religion_nomes.nome AS nome,
+-- (SELECT count(usuariosxperfil.id) FROM usuarios WITH (NOLOCK), usuariosxperfil WITH (NOLOCK) WHERE usuariosxperfil.id_usr = usuarios.id AND usuarios.site = @site AND usuariosxperfil.religion = desc_religion_nomes.id AND usuarios.nivel >= 4) AS qtd
+-- FROM desc_religion_nomes WITH (NOLOCK)
+-- WHERE desc_religion_nomes.lang = @lang
+-- ORDER BY desc_religion_nomes.nome
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_religion_nome_select] @nome varchar(50), @lang int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id FROM desc_religion_nomes WITH (NOLOCK) WHERE LOWER(nome) = LOWER(@nome) AND lang = @lang
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_religion_insert] @doc ntext AS
+-- DECLARE @idoc int, @id int
+-- BEGIN TRANSACTION
+-- INSERT INTO desc_religion Default Values
+-- SELECT TOP 1 @id = id FROM desc_religion ORDER BY id DESC
+-- -- Create an internal representation (virtual table) of the XML document...
+-- EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+-- -- Perform INSERTS
+-- INSERT INTO desc_religion_nomes (id,nome,lang)
+-- (SELECT @id, nome, lang
+-- FROM OPENXML (@idoc, '/aec_desc_religion/religion',2)
+-- WITH (nome varchar(50),lang int))
+-- -- Remove the 'virtual table' now...
+-- EXEC sp_xml_removedocument @idoc
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_religion_details_select] @id int, @lang int AS
+-- SELECT id, nome
+-- FROM desc_religion_nomes WITH (NOLOCK)
+-- WHERE lang = @lang AND id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_religion_delete] @id int, @new_id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     BEGIN TRANSACTION
+--     UPDATE usuariosxperfil WITH (ROWLOCK) SET religion = @new_id WHERE religion = @id
+--     DELETE FROM desc_religion WHERE id = @id
+--     DELETE FROM desc_religion_nomes WHERE id = @id
+--     COMMIT TRANSACTION
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_religion_adm_select] @nome nvarchar(50) = NULL, @lang int AS
+-- SELECT id, nome
+-- FROM desc_religion_nomes WITH (NOLOCK)
+-- WHERE nome LIKE '%' + ISNULL(@nome, '%') + '%' AND lang = @lang
+-- ORDER BY nome
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_profession_select] @lang int AS
+-- SELECT id, nome
+-- FROM desc_profession_nomes WITH (NOLOCK)
+-- WHERE lang = @lang
+-- ORDER BY nome
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_profession_qtd_select] @site int, @lang int AS
+-- SELECT desc_profession_nomes.nome AS nome,
+-- (SELECT count(usuariosxperfil.id) FROM usuarios WITH (NOLOCK), usuariosxperfil WITH (NOLOCK) WHERE usuariosxperfil.id_usr = usuarios.id AND usuarios.site = @site AND usuarios.nivel >= 4 AND usuariosxperfil.profession = desc_profession_nomes.id) AS qtd
+-- FROM desc_profession_nomes WITH (NOLOCK)
+-- WHERE desc_profession_nomes.lang = @lang
+-- ORDER BY desc_profession_nomes.nome
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_profession_details_select] @id int, @lang int AS
+-- SELECT id
+-- FROM desc_profession_nomes WITH (NOLOCK)
+-- WHERE lang = @lang AND id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_education_select] @lang int AS
+-- SELECT id, nome
+-- FROM desc_education_nomes WITH (NOLOCK)
+-- WHERE lang = @lang
+-- ORDER BY id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_education_qtd_select] @site int, @lang int AS
+-- SELECT desc_education_nomes.nome AS nome,
+-- (SELECT count(usuariosxperfil.id) FROM usuarios WITH (NOLOCK), usuariosxperfil WITH (NOLOCK) WHERE usuariosxperfil.id_usr = usuarios.id AND usuarios.site = @site AND usuarios.nivel >= 4 AND usuariosxperfil.education = desc_education_nomes.id) AS qtd
+-- FROM desc_education_nomes WITH (NOLOCK)
+-- WHERE desc_education_nomes.lang = @lang
+-- ORDER BY desc_education_nomes.id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_education_details_select] @id int, @lang int AS
+-- SELECT id
+-- FROM desc_education_nomes WITH (NOLOCK)
+-- WHERE lang = @lang AND id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_desc_civil_stat_select] @lang int AS
+-- SELECT id, nome
+-- FROM desc_civil_stat_nomes WITH (NOLOCK)
+-- WHERE lang = @lang
+-- ORDER BY nome
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_civil_stat_qtd_select] @site int, @lang int AS
+-- SELECT desc_civil_stat_nomes.nome AS nome,
+-- (SELECT count(usuariosxperfil.id) FROM usuarios WITH (NOLOCK), usuariosxperfil WITH (NOLOCK) WHERE usuariosxperfil.id_usr = usuarios.id AND usuarios.site = @site AND usuarios.nivel >= 4 AND usuariosxperfil.civil_stat = desc_civil_stat_nomes.id) AS qtd
+-- FROM desc_civil_stat_nomes WITH (NOLOCK)
+-- WHERE desc_civil_stat_nomes.lang = @lang
+-- ORDER BY desc_civil_stat_nomes.nome
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_desc_civil_stat_details_select] @id int, @lang int AS
+-- SELECT id
+-- FROM desc_civil_stat_nomes WITH (NOLOCK)
+-- WHERE lang = @lang AND id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_unicas_converte_para_recorrente_update] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DECLARE @valor money, @recorrencia int, @flag_parcelada int
+--     SELECT @valor = valor, @recorrencia = recorrencia, @flag_parcelada = flag_parcelada FROM cobrancas_precos WHERE id_forma_pag = 1 AND recorrencia = 1
+--     UPDATE cobrancas SET valor = @valor, recorrencia = @recorrencia, flag_parcelada = @flag_parcelada WHERE recorrencia = 0 AND id_forma_pag = 1 AND DateDiff(day, GetDate(), cobrancas.datanext) <= 0
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_status_update] @id_usr int, @id_forma_pag int, @flag_so_se_estiver_inativa int AS
+-- BEGIN
+-- SET NOCOUNT ON;
+-- DECLARE @status int
+-- IF @id_forma_pag = 1
+--     SET @status = 2
+-- ELSE
+--     SET @status = 3
+-- IF @flag_so_se_estiver_inativa = 1
+--     UPDATE cobrancas WITH (ROWLOCK) SET status = @status, gerada_por = 1, retry_count = 0 WHERE id_usr = @id_usr AND status = -1
+-- ELSE
+--     BEGIN
+--     IF @status = -1
+--         UPDATE cobrancas WITH (ROWLOCK) SET status_old = status, status = @status, gerada_por = 1, datainativa = GETDATE(), retry_count = 0, datanext = NULL WHERE id_usr = @id_usr
+--     ELSE
+--         UPDATE cobrancas WITH (ROWLOCK) SET status = @status, gerada_por = 1, retry_count = 0 WHERE id_usr = @id_usr
+--     END
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_sem_recorrencia_date_select] @num_dias_aviso_renovacao int AS
+-- SELECT cobrancas.id_usr AS id_usr, cobrancas.valor AS valor, cobrancas.id_forma_pag AS id_forma_pag, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.apelido AS apelido, usuarios.email AS email, usuarios.site AS site, usuarios.lang AS lang
+-- FROM cobrancas WITH (NOLOCK), usuarios WITH (NOLOCK)
+-- WHERE usuarios.id = cobrancas.id_usr AND cobrancas.status = 1 AND cobrancas.id_forma_pag <> 1 AND cobrancas.valor > 0 AND DateDiff(d,cobrancas.datanext,DateAdd(d,@num_dias_aviso_renovacao,GetDate())) = 0 AND usuarios.notificacao_sistema >= 1 AND usuarios.nivel <> 2 AND usuarios.nivel <> 3
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_rejeitadas_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT cobrancas.id_usr AS id_usr FROM cobrancas WITH (NOLOCK),usuarios WITH (NOLOCK) WHERE cobrancas.id_usr = usuarios.id AND usuarios.nivel = 6 AND cobrancas.valor > 0 AND cobrancas.id_forma_pag = 1 AND (cobrancas.status = 0 OR cobrancas.status = 3)
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_rejeitadas_notificacao_vencimento_sem_recorrencia_select] AS
+-- DECLARE @id_usr int, @id_cob int
+
+-- -- Seleciona usuarios pagantes de boleto com boleto vencido
+-- SELECT cobrancas.id_usr AS id_usr, cobrancas.id AS id_cob, cobrancas.recorrencia As recorrencia, cobrancas.valor As valor, cobrancas.id_forma_pag AS id_forma_pag, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.apelido AS apelido, usuarios.email AS email, usuarios.site AS site, usuarios.lang AS lang, usuarios.notificacao_sistema AS notificacao_sistema
+-- FROM cobrancas WITH (NOLOCK),usuarios WITH (NOLOCK)
+-- WHERE usuarios.id = cobrancas.id_usr AND usuarios.nivel = 6 AND cobrancas.id_forma_pag <> 1 AND cobrancas.valor > 0 AND ((cobrancas.status = 0) OR (cobrancas.status = -1) OR (cobrancas.status = 3) OR (cobrancas.status = 1 And DateDiff(d,cobrancas.datanext,GetDate()) > 0))
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_rejeitadas_notificacao_pendentes_sem_recorrencia_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT cobrancas.id_usr FROM cobrancas WITH (NOLOCK),usuarios WITH (NOLOCK) WHERE cobrancas.id_usr = usuarios.id AND usuarios.nivel = 6 AND cobrancas.id_forma_pag <> 1 AND cobrancas.valor > 0 AND (cobrancas.status = 2 OR cobrancas.status = 3)
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_rejeitadas_notificacao_pendentes_cartao_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT usuarios.id AS id_usr FROM cobrancas WITH (NOLOCK), usuarios WITH (NOLOCK) WHERE usuarios.nivel = 6 AND cobrancas.id_usr = usuarios.id AND cobrancas.id_forma_pag = 1 AND cobrancas.valor > 0 AND cobrancas.status = 3 AND ((IsDate(cobrancas.datanext) = 1 AND DateDiff(d,cobrancas.datanext,GetDate()) > 14) Or (IsDate(cobrancas.datanext) = 0 AND DateDiff(d,cobrancas.dataini,GetDate()) > 14))
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_rejeitadas_notificacao_pagantes_select] @dias_recor int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE cobrancas WITH (ROWLOCK) SET status_old = status, status = -1, datainativa = GetDate(), retry_count = 0, datanext = NULL
+--     WHERE recorrencia <> 0 AND id_usr IN (SELECT usuarios_int.id FROM usuarios AS usuarios_int WITH (NOLOCK), cobrancas AS cobrancas_int WITH (NOLOCK) WHERE usuarios_int.nivel = 4 AND cobrancas_int.id_usr = usuarios_int.id AND cobrancas_int.id_forma_pag = 1 AND cobrancas_int.recorrencia <> 0 AND cobrancas_int.status = 0 AND ((IsDate(cobrancas_int.datacad) = 1 AND DateDiff(d,GetDate(),DateAdd(d,@dias_recor,DateAdd(m,cobrancas_int.recorrencia,cobrancas_int.datacad))) > 0) Or (IsDate(cobrancas_int.datacad) = 0)))
+
+--     SELECT cobrancas.id_usr AS id_usr, cobrancas.id AS id_cob, cobrancas.datacad AS cob_datacad, cobrancas.recorrencia AS recorrencia, cobrancas.flag_parcelada AS flag_parcelada, cobrancas.retry_count AS retry_count, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.apelido AS apelido, usuarios.email AS email, usuarios.site AS site, usuarios.lang AS lang, usuarios.notificacao_sistema AS notificacao_sistema, usuarios.fotos AS fotos, usuarios.sexo AS sexo, usuarios.nivel AS nivel
+--     FROM usuarios WITH (NOLOCK), cobrancas WITH (NOLOCK)
+--     WHERE ((usuarios.nivel = 5 And cobrancas.recorrencia > 0) OR ((usuarios.nivel = 2 OR usuarios.nivel = 3) AND cobrancas.recorrencia = -1))
+--     AND cobrancas.id_usr = usuarios.id AND cobrancas.status <> 1 AND cobrancas.status <> -1
+--     -- pega somente cobrancas que foram criadas a mais do que @dias_recor dias
+--     AND DateDiff(d,cobrancas.dataini,GetDate()) > @dias_recor
+--     -- pega somente cobrancas cuja ultima cobranca com sucesso ja passou do periodo contratado + @dias_recor dias ou que nunca rodaram com sucesso
+-- --  AND ((IsDate(cobrancas.datacad) = 1 AND DateDiff(d,GetDate(),DateAdd(d,@dias_recor,DateAdd(m,cobrancas.recorrencia,cobrancas.datacad))) < 0) OR (IsDate(cobrancas.datacad) = 0))
+--     AND cobrancas.retry_count >= @dias_recor
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_rejeitadas_notificacao_pagantes_cobrancas_passadas_select] @id_cob int, @dias_recor int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT COUNT(id) AS cobrancas
+--     FROM cobrancas_passadas WITH (NOLOCK)
+--     WHERE id_cob = @id_cob AND DateDiff(d,datacad,GetDate()) <= @dias_recor
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_rejeitadas_notificacao_inativos_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE cobrancas WITH (ROWLOCK) SET status = 2, retry_count = 0 WHERE id IN (SELECT cobrancas.id FROM cobrancas WITH (NOLOCK),usuarios WITH (NOLOCK) WHERE cobrancas.id_usr = usuarios.id AND usuarios.nivel = 6 AND cobrancas.id_forma_pag = 1 AND cobrancas.valor > 0 AND cobrancas.status = -1)
+--     UPDATE cobrancas WITH (ROWLOCK) SET status = 3, retry_count = 0 WHERE id IN (SELECT cobrancas.id FROM cobrancas WITH (NOLOCK),usuarios WITH (NOLOCK) WHERE cobrancas.id_usr = usuarios.id AND usuarios.nivel = 6 AND cobrancas.id_forma_pag <> 1 AND cobrancas.valor > 0 AND cobrancas.status = -1)
+--     UPDATE cobrancas WITH (ROWLOCK) SET status_old = status, status = -1, datainativa = GetDate(), retry_count = 0, datanext = NULL WHERE id IN (SELECT cobrancas.id FROM cobrancas WITH (NOLOCK),usuarios WITH (NOLOCK) WHERE cobrancas.id_usr = usuarios.id AND (usuarios.nivel = 2 OR usuarios.nivel = 3) AND cobrancas.status <> -1 AND cobrancas.recorrencia <> -1)
+--     SELECT cobrancas.id_usr FROM cobrancas WITH (NOLOCK),usuarios WITH (NOLOCK) WHERE cobrancas.id_usr = usuarios.id AND usuarios.nivel = 5 AND cobrancas.valor > 0 AND cobrancas.status = -1
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_rejeitadas_notificacao_gratuitos_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT cobrancas.id AS id_cob, cobrancas.id_usr FROM cobrancas WITH (NOLOCK),usuarios WITH (NOLOCK) WHERE cobrancas.id_usr = usuarios.id AND usuarios.nivel = 4 AND cobrancas.id_forma_pag = 1 AND cobrancas.valor > 0 AND (cobrancas.status = 2 OR cobrancas.status = 3)
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_qtd_select] AS
+-- SELECT status, id_forma_pag, recorrencia
+-- FROM cobrancas WITH (NOLOCK)
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_promocoes_update] @id int, @percentual money, @id_forma_pag smallint, @lang smallint,  @dayini varchar(2), @monthini varchar(2), @yearini varchar(4), @hourini varchar(2),  @dayfim varchar(2), @monthfim varchar(2), @yearfim varchar(4), @hourfim varchar(2)  AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DECLARE @dataini datetime, @datafim datetime
+--     SET @dataini = convert(datetime, @monthini + '-' + @dayini + '-' + @yearini + ' ' + @hourini + ':00:00', 120)
+--     SET @datafim = convert(datetime, @monthfim + '-' + @dayfim + '-' + @yearfim + ' ' + @hourfim + ':00:00', 120)
+--     UPDATE cobrancas_promocoes SET percentual = @percentual, id_forma_pag = @id_forma_pag, lang = @lang, dataini = @dataini, datafim = @datafim WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_promocoes_manutencao_delete] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM cobrancas_promocoes WITH (ROWLOCK) WHERE DateDiff(d,GetDate(),datafim) <= 0
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_promocoes_insert] @percentual money, @id_forma_pag smallint, @lang smallint,  @dayini varchar(2), @monthini varchar(2), @yearini varchar(4), @hourini varchar(2),  @dayfim varchar(2), @monthfim varchar(2), @yearfim varchar(4), @hourfim varchar(2)  AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DECLARE @dataini datetime, @datafim datetime
+--     SET @dataini = convert(datetime, @monthini + '-' + @dayini + '-' + @yearini + ' ' + @hourini + ':00:00', 120)
+--     SET @datafim = convert(datetime, @monthfim + '-' + @dayfim + '-' + @yearfim + ' ' + @hourfim + ':00:00', 120)
+--     INSERT INTO cobrancas_promocoes (percentual, id_forma_pag, lang, dataini, datafim, datacad) VALUES (@percentual, @id_forma_pag, @lang, @dataini, @datafim, GETDATE())
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_promocoes_delete] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM cobrancas_promocoes WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_promocoes_date_select] @id_forma_pag smallint AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT percentual FROM cobrancas_promocoes WITH (NOLOCK) WHERE id_forma_pag = @id_forma_pag AND DateDiff(mi,dataini,GetDate()) > 0 AND DateDiff(mi,GetDate(),datafim) > 0
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_promocoes_check_select] @id_forma_pag smallint, @lang smallint AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id, percentual FROM cobrancas_promocoes WITH (NOLOCK) WHERE id_forma_pag = @id_forma_pag AND lang = @lang AND DateDiff(mi,dataini,GetDate()) > 0 AND DateDiff(mi,GetDate(),datafim) > 0
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_promocoes_adm_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id, percentual, id_forma_pag, lang, dataini, datafim FROM cobrancas_promocoes WITH (NOLOCK) WHERE DateDiff(hh,GetDate(),datafim) > 0 ORDER BY dataini, lang, id_forma_pag
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_process] @id int, @id_usr int, @status int, @bandeira int, @id_trans_op varchar(50), @num_aut_op varchar(50), @recorrencia int, @valor money, @flag_promo smallint, @moeda smallint, @id_forma_pag smallint, @flag_parcelada smallint, @rodada_por int, @dias_cobranca_unica int AS
+-- DECLARE @datanext datetime, @recorrencia_calculada int
+-- BEGIN TRANSACTION
+-- IF @status = 1
+--     BEGIN
+--     SELECT @datanext = datanext FROM cobrancas WHERE id = @id
+--     -- Se a datanext já passou ou é nula, coloca como o dia de hoje
+--     IF Datediff(d,GetDate(),ISNUll(@datanext,DateAdd(d,-1,GetDate()))) <= 0
+--         SET @datanext = GetDate()
+--     IF @recorrencia = 0
+--         UPDATE cobrancas WITH (ROWLOCK) SET status = @status, id_trans_op = @id_trans_op, num_aut_op = @num_aut_op, dataold = dataprev, dataprev = datacad, datacad = GetDate(), datanext = DATEADD(d, @dias_cobranca_unica, @datanext), retry_count = 0 WHERE id = @id
+--     ELSE
+--         BEGIN
+--         SET @recorrencia_calculada = @recorrencia
+--         IF (@id_forma_pag = 1 AND @rodada_por = 2 AND @flag_parcelada > 0 AND @recorrencia > 1) OR (@recorrencia = -1)
+--             SET @recorrencia_calculada = 1
+--         IF @recorrencia = -1
+--             UPDATE cobrancas WITH (ROWLOCK) SET status = @status, id_trans_op = @id_trans_op, num_aut_op = @num_aut_op, dataold = dataprev, dataprev = datacad, datacad = GetDate(), gerada_por = 1, datanext = DATEADD(m, @recorrencia_calculada, GetDate()), retry_count = 0 WHERE id = @id
+--         ELSE
+--             UPDATE cobrancas WITH (ROWLOCK) SET status = @status, id_trans_op = @id_trans_op, num_aut_op = @num_aut_op, dataold = dataprev, dataprev = datacad, datacad = GetDate(), gerada_por = 1, datanext = DATEADD(m, @recorrencia_calculada, @datanext), retry_count = 0 WHERE id = @id
+--         END
+--     IF @recorrencia <> -1
+--         UPDATE usuarios WITH (ROWLOCK) SET nivel = 6 WHERE id = @id_usr AND nivel <> 2 AND nivel <> 3
+--     END
+-- ELSE
+--     BEGIN
+--     UPDATE cobrancas WITH (ROWLOCK) SET status = @status, id_trans_op = @id_trans_op, num_aut_op = @num_aut_op WHERE id = @id
+--     IF @id_forma_pag = 1 AND @rodada_por = 2
+--         UPDATE cobrancas WITH (ROWLOCK) SET retry_count = retry_count + 1 WHERE id = @id
+--     ELSE
+--         UPDATE cobrancas WITH (ROWLOCK) SET retry_count = 0 WHERE id = @id
+--     IF @recorrencia > 0
+--         UPDATE usuarios WITH (ROWLOCK) SET nivel = 5 WHERE id = @id_usr AND nivel <> 2 AND nivel <> 3
+--     END
+-- INSERT INTO cobrancas_passadas (id_cob,id_usr,valor,flag_promo,moeda,recorrencia,id_forma_pag,flag_parcelada,status,id_trans_op,num_aut_op,datacad,bandeira,rodada_por) VALUES (@id,@id_usr,@valor,@flag_promo,@moeda,@recorrencia,@id_forma_pag,@flag_parcelada,@status,@id_trans_op,@num_aut_op,GetDate(),@bandeira,@rodada_por)
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_precos_valor_select] @recorrencia smallint, @id_forma_pag smallint, @lang smallint, @flag_parcelada smallint AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT valor FROM cobrancas_precos WITH (NOLOCK) WHERE recorrencia = @recorrencia AND id_forma_pag = @id_forma_pag AND lang = @lang AND flag_parcelada = @flag_parcelada
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_precos_update] @id int, @valor money, @flag_parcelada smallint, @recorrencia smallint, @id_forma_pag smallint, @lang smallint, @flag_default smallint AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE cobrancas_precos SET valor = @valor, flag_parcelada = @flag_parcelada, recorrencia = @recorrencia, id_forma_pag = @id_forma_pag, lang = @lang, flag_default = @flag_default WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_precos_lang_select] @lang smallint AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT percentual, id_forma_pag FROM cobrancas_promocoes WITH (NOLOCK) WHERE lang = @lang AND DateDiff(mi,dataini,GetDate()) > 0 AND DateDiff(mi,GetDate(),datafim) > 0
+--     SELECT id, valor, flag_parcelada, recorrencia, id_forma_pag, flag_default,
+--     order_pref1 = CASE recorrencia
+--     WHEN 0 THEN 1
+--     ELSE 0
+--     END,
+--     order_pref2 = CASE flag_parcelada
+--     WHEN 1 THEN recorrencia
+--     ELSE recorrencia * -1
+--     END
+--     FROM cobrancas_precos WITH (NOLOCK) WHERE lang = @lang ORDER BY id_forma_pag, order_pref1 DESC, order_pref2 DESC
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_precos_insert] @valor money, @flag_parcelada smallint, @recorrencia smallint, @id_forma_pag smallint, @lang smallint, @flag_default smallint AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     INSERT INTO cobrancas_precos (valor, flag_parcelada, recorrencia, id_forma_pag, lang, flag_default) VALUES (@valor, @flag_parcelada, @recorrencia, @id_forma_pag, @lang, @flag_default)
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_precos_delete] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM cobrancas_precos WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_precos_check_select] @id_forma_pag smallint, @recorrencia smallint, @flag_parcelada smallint, @lang smallint AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id, valor FROM cobrancas_precos WITH (NOLOCK) WHERE id_forma_pag = @id_forma_pag AND recorrencia = @recorrencia AND flag_parcelada = @flag_parcelada AND lang = @lang
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_precos_adm_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id, valor, flag_parcelada, recorrencia, id_forma_pag, lang, flag_default FROM cobrancas_precos WITH (NOLOCK) ORDER BY lang, id_forma_pag, recorrencia, flag_parcelada DESC
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_passadas_sem_nota_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT cobrancas_passadas.id AS id, cobrancas_passadas.valor AS valor, cobrancas_passadas.datacad AS datacad, usuarios.cpf AS cpf, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.email AS email
+--     FROM cobrancas_passadas WITH (NOLOCK), usuarios WITH (NOLOCK)
+--     WHERE cobrancas_passadas.id_usr = usuarios.id AND cobrancas_passadas.valor > 0 AND cobrancas_passadas.status = 1
+--     AND (cobrancas_passadas.num_rps IS NULL OR (cobrancas_passadas.num_rps IS NOT NULL AND cobrancas_passadas.num_ntfse IS NULL))
+--     AND DateDiff(d,cobrancas_passadas.datacad,GETDATE()) >= 1
+--     -- So pega cobrancas dos ultimos 10 dias
+--     AND DateDiff(d,DATEADD(d,-11,Getdate()),cobrancas_passadas.datacad) >= 0
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_passadas_select] @id_cob int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT valor, moeda, recorrencia, flag_parcelada, flag_promo, id_forma_pag, bandeira, status, id_trans_op, num_aut_op, datacad, rodada_por, num_ntfse, codigo_ntfse, data_ntfse, num_rps, serie_rps, data_rps
+--     FROM cobrancas_passadas WITH (NOLOCK)
+--     WHERE id_cob = @id_cob
+--     ORDER BY datacad DESC
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_passadas_rps_num_update] @id int, @num_rps bigint, @serie_rps varchar(5) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE cobrancas_passadas WITH (ROWLOCK) SET num_rps = @num_rps, serie_rps = @serie_rps, data_rps = GETDATE() WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_passadas_promocao_select] @id_usr int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT TOP 1 id, id_cob, datacad
+--     FROM cobrancas_passadas WITH (NOLOCK)
+--     WHERE id_usr = @id_usr AND status >= 1 AND recorrencia = 0
+--     ORDER BY datacad DESC
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_passadas_nfse_num_update] @num_ntfse bigint, @codigo_ntfse varchar(9), @data_ntfse varchar(24), @serie_rps varchar(5),  @num_rps bigint AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE cobrancas_passadas WITH (ROWLOCK) SET num_ntfse = @num_ntfse, codigo_ntfse = @codigo_ntfse, data_ntfse = CONVERT(datetime,@data_ntfse,120) WHERE serie_rps = @serie_rps AND num_rps = @num_rps
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_passadas_id_trans_op_select] @id_trans_op varchar(50) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT TOP 1 id_cob FROM cobrancas_passadas WITH (ROWLOCK) WHERE id_trans_op = @id_trans_op ORDER BY id DESC
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_passadas_contribuicao_select] @id_usr int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id, datacad, status
+--     FROM cobrancas WITH (NOLOCK)
+--     WHERE id_usr = @id_usr AND recorrencia = -1
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_passadas_check_select] @id int, @id_usr int, @id_forma_pag smallint, @id_trans_op varchar(50), @num_aut_op varchar(50), @recorrencia int, @valor money, @moeda smallint AS
+-- SELECT TOP 1 datacad, status FROM cobrancas_passadas WITH (ROWLOCK)
+-- -- COMENTEI ESSE LINHA PRA SO USAR COLUNAS COM INDEXES
+-- -- WHERE id_cob = @id AND id_usr = @id_usr AND id_forma_pag = @id_forma_pag AND id_trans_op = @id_trans_op AND num_aut_op = @num_aut_op AND recorrencia = @recorrencia AND valor = @valor AND moeda = @moeda
+-- WHERE id_cob = @id AND id_usr = @id_usr AND id_forma_pag = @id_forma_pag AND id_trans_op = @id_trans_op
+-- ORDER BY datacad DESC
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_passadas_check_delete] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM cobrancas_passadas WITH (ROWLOCK) WHERE DateDiff(d,cobrancas_passadas.datacad,GetDate()) > 365 AND cobrancas_passadas.status <> 1
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_month_select] @month int, @year int AS
+-- DECLARE @datevar datetime
+-- SET @datevar = convert(datetime, convert(varchar(2),@month) + '/01/' + convert(varchar(4),@year), 101)
+-- SELECT data.b AS b, cobrancas_passadas.datacad AS datacad, cobrancas_passadas.id_forma_pag AS id_forma_pag, cobrancas_passadas.recorrencia AS recorrencia, cobrancas_passadas.valor AS valor, cobrancas_passadas.flag_parcelada AS flag_parcelada, cobrancas_passadas.rodada_por AS rodada_por, cobrancas_passadas.datacad AS datacad
+-- FROM data RIGHT JOIN cobrancas_passadas ON (cobrancas_passadas.id_usr = data.u)
+-- WHERE cobrancas_passadas.status = 1 And
+-- (
+-- -- Cobrancas nao-parceladas
+-- (Year(cobrancas_passadas.datacad) = @year And Month(cobrancas_passadas.datacad) = @month And cobrancas_passadas.flag_parcelada = 0)
+-- OR
+-- -- Cobrancas parceladas geradas pelo usuario ou cobrancas parceladas anteriores a 06/2014, quando mudamos as cobrancas parceladas pra recorrerem mensalmente
+-- (DATEDIFF(m,cobrancas_passadas.datacad,@datevar) < cobrancas_passadas.recorrencia And DATEDIFF(m,cobrancas_passadas.datacad,@datevar) > 0 And cobrancas_passadas.flag_parcelada > 0 And ((cobrancas_passadas.rodada_por <> 2) Or ((YEAR(cobrancas_passadas.datacad) < 2014) Or (YEAR(cobrancas_passadas.datacad) = 2014 And MONTH(cobrancas_passadas.datacad) <= 5))))
+-- OR
+-- -- Cobrancas parceladas geradas pela recorrencia ou cobrancas parceladas posteriores a 06/2014
+-- (Year(cobrancas_passadas.datacad) = @year And Month(cobrancas_passadas.datacad) = @month And cobrancas_passadas.flag_parcelada > 0 And ((cobrancas_passadas.rodada_por = 2) Or ((YEAR(cobrancas_passadas.datacad) > 2014) Or (YEAR(cobrancas_passadas.datacad) = 2014 And MONTH(cobrancas_passadas.datacad) > 5))))
+-- )
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_inactivate_update] @id_cob int AS
+-- BEGIN
+-- SET NOCOUNT ON;
+-- UPDATE cobrancas WITH (ROWLOCK) SET status_old = status, status = -1, datainativa = GetDate(), retry_count = 0, datanext = NULL WHERE id = @id_cob
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_gerada_por_update] @id int, @gerada_por int AS
+-- UPDATE cobrancas WITH (ROWLOCK) SET gerada_por = @gerada_por WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_execute] AS
+
+-- -- Atualiza usuarios pagantes de cartao que nao sao mensais para terem a recorrencia mensal na renovacao
+-- -- UPDATE cobrancas WITH (ROWLOCK) SET recorrencia = 1 WHERE recorrencia > 1 And id_forma_pag = 1 And cobrancas.valor > 0 And cobrancas.status = 1 And DateDiff(day, GetDate(), cobrancas.datanext) <= 0
+
+-- -- Seleciona cobrancas para serem processadas
+-- SELECT data.b AS b, data.d AS d, data.m AS m, data.a AS a, data.c AS c, data.n AS n,
+-- cobrancas.id AS id_cob, cobrancas.recorrencia AS recorrencia, cobrancas.flag_parcelada AS flag_parcelada, cobrancas.status AS status, cobrancas.valor AS valor, cobrancas.moeda AS moeda, cobrancas.id_forma_pag AS id_forma_pag,
+-- usuarios.id AS id_usr, usuarios.apelido AS apelido, usuarios.email AS email, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.site AS site, usuarios.lang AS lang, nivel AS nivel, notificacao_sistema AS notificacao_sistema
+-- FROM data WITH (NOLOCK) RIGHT JOIN cobrancas WITH (NOLOCK) ON data.u = cobrancas.id_usr, usuarios WITH (NOLOCK)
+-- WHERE cobrancas.id_usr = usuarios.id AND usuarios.problematico = 0 AND cobrancas.id_forma_pag = 1 AND cobrancas.valor > 0 AND
+-- ((usuarios.nivel <> 2 AND usuarios.nivel <> 3 AND cobrancas.recorrencia > 0) OR ((usuarios.nivel = 2 OR usuarios.nivel = 3) AND cobrancas.recorrencia = -1)) AND
+-- (cobrancas.status = 0 Or cobrancas.status = 2 Or cobrancas.status = 3 Or (cobrancas.status = 1 And DateDiff(day, GetDate(), cobrancas.datanext) <= 0))
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_details_select] @id int AS
+-- SELECT cobrancas.id AS id, cobrancas.id_usr AS id_usr, cobrancas.id_forma_pag AS id_forma_pag, cobrancas.recorrencia AS recorrencia, cobrancas.flag_parcelada AS flag_parcelada, cobrancas.valor AS valor, cobrancas.moeda AS moeda, cobrancas.status AS status, cobrancas.id_trans_op AS id_trans_op, cobrancas.num_aut_op AS num_aut_op, cobrancas.datacad AS datacad, cobrancas.datanext AS datanext, cobrancas.datainativa AS datainativa, cobrancas.dataini AS dataini, cobrancas.gerada_por AS gerada_por,
+-- usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.email AS email, usuarios.apelido AS apelido, usuarios.nivel AS nivel, usuarios.site AS site, usuarios.lang AS lang, usuarios.notificacao_sistema AS notificacao_sistema, usuarios.problematico AS problematico
+-- FROM cobrancas WITH (NOLOCK), usuarios WITH (NOLOCK)
+-- WHERE usuarios.id = cobrancas.id_usr AND cobrancas.id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_delete] @id int AS
+-- BEGIN TRANSACTION
+-- DELETE FROM cobrancas WITH (ROWLOCK) WHERE id = @id
+-- DELETE FROM cobrancas_passadas WITH (ROWLOCK) WHERE id_cob = @id
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_check_update] @id int AS
+-- UPDATE usuarios WITH (ROWLOCK) SET nivel = 6 WHERE id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_cobrancas_check_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT cobrancas.id_usr FROM cobrancas WITH (NOLOCK), usuarios AS usuarios_check WITH (NOLOCK) WHERE (usuarios_check.nivel = 4 OR usuarios_check.nivel = 1) AND usuarios_check.id = cobrancas.id_usr AND cobrancas.recorrencia > 0 AND cobrancas.status = 1
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_usuarios_sistema_update] @id int, @login varchar(50), @senha varchar(10), @nome varchar(50), @sobrenome varchar(50), @email varchar(50), @nivel int, @ativo bit AS
+-- UPDATE usuarios_sistema
+-- SET login = @login, senha = @senha, nome = @nome, sobrenome = @sobrenome, email = @email, nivel = @nivel, ativo = @ativo
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_usuarios_sistema_login_update] @id int AS
+-- UPDATE usuarios_sistema
+-- SET ultacesso = GetDate(), numacessos = numacessos + 1
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_usuarios_sistema_insert] @login varchar(50), @senha varchar(10), @nome varchar(50), @sobrenome varchar(50), @email varchar(50), @nivel int AS
+-- INSERT INTO usuarios_sistema (login, senha, nome, sobrenome, email, ativo, numacessos, nivel)
+-- VALUES (@login, @senha, @nome, @sobrenome, @email, 1, 0, @nivel)
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_usuarios_sistema_details_select] @id int, @login varchar(50) AS
+-- SELECT id, login, senha, nome, sobrenome, email, ativo, numacessos, nivel
+-- FROM usuarios_sistema
+-- WHERE id = @id OR login = @login
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_usuarios_sistema_delete] @id int AS
+-- DELETE FROM usuarios_sistema
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_usuarios_sistema_adm_select] @login nvarchar(50) = NULL, @nome nvarchar(50) = NULL, @sobrenome nvarchar(50) = NULL AS
+-- SELECT id, nome, sobrenome, login, ultacesso, numacessos
+-- FROM usuarios_sistema
+-- WHERE login LIKE '%' + ISNULL(@login, '%') + '%' AND nome LIKE '%' + ISNULL(@nome, '%') + '%' AND sobrenome LIKE '%' + ISNULL(@sobrenome, '%') + '%'
+-- ORDER BY sobrenome
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_xml_select] @site int AS
+-- SELECT usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.email AS email, usuarios.sexo AS sexo, usuarios.nivel AS nivel, usuarios.nascdia AS nascdia, usuarios.nascmes AS nascmes, usuarios.nascano AS nascano, usuarios.cep AS cep, usuarios.endereco AS endereco, usuarios.bairro AS bairro, usuarios.tel AS tel
+-- FROM usuarios WITH (NOLOCK)
+-- WHERE usuarios.nivel >= 3 AND usuarios.site = @site
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_texts_update] @id int, @suspect int, @my_desc text, @search_desc text, @favorite_movies text AS
+-- IF @suspect >= 0
+--     UPDATE usuarios WITH (ROWLOCK) SET suspect = @suspect, datatexts = GetDate() WHERE id = @id
+-- UPDATE usuariosxperfil WITH (ROWLOCK) SET my_desc = @my_desc, search_desc = @search_desc, favorite_movies = @favorite_movies WHERE id_usr = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_texts_select] @id int AS
+-- SELECT my_desc, search_desc, favorite_movies
+-- FROM usuariosxperfil WITH (NOLOCK)
+-- WHERE id_usr = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_suspect_update] @id int, @suspect int AS
+-- UPDATE usuarios WITH (ROWLOCK) SET suspect = @suspect WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_suspect_texts_update] @id int, @total_avisos int, @apelido varchar(200), @my_desc text, @search_desc text, @favorite_movies text AS
+-- DECLARE @num_avisos int
+-- UPDATE usuarios WITH (ROWLOCK) SET apelido = @apelido, suspect = 0, num_avisos = num_avisos + 1 WHERE id = @id
+-- SELECT @num_avisos = num_avisos FROM usuarios WITH (NOLOCK) WHERE id = @id
+-- IF @num_avisos >= @total_avisos
+--     UPDATE usuarios WITH (ROWLOCK) SET nivel = 3 WHERE id = @id
+-- SELECT num_avisos FROM usuarios WITH (NOLOCK) WHERE id = @id
+-- UPDATE usuariosxperfil WITH (ROWLOCK) SET my_desc = @my_desc, search_desc = @search_desc, favorite_movies = @favorite_movies WHERE id_usr = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_suspect_random_select] @lang int AS
+-- BEGIN
+-- SELECT TOP 50 usuarios.id AS id, usuarios.apelido AS apelido, usuarios.email AS email, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.site AS site, usuarios.lang AS lang, usuarios.notificacao_sistema AS notificacao_sistema, usuariosxperfil.my_desc AS my_desc, usuariosxperfil.search_desc AS search_desc, usuariosxperfil.favorite_movies AS favorite_movies
+-- FROM usuarios WITH (READPAST), usuariosxsessoes WITH (READPAST), usuariosxperfil WITH (READPAST)
+-- WHERE usuarios.id = usuariosxsessoes.id_usr AND usuarios.id = usuariosxperfil.id_usr AND usuarios.suspect = 1 AND usuarios.lang = @lang
+-- ORDER BY usuariosxsessoes.datalast DESC
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_suspect_marked_select] @lang int AS
+-- SELECT usuarios.id AS id, usuarios.apelido AS apelido, usuarios.email AS email, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.site AS site, usuarios.lang AS lang, usuarios.notificacao_sistema AS notificacao_sistema, usuariosxperfil.my_desc AS my_desc, usuariosxperfil.search_desc AS search_desc, usuariosxperfil.favorite_movies AS favorite_movies
+-- FROM usuarios WITH (READPAST), usuariosxperfil WITH (READPAST)
+-- WHERE usuarios.id = usuariosxperfil.id_usr AND usuarios.suspect = 2 AND usuarios.lang = @lang
+-- ORDER BY usuarios.apelido
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_session_insert] @id int, @session_code varchar(500)
+-- AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     INSERT INTO usuariosxsessoes (id_usr,session_code,datalast) VALUES (@id,@session_code,GetDate())
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_session_code_update] @id int, @session_code varchar(500) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuariosxsessoes WITH (ROWLOCK) SET session_code = @session_code WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_session_code_select] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT usuarios.apelido AS apelido, usuarios.flag_registering AS flag_registering, usuarios.nivel AS nivel, usuarios.sexo AS sexo, usuarios.senha AS senha, usuarios.problematico AS problematico, usuarios.email AS email, usuarios.nascmes AS nascmes, usuarios.nascano AS nascano, usuarios.nascdia AS nascdia, usuarios.cidade AS cidade, usuarios.estado AS estado, usuarios.pais AS pais, usuariosxsessoes.session_code AS session_code, usuarios.num_favoritos AS num_favoritos, usuarios.fotos AS fotos, usuarios.display_visitas AS display_visitas, usuarios.scammer AS scammer, usuarios.email_confirmed AS email_confirmed,
+--     estados.nome AS estado_nome, estados.tipo AS estado_tipo, cidades.nome AS cidade_nome
+--     FROM usuarios WITH (NOLOCK) LEFT OUTER JOIN cidades WITH (NOLOCK) ON usuarios.cidade = cidades.id LEFT OUTER JOIN estados WITH (NOLOCK) ON usuarios.estado = estados.id, usuariosxsessoes WITH (NOLOCK)
+--     WHERE usuarios.id = usuariosxsessoes.id_usr AND usuarios.id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_session_code_code_select] @session_code varchar(500) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT usuarios.id AS id, usuarios.apelido AS apelido, usuarios.flag_registering AS flag_registering, usuarios.nivel AS nivel, usuarios.sexo AS sexo, usuarios.senha AS senha, usuarios.problematico AS problematico, usuarios.email AS email, usuarios.nascmes AS nascmes, usuarios.nascano AS nascano, usuarios.nascdia AS nascdia, usuarios.cidade AS cidade, usuarios.estado AS estado, usuarios.pais AS pais, usuariosxsessoes.session_code AS session_code, usuarios.num_favoritos AS num_favoritos, usuarios.fotos AS fotos, usuarios.display_visitas AS display_visitas, usuarios.friendemail AS friendemail, usuarios.email_confirmed AS email_confirmed,
+--     estados.nome AS estado_nome, estados.tipo AS estado_tipo, cidades.nome AS cidade_nome
+--     FROM usuarios WITH (NOLOCK) LEFT OUTER JOIN cidades WITH (NOLOCK) ON usuarios.cidade = cidades.id LEFT OUTER JOIN estados WITH (NOLOCK) ON usuarios.estado = estados.id, usuariosxsessoes
+--     WHERE usuarios.id = usuariosxsessoes.id_usr AND usuariosxsessoes.session_code = @session_code
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_registration_code_update] @id int, @registration_code varchar(500) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuariosxsessoes WITH (ROWLOCK) SET registration_code = @registration_code WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_registration_code_select] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT usuarios.apelido AS apelido, usuarios.email AS email, usuarios.email_confirmed AS email_confirmed, usuariosxsessoes.registration_code AS registration_code
+--     FROM usuarios WITH (NOLOCK), usuariosxsessoes WITH (NOLOCK)
+--     WHERE usuarios.id = usuariosxsessoes.id_usr AND usuarios.id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_registration_code_code_select] @registration_code varchar(500) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT usuarios.id AS id, usuarios.apelido AS apelido, usuarios.flag_registering AS flag_registering, usuarios.nivel AS nivel, usuarios.sexo AS sexo, usuarios.senha AS senha, usuarios.problematico AS problematico, usuarios.email AS email, usuarios.nascmes AS nascmes, usuarios.nascano AS nascano, usuarios.nascdia AS nascdia, usuarios.cidade AS cidade, usuarios.estado AS estado, usuarios.pais AS pais, usuariosxsessoes.session_code AS session_code, usuarios.num_favoritos AS num_favoritos, usuarios.fotos AS fotos, usuarios.display_visitas AS display_visitas, usuarios.friendemail AS friendemail, usuarios.email_confirmed AS email_confirmed,
+--     estados.nome AS estado_nome, estados.tipo AS estado_tipo, cidades.nome AS cidade_nome
+--     FROM usuarios WITH (NOLOCK) LEFT OUTER JOIN cidades WITH (NOLOCK) ON usuarios.cidade = cidades.id LEFT OUTER JOIN estados WITH (NOLOCK) ON usuarios.estado = estados.id, usuariosxsessoes
+--     WHERE usuarios.id = usuariosxsessoes.id_usr AND usuariosxsessoes.registration_code = @registration_code
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_register_full_select] @id int AS
+-- SELECT cobrancas.id AS id_cob, cobrancas.id_forma_pag AS id_forma_pag, cobrancas.recorrencia AS recorrencia, cobrancas.status AS status, cobrancas.flag_parcelada AS flag_parcelada, usuarios.apelido AS apelido, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.email AS email, usuarios.friendemail AS friendemail, usuarios.nivel AS nivel, usuarios.notificacao_sistema AS notificacao_sistema, usuarios.cpf AS cpf, usuarios.scammer AS scammer
+-- FROM cobrancas WITH (NOLOCK) RIGHT JOIN usuarios WITH (NOLOCK) ON cobrancas.id_usr = usuarios.id
+-- WHERE usuarios.id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_qtd_select] @nivel int, @site int AS
+-- SELECT nivel, sexo, nascano, suspect
+-- FROM usuarios WITH (NOLOCK)
+-- WHERE nivel >= @nivel AND site = @site
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_promocao_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id FROM usuarios WITH (NOLOCK) WHERE nivel = 7 AND NOT EXISTS (SELECT id FROM calendario WITH (NOLOCK) WHERE id_usr = usuarios.id)
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_profileview_select] @id int AS
+-- SET NOCOUNT ON;
+-- SELECT usuarios.id AS id, usuarios.fotos AS fotos, usuarios.apelido AS apelido, usuarios.sexo AS sexo, usuarios.nascano AS nascano, usuarios.nascmes AS nascmes, usuarios.nascdia AS nascdia, usuarios.display_favorites AS display_favorites, usuarios.display_visitas AS display_visitas, usuarios.nacionalidade AS nacionalidade, usuarios.pais AS pais, usuarios.num_favoritos_subject AS count_favoritos, usuarios.nivel AS nivel, usuarios.scammer AS scammer,
+-- estados.nome AS estado, estados.tipo AS estado_tipo, cidades.nome AS cidade,
+-- usuariosxperfil.skin AS skin, usuariosxperfil.civil_stat AS civil_stat, usuariosxperfil.education AS education, usuariosxperfil.profession AS profession, usuariosxperfil.height AS height, usuariosxperfil.weight AS weight, usuariosxperfil.parent AS parent, usuariosxperfil.want_children AS want_children, usuariosxperfil.smoke AS smoke, usuariosxperfil.drink AS drink,
+-- usuariosxperfil.religion AS religion, usuariosxperfil.religious_importance AS religious_importance, usuariosxperfil.religious_style AS religious_style, usuariosxperfil.religious_frequency AS religious_frequency,
+-- usuariosxperfil.sexo AS busca_sexo, usuariosxperfil.minage AS busca_minage, usuariosxperfil.maxage AS busca_maxage,
+-- usuariosxperfil.my_desc AS my_desc, usuariosxperfil.search_desc AS search_desc, usuariosxperfil.favorite_movies AS favorite_movies
+-- FROM usuarios WITH (NOLOCK) LEFT OUTER JOIN cidades WITH (NOLOCK) ON usuarios.cidade = cidades.id LEFT OUTER JOIN estados WITH (NOLOCK) ON usuarios.estado = estados.id
+-- LEFT OUTER JOIN usuariosxperfil WITH (NOLOCK) ON usuarios.id = usuariosxperfil.id_usr
+-- WHERE usuarios.id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_profile_update] @id int, @height int, @weight int, @skin int, @civil_stat int, @parent int, @want_children int, @education int, @profession int, @smoke int, @drink int, @religion int, @religious_style int, @religious_frequency int, @religious_importance int, @sexo int, @minage int, @maxage int AS
+-- UPDATE usuariosxperfil WITH (ROWLOCK)
+-- SET height = @height, weight = @weight, skin = @skin, civil_stat = @civil_stat, parent = @parent, want_children = @want_children, education = @education, profession = @profession, smoke = @smoke, drink = @drink, religion = @religion, religious_style = @religious_style, religious_frequency = @religious_frequency, religious_importance = @religious_importance, sexo = @sexo, minage = @minage, maxage = @maxage
+-- WHERE id_usr = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_profile_select] @id int AS
+-- SELECT usuarios.sexo AS sexo_usr, usuariosxperfil.id AS id, usuariosxperfil.height AS height, usuariosxperfil.weight AS weight, usuariosxperfil.skin AS skin, usuariosxperfil.civil_stat AS civil_stat, usuariosxperfil.parent AS parent, usuariosxperfil.want_children AS want_children, usuariosxperfil.education AS education, usuariosxperfil.profession AS profession, usuariosxperfil.smoke AS smoke, usuariosxperfil.drink AS drink, usuariosxperfil.religion AS religion, usuariosxperfil.religious_style AS religious_style, usuariosxperfil.religious_frequency AS religious_frequency, usuariosxperfil.religious_importance AS religious_importance, usuariosxperfil.sexo AS sexo, usuariosxperfil.minage AS minage, usuariosxperfil.maxage AS maxage
+-- FROM usuarios WITH (NOLOCK), usuariosxperfil WITH (NOLOCK)
+-- WHERE usuarios.id = @id AND usuariosxperfil.id_usr = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_profile_insert] @id int, @nome varchar(100), @sobrenome varchar(100), @cidade int, @endereco varchar(100), @bairro varchar(100), @cep int, @tel varchar(20), @height int, @weight int, @skin int, @civil_stat int, @parent int, @want_children int, @education int, @profession int, @smoke int, @drink int, @religion int, @religious_style int, @religious_frequency int, @religious_importance int, @sexo int, @minage int, @maxage int AS
+-- DECLARE @id_usr int
+-- -- BEGIN TRANSACTION
+-- UPDATE usuarios WITH (ROWLOCK) SET nome = @nome, sobrenome = @sobrenome, cidade = @cidade, endereco = @endereco, bairro = @bairro, cep = @cep, tel = @tel WHERE id = @id
+-- SELECT @id_usr = id_usr FROM usuariosxperfil WITH (NOLOCK) WHERE id_usr = @id
+-- IF @id_usr IS NOT NULL
+--     UPDATE usuariosxperfil WITH (ROWLOCK) SET height = @height, weight = @weight, skin = @skin, civil_stat = @civil_stat, parent = @parent, want_children = @want_children, education = @education, profession = @profession, smoke = @smoke, drink = @drink, religion = @religion, religious_style = @religious_style, religious_frequency = @religious_frequency, religious_importance = @religious_importance, sexo = @sexo, minage = @minage, maxage = @maxage WHERE id_usr = @id
+-- ELSE
+--     INSERT INTO usuariosxperfil (id_usr, height, weight, skin, civil_stat, parent, want_children, education, profession, smoke, drink, religion, religious_style, religious_frequency, religious_importance, sexo, minage, maxage) VALUES (@id, @height, @weight, @skin, @civil_stat, @parent, @want_children, @education, @profession, @smoke, @drink, @religion, @religious_style, @religious_frequency, @religious_importance, @sexo, @minage, @maxage)
+-- -- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_profile_adm_update] @id int, @height int, @weight int, @skin int, @civil_stat int, @parent int, @want_children int, @education int, @profession int, @smoke int, @drink int, @religion int, @religious_style int, @religious_frequency int, @religious_importance int, @sexo int, @minage int, @maxage int AS
+-- DECLARE @id_usr int
+-- BEGIN TRANSACTION
+-- SELECT @id_usr = id_usr FROM usuariosxperfil WITH (NOLOCK) WHERE id_usr = @id
+-- IF @id_usr IS NOT NULL
+--     BEGIN
+--     UPDATE usuariosxperfil WITH (ROWLOCK) SET height = @height, weight = @weight, skin = @skin, civil_stat = @civil_stat, parent = @parent, want_children = @want_children, education = @education, profession = @profession, smoke = @smoke, drink = @drink, religion = @religion, religious_style = @religious_style, religious_frequency = @religious_frequency, religious_importance = @religious_importance, sexo = @sexo, minage = @minage, maxage = @maxage WHERE id_usr = @id
+--     END
+-- ELSE
+--     BEGIN
+--     INSERT INTO usuariosxperfil (id_usr, height, weight, skin, civil_stat, parent, want_children, education, profession, smoke, drink, religion, religious_style, religious_frequency, religious_importance, sexo, minage, maxage) VALUES (@id, @height, @weight, @skin, @civil_stat, @parent, @want_children, @education, @profession, @smoke, @drink, @religion, @religious_style, @religious_frequency, @religious_importance, @sexo, @minage, @maxage)
+--     END
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_photos_update] @id int, @photos int, @display int, @adm int AS
+-- IF @display >= 0
+--     BEGIN
+--     IF @adm = 1
+--         BEGIN
+--         UPDATE usuarios WITH (ROWLOCK) SET display = @display, fotos = @photos WHERE id = @id
+--         END
+--     ELSE
+--         BEGIN
+--         DECLARE @display_flag int
+--         SELECT @display_flag = display FROM usuarios WITH (NOLOCK) WHERE id = @id
+--         IF @display_flag >= 0
+--             UPDATE usuarios WITH (ROWLOCK) SET display = @display, fotos = @photos, datafotos = GETDATE() WHERE id = @id
+--         ELSE
+--             UPDATE usuarios WITH (ROWLOCK) SET fotos = @photos, datafotos = GETDATE() WHERE id = @id
+--         END
+--     END
+-- ELSE
+--     BEGIN
+--     UPDATE usuarios WITH (ROWLOCK) SET fotos = @photos WHERE id = @id
+--     END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_photos_select] @id int AS
+-- SELECT fotos, apelido, site, lang, notificacao_sistema, email, nome, sobrenome
+-- FROM usuarios WITH (NOLOCK)
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_photos_count_update] @id int, @fotos int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DECLARE @usr_fotos int
+--     SELECT @usr_fotos = fotos FROM usuarios WITH (NOLOCK) WHERE id = @id
+--     IF @usr_fotos >= 0
+--         UPDATE usuarios WITH (ROWLOCK) SET fotos = @fotos WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_personal_update] @id int, @suspect int, @email varchar(100), @nome varchar(100), @sobrenome varchar(100), @apelido varchar(200), @sexo bit, @nascdia int, @nascmes int, @nascano int, @estado int, @pais int, @nacionalidade int, @login varchar(50) AS
+-- DECLARE @email_antigo varchar(100), @apelido_antigo varchar(20)
+-- SELECT @email_antigo = email, @apelido_antigo = apelido FROM usuarios WITH (NOLOCK) WHERE id = @id
+-- IF @email_antigo <> LOWER(@email)
+--     UPDATE usuarios WITH (ROWLOCK) SET friendemail = LOWER(@email) WHERE friendemail = @email_antigo
+-- UPDATE usuarios WITH (ROWLOCK) SET nome = @nome, sobrenome = @sobrenome, email = LOWER(@email), apelido = @apelido, sexo = @sexo, nascdia = @nascdia, nascmes = @nascmes, nascano = @nascano, estado = @estado, pais = @pais, nacionalidade = @nacionalidade WHERE id = @id
+-- IF @suspect >= 0
+--     BEGIN
+--     UPDATE usuarios WITH (ROWLOCK) SET suspect = @suspect WHERE id = @id
+--     IF LOWER(@apelido) <> LOWER(@apelido_antigo)
+--         UPDATE usuarios WITH (ROWLOCK) SET datatexts = GetDate() WHERE id = @id
+--     END
+-- IF LOWER(@apelido) <> LOWER(@apelido_antigo)
+--     BEGIN
+--     UPDATE usuarios WITH (ROWLOCK) SET dataapelido = GETDATE() WHERE id = @id
+--     INSERT INTO usuarios_historico_apelidos_emails (id_usr, texto, texto_antigo, tipo, login, data) VALUES (@id, @apelido, @apelido_antigo, 1, @login, GETDATE())
+--     END
+-- IF LOWER(@email_antigo) <> LOWER(@email)
+--     INSERT INTO usuarios_historico_apelidos_emails (id_usr, texto, texto_antigo, tipo, login, data) VALUES (@id, LOWER(@email), LOWER(@email_antigo), 2, @login, GETDATE())
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_personal_select] @id int AS
+-- SELECT nome, sobrenome, email, apelido, sexo, nascdia, nascmes, nascano, estado, pais, nacionalidade
+-- FROM usuarios WITH (NOLOCK)
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_personal_insert] @suspect int, @email varchar(100), @apelido varchar(200), @senha varchar(15), @sexo bit, @nascdia int, @nascmes int, @nascano int, @estado int, @pais int, @nacionalidade int, @friendemail varchar(100), @subid varchar(300), @site int, @lang int, @registration_code varchar(500) AS
+-- BEGIN
+-- DECLARE @id int
+-- INSERT INTO usuarios (email, nome, sobrenome, apelido, senha, sexo, nivel, nascdia, nascmes, nascano, cidade, estado, pais, nacionalidade, cep, newsletter, notificacao_favoritos, devocional, notificacao_mensagens, notificacao_sistema, notificacao_datas_especiais, notificacao_email_lido, friendemail, subid, datacad, fotos, msgs, musicas, display, site, lang, suspect, problematico, scammer, display_favorites, display_visitas, num_avisos, num_favoritos, num_favoritos_subject, exibir_codigo, flag_registering, email_confirmed)
+-- VALUES (LOWER(@email), '', '', @apelido, @senha, @sexo, 1, @nascdia, @nascmes, @nascano, 0, @estado, @pais, @nacionalidade, 0, 1, 1, 1, 1, 1, 1, 1, LOWER(@friendemail), @subid, GetDate(), 0, 0, 0, 1, @site, @lang, @suspect, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0)
+-- SELECT @id = id FROM usuarios WITH (NOLOCK) WHERE apelido = @apelido AND email = @email AND senha = @senha ORDER BY id DESC
+-- INSERT INTO usuariosxsessoes (id_usr,registration_code,datalast) VALUES (@id,@registration_code,GetDate())
+-- SELECT @id AS id
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_perfis_recentes_select] @lang int, @fromage int, @toage int, @sexo int AS
+-- IF @fromage >= 0
+--     BEGIN
+--     SELECT id, apelido, sexo, nascmes, nascano, fotos FROM usuarios WITH (NOLOCK) WHERE id IN
+--     (SELECT TOP 50 usuarios_int.id
+--     FROM usuarios AS usuarios_int WITH (NOLOCK)
+--     WHERE usuarios_int.nivel >= 4 AND usuarios_int.fotos > 0 AND usuarios_int.lang = @lang AND usuarios_int.sexo = @sexo AND ((usuarios_int.nascano < Year(GetDate()) - @fromage) OR ((usuarios_int.nascano = Year(GetDate()) - @fromage) AND (usuarios_int.nascmes < Month(GetDate())))) AND ((usuarios_int.nascano > Year(GetDate()) - @toage - 1) OR ((usuarios_int.nascano = Year(GetDate()) - @toage - 1) AND (usuarios_int.nascmes >= Month(GetDate()))))
+--     ORDER BY usuarios_int.id DESC)
+--     ORDER BY NEWID()
+--     END
+-- ELSE
+--     BEGIN
+--     SELECT id, apelido, sexo, nascmes, nascano, fotos FROM usuarios WITH (NOLOCK) WHERE id IN
+--     (SELECT TOP 50 usuarios_int.id
+--     FROM usuarios AS usuarios_int WITH (NOLOCK)
+--     WHERE usuarios_int.nivel >= 4 AND usuarios_int.fotos > 0 AND usuarios_int.lang = @lang
+--     ORDER BY usuarios_int.id DESC)
+--     ORDER BY NEWID()
+--     END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_perfis_home_update] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DECLARE @id int
+--     DECLARE @t TABLE (id int)
+--     UPDATE usuarios WITH (ROWLOCK) SET display = 1 WHERE display = 3
+--     INSERT INTO @t SELECT TOP 50 usuarios.id FROM usuarios WITH (NOLOCK) WHERE nivel >= 4 AND display = 1 AND fotos > 0 ORDER BY (SELECT Count(usuariosxfavoritos.id) FROM usuariosxfavoritos WITH (NOLOCK) WHERE usuariosxfavoritos.id_fav = usuarios.id) DESC
+--     WHILE (SELECT Count(id) FROM @t) > 0
+--         BEGIN
+--             SELECT TOP 1 @id = T.id FROM @t T
+--             UPDATE usuarios WITH (ROWLOCK) SET display = 3 WHERE id = @id
+--             DELETE FROM @t WHERE id = @id
+--         END
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_perfis_home_select] @lang int, @fromage int, @toage int, @sexo int AS
+-- BEGIN
+-- IF @fromage >= 0
+--     BEGIN
+--     SELECT id, apelido, sexo, nascmes, nascano, fotos FROM usuarios WITH (NOLOCK) WHERE id IN
+--     (SELECT TOP 50 usuarios_int.id
+--     FROM usuarios AS usuarios_int WITH (NOLOCK), usuariosxsessoes AS usuariosxsessoes_int WITH (NOLOCK)
+--     WHERE usuarios_int.id = usuariosxsessoes_int.id_usr AND usuarios_int.nivel >= 4 AND usuarios_int.fotos > 0 AND usuarios_int.display > 1 AND usuarios_int.lang = @lang AND usuarios_int.sexo = @sexo AND ((usuarios_int.nascano < Year(GetDate()) - @fromage) OR ((usuarios_int.nascano = Year(GetDate()) - @fromage) AND (usuarios_int.nascmes < Month(GetDate())))) AND ((usuarios_int.nascano > Year(GetDate()) - @toage - 1) OR ((usuarios_int.nascano = Year(GetDate()) - @toage - 1) AND (usuarios_int.nascmes >= Month(GetDate()))))
+--     ORDER BY usuariosxsessoes_int.datalast DESC)
+--     ORDER BY NEWID()
+--     END
+-- ELSE
+--     BEGIN
+--     SELECT id, apelido, sexo, nascmes, nascano, fotos FROM usuarios WITH (NOLOCK) WHERE id IN
+--     (SELECT TOP 50 usuarios_int.id
+--     FROM usuarios AS usuarios_int WITH (NOLOCK), usuariosxsessoes AS usuariosxsessoes_int WITH (NOLOCK)
+--     WHERE usuarios_int.id = usuariosxsessoes_int.id_usr AND usuarios_int.nivel >= 4 AND usuarios_int.fotos > 0 AND usuarios_int.display > 1 AND usuarios_int.lang = @lang
+--     ORDER BY usuariosxsessoes_int.datalast DESC)
+--     ORDER BY NEWID()
+--     END
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_pass_update] @id int, @senha varchar(15) AS
+-- UPDATE usuarios WITH (ROWLOCK)
+-- SET senha = @senha
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_options_update] @id int, @display_favorites int, @display_visitas int, @newsletter int, @notificacao_favoritos int, @devocional int, @notificacao_mensagens int, @notificacao_email_lido int AS
+-- UPDATE usuarios WITH (ROWLOCK)
+-- SET display_favorites = @display_favorites, display_visitas = @display_visitas, newsletter = @newsletter, notificacao_favoritos = @notificacao_favoritos, devocional = @devocional, notificacao_mensagens = @notificacao_mensagens, notificacao_email_lido = @notificacao_email_lido
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_options_select] @id int AS
+-- SELECT display_favorites, display_visitas, newsletter, notificacao_favoritos, devocional, notificacao_mensagens, notificacao_email_lido
+-- FROM usuarios WITH (NOLOCK)
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_notificacao_update] @id_usr int, @id_cob int AS
+-- BEGIN TRANSACTION
+-- UPDATE cobrancas WITH (ROWLOCK) SET status_old = status, status = -1, datainativa = GetDate(), retry_count = 0, datanext = NULL WHERE id = @id_cob
+-- UPDATE usuarios WITH (ROWLOCK) SET nivel = 4 WHERE id = @id_usr
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_nivel_update] @id int, @nivel int AS
+-- BEGIN TRANSACTION
+-- UPDATE usuarios WITH (ROWLOCK) SET nivel = @nivel WHERE id = @id
+-- IF @nivel = 2 OR @nivel = 3
+--     DELETE FROM calendario WHERE id_usr = @id
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_musicas_select] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT musicas FROM usuarios WITH (NOLOCK) WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_messages_mantencao_delete] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuarios SET msgs = 0, musicas = 0
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_messages_count_update] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuarios WITH (ROWLOCK) SET msgs = msgs + 1 WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_messages_count_select] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT msgs FROM usuarios WITH (NOLOCK) WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_manutencao_perfis_update] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuarios WITH (ROWLOCK) SET nivel = 1 WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_manutencao_perfis_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id, nivel FROM usuarios WITH (ROWLOCK) WHERE nivel = 4 AND
+--     NOT EXISTS(SELECT usuariosxperfil.id FROM usuariosxperfil WITH (NOLOCK) WHERE usuariosxperfil.id_usr = usuarios.id)
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_logout_update] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuariosxsessoes WITH (ROWLOCK) SET session_code = '' WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_logout_batch_update] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuariosxsessoes WITH (ROWLOCK) SET session_code = '' WHERE session_code <> '' AND datalast < DateAdd( n, -480, GetDate() )
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_login_update] @id int, @session_code varchar(500) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuariosxsessoes WITH (ROWLOCK) SET dataprev = datalast, session_code = @session_code, datalast = GetDate() WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_login_select] @email varchar(100) AS
+-- BEGIN
+-- SELECT usuarios.id AS id, usuarios.nivel AS nivel, usuarios.flag_registering AS flag_registering, usuarios.problematico AS problematico, usuarios.sexo AS sexo, usuarios.apelido AS apelido, usuarios.senha AS senha, usuarios.nascmes AS nascmes, usuarios.nascano AS nascano, usuarios.nascdia AS nascdia, usuarios.cidade AS cidade, usuarios.estado AS estado, usuarios.pais AS pais, usuariosxsessoes.session_code AS session_code, usuariosxsessoes.guid AS guid, usuarios.num_favoritos AS num_favoritos, usuarios.fotos AS fotos, usuarios.exibir_codigo AS exibir_codigo, usuarios.display_visitas AS display_visitas, usuarios.scammer AS scammer, usuarios.email_confirmed AS email_confirmed,
+-- estados.nome AS estado_nome, estados.tipo AS estado_tipo, cidades.nome AS cidade_nome
+-- FROM usuarios WITH (NOLOCK) LEFT OUTER JOIN cidades WITH (NOLOCK) ON usuarios.cidade = cidades.id LEFT OUTER JOIN estados WITH (NOLOCK) ON usuarios.estado = estados.id, usuariosxsessoes
+-- WHERE usuarios.id = usuariosxsessoes.id_usr AND usuarios.email = LOWER(@email)
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_login_guid_update] @id int, @guid varchar(50) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuariosxsessoes WITH (ROWLOCK) SET guid = @guid WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_location_update] @id int, @cidade int, @endereco varchar(100), @bairro varchar(100), @cep int, @tel varchar(20) AS
+-- UPDATE usuarios WITH (ROWLOCK)
+-- SET cidade = @cidade, endereco = @endereco, bairro = @bairro, cep = @cep, tel = @tel
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_location_select] @id int AS
+-- SELECT usuarios.pais AS pais, usuarios.estado AS estado, usuarios.cidade AS cidade, usuarios.endereco AS endereco, usuarios.bairro AS bairro, usuarios.cep AS cep, usuarios.tel AS tel, estados.nome AS estado_nome
+-- FROM usuarios WITH (NOLOCK) LEFT OUTER JOIN estados WITH (NOLOCK) ON usuarios.estado = estados.id
+-- WHERE usuarios.id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_historico_select] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT texto, texto_antigo, tipo, login, data FROM usuarios_historico_apelidos_emails WHERE id_usr = @id ORDER BY tipo, id DESC
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_flag_registering_update] @id int, @flag_registering int, @nivel int AS
+-- UPDATE usuarios WITH (ROWLOCK) SET flag_registering = @flag_registering, nivel = @nivel WHERE id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_favorites_subject_select] @id int, @lang int AS
+-- BEGIN
+-- SET NOCOUNT ON;
+-- SELECT usuarios.id AS id, usuarios.apelido AS apelido, usuarios.nascano AS nascano, usuarios.nascmes AS nascmes, usuarios.nascdia AS nascdia,
+-- usuarios.sexo AS sexo, paises_nomes.nome AS pais, estados.nome AS estado, estados.tipo AS estado_tipo, cidades.nome AS cidade,
+-- usuarios.datacad AS datacad, usuarios.fotos AS fotos, usuariosxsessoes.datalast AS datalast, 0, ''
+-- FROM usuarios WITH (NOLOCK) LEFT OUTER JOIN cidades WITH (NOLOCK) ON usuarios.cidade = cidades.id LEFT OUTER JOIN estados WITH (NOLOCK) ON usuarios.estado = estados.id AND estados.tipo > 0 LEFT OUTER JOIN paises_nomes WITH (NOLOCK) ON usuarios.pais = paises_nomes.id_pais AND paises_nomes.lang = @lang, usuariosxsessoes WITH (NOLOCK), usuariosxfavoritos WITH (NOLOCK)
+-- WHERE usuarios.id = usuariosxsessoes.id_usr AND usuarios.id = usuariosxfavoritos.id_usr AND usuariosxfavoritos.id_fav = @id AND usuarios.nivel <> 2 AND usuarios.nivel <> 3
+-- ORDER BY usuarios.apelido
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_favorites_subject_num_update] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     -- DELETE Duplicates
+-- --  DELETE T1 FROM usuariosxfavoritos T1, usuariosxfavoritos T2 WHERE T1.id_usr = T2.id_usr AND T1.id_fav = T2.id_fav AND (T1.id_usr = @id OR T1.id_fav = @id) AND T1.id < T2.id
+--     -- UPDATE count
+--     UPDATE usuarios WITH (ROWLOCK) SET num_favoritos_subject = (SELECT COUNT(usuarios_int.id) FROM usuarios AS usuarios_int WITH (NOLOCK), usuariosxfavoritos WITH (NOLOCK) WHERE usuarios_int.id = usuariosxfavoritos.id_usr AND usuariosxfavoritos.id_fav = @id AND usuarios_int.nivel <> 2 AND usuarios_int.nivel <> 3) WHERE id = @id AND nivel <> 2 AND nivel <> 3
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_favorites_select] @id int, @lang int AS
+-- BEGIN
+-- SET NOCOUNT ON;
+-- SELECT usuarios.id AS id, usuarios.apelido AS apelido, usuarios.nascano AS nascano, usuarios.nascmes AS nascmes, usuarios.nascdia AS nascdia,
+-- usuarios.sexo AS sexo, paises_nomes.nome AS pais, estados.nome AS estado, estados.tipo AS estado_tipo, cidades.nome AS cidade,
+-- usuarios.datacad AS datacad, usuarios.fotos AS fotos, usuariosxsessoes.datalast AS datalast, 0, usuariosxfavoritos.comment AS comment
+-- FROM usuarios WITH (NOLOCK) LEFT JOIN cidades WITH (NOLOCK) ON cidades.id = usuarios.cidade LEFT JOIN estados WITH (NOLOCK) ON estados.id = usuarios.estado AND estados.tipo > 0 LEFT JOIN paises_nomes WITH (NOLOCK) ON paises_nomes.id_pais = usuarios.pais AND paises_nomes.lang = @lang, usuariosxsessoes WITH (NOLOCK), usuariosxfavoritos WITH (NOLOCK)
+-- WHERE usuarios.id = usuariosxsessoes.id_usr AND usuarios.id = usuariosxfavoritos.id_fav AND usuariosxfavoritos.id_usr = @id AND usuarios.nivel <> 2 AND usuarios.nivel <> 3
+-- ORDER BY usuarios.apelido
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_favorites_num_update] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     -- DELETE Duplicates
+-- --  DELETE T1 FROM usuariosxfavoritos T1, usuariosxfavoritos T2 WHERE T1.id_usr = T2.id_usr AND T1.id_fav = T2.id_fav AND (T1.id_usr = @id OR T1.id_fav = @id) AND T1.id < T2.id
+--     -- UPDATE count
+--     UPDATE usuarios WITH (ROWLOCK) SET num_favoritos = (SELECT COUNT(usuariosxfavoritos.id) AS count_fav FROM usuarios AS usuarios_int WITH (NOLOCK), usuariosxfavoritos WITH (NOLOCK) WHERE usuariosxfavoritos.id_usr = @id AND usuariosxfavoritos.id_fav = usuarios_int.id AND usuarios_int.nivel <> 2 AND usuarios_int.nivel <> 3) WHERE id = @id AND nivel <> 2 AND nivel <> 3
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_favorites_mantencao_num_select] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT TOP 1000 T1.id_usr AS id_usr, T1.id_fav AS id_fav FROM usuariosxfavoritos T1 WITH (NOLOCK), usuariosxfavoritos T2 WITH (NOLOCK) WHERE T1.id_usr = T2.id_usr AND T1.id_fav = T2.id_fav AND T1.id < T2.id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_favorites_mantencao_delete] AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DELETE FROM usuariosxfavoritos WITH (ROWLOCK) WHERE id_usr in (SELECT id FROM usuarios WITH (NOLOCK) WHERE nivel = 2 OR nivel = 3) OR id_fav in (SELECT id FROM usuarios WITH (NOLOCK) WHERE nivel = 2 OR nivel = 3)
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_favorites_insert] @id int, @id_fav int, @comment text, @pais int AS
+-- SELECT favorito.id AS id_fav, favorito.nome AS nome_fav, favorito.apelido AS apelido_fav, favorito.email AS email_fav, favorito.sexo AS sexo_fav, favorito.site AS site_fav, favorito.lang AS lang_fav, favorito.notificacao_favoritos AS notificacao_favoritos_fav, favorito.display_favorites AS display_favorites, paises_nomes.nome AS nome_pais
+-- FROM usuarios AS favorito WITH (NOLOCK)
+-- LEFT OUTER JOIN paises_nomes WITH (NOLOCK) ON paises_nomes.id_pais = @pais AND paises_nomes.lang = favorito.lang
+-- WHERE favorito.id = @id_fav AND favorito.nivel <> 2 AND favorito.nivel <> 3
+-- UPDATE usuarios WITH (ROWLOCK) SET num_favoritos = num_favoritos + 1 WHERE id = @id
+-- UPDATE usuarios WITH (ROWLOCK) SET num_favoritos_subject = num_favoritos_subject + 1 WHERE id = @id_fav
+-- INSERT INTO usuariosxfavoritos (id_usr, id_fav, ativo, datacad, comment) VALUES (@id, @id_fav, 0, GetDate(), @comment)
+-- RETURN 1
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_favorites_delete] @id int, @id_fav int AS
+-- UPDATE usuarios WITH (ROWLOCK) SET num_favoritos = num_favoritos - 1 WHERE id = @id
+-- UPDATE usuarios WITH (ROWLOCK) SET num_favoritos_subject = num_favoritos_subject - 1 WHERE id = @id_fav
+-- DELETE FROM usuariosxfavoritos WITH (ROWLOCK) WHERE id_usr = @id AND id_fav = @id_fav
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_favorites_comment_update] @id int, @id_fav int, @comment text  AS
+-- UPDATE usuariosxfavoritos WITH (ROWLOCK) SET comment = @comment WHERE id_usr = @id AND id_fav = @id_fav
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_favorites_check_select] @id int, @id_fav int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT id FROM usuariosxfavoritos WITH (NOLOCK) WHERE id_usr = @id AND id_fav = @id_fav
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_favorites_batch_delete] @id_usr int, @doc ntext AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     DECLARE @idoc int, @id_fav int, @count int
+--     -- Create an internal representation (virtual table) of the XML document...
+--     EXEC sp_xml_preparedocument @idoc OUTPUT, @doc
+--     -- Perform DELETES
+--     DECLARE @t TABLE (id_fav int)
+--     INSERT INTO @t SELECT id FROM OPENXML (@idoc, '/ROOT/Activity',1) WITH (id int)
+--     SET @count = 0
+--     WHILE (SELECT Count(id_fav) FROM @t) > 0
+--         BEGIN
+--             SELECT TOP 1 @id_fav = T.id_fav FROM @t T
+--             UPDATE usuarios WITH (ROWLOCK) SET num_favoritos_subject = num_favoritos_subject - 1 WHERE id = @id_fav
+--             DELETE FROM usuariosxfavoritos WITH (ROWLOCK) WHERE id_usr = @id_usr AND id_fav = @id_fav
+--             DELETE FROM @t WHERE id_fav = @id_fav
+--             SET @count = @count + 1
+--         END
+--     UPDATE usuarios WITH (ROWLOCK) SET num_favoritos = num_favoritos - @count WHERE id = @id_usr
+--     -- Remove the 'virtual table' now...
+--     EXEC sp_xml_removedocument @idoc
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_envia_devocionais_select] @site int, @devocional int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     SELECT usuarios.id AS id, usuarios.apelido AS apelido, usuarios.email AS email
+--     FROM usuarios WITH (NOLOCK) LEFT OUTER JOIN usuarios_x_datamailcheck WITH (NOLOCK) ON usuarios.email = usuarios_x_datamailcheck.email, usuariosxsessoes WITH (NOLOCK)
+--     WHERE usuarios.id = usuariosxsessoes.id_usr AND usuarios.email <> '' AND ((usuarios.nivel <> 2 AND usuarios.nivel <> 3) OR (usuarios.nivel = 3 AND usuarios.problematico = 0)) AND usuarios.site = @site AND usuarios.devocional = @devocional AND usuarios_x_datamailcheck.datamailcheck Is Null
+--     ORDER BY usuariosxsessoes.datalast DESC
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_emails_bloqueados_update] @id int, @newsletter int, @devocional int, @notificacao_favoritos int, @notificacao_mensagens int AS
+-- UPDATE usuarios WITH (ROWLOCK)
+-- SET newsletter = @newsletter, devocional = @devocional, notificacao_favoritos = @notificacao_favoritos, notificacao_mensagens = @notificacao_mensagens
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_emails_bloqueados_select] @id int AS
+-- SELECT newsletter, notificacao_favoritos, devocional, notificacao_mensagens
+-- FROM usuarios WITH (NOLOCK)
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_email_update] @id int, @email varchar(100), @code varchar(500) AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuarios WITH (ROWLOCK) SET email = LOWER(@email) WHERE id = @id
+--     UPDATE usuariosxsessoes WITH (ROWLOCK) SET registration_code = @code WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_email_confirmed_update] @id int AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuarios WITH (ROWLOCK) SET email_confirmed = 1 WHERE id = @id
+--     UPDATE usuariosxsessoes WITH (ROWLOCK) SET registration_code = '' WHERE id_usr = @id
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_display_visitas_update] @id int, @display_visitas int AS
+-- UPDATE usuarios WITH (ROWLOCK)
+-- SET display_visitas = @display_visitas
+-- WHERE id = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_details_select] @id int, @email varchar(100), @apelido varchar(200) AS
+-- IF LEN(@email) <= 0 And LEN(@apelido) <= 0
+--     SELECT id, apelido, nome, sobrenome, email, senha, sexo, datacad, nivel, msgs, nascdia, nascmes, nascano, nacionalidade, pais, estado, friendemail, fotos, site, lang, notificacao_sistema, flag_registering, scammer FROM usuarios WITH (NOLOCK) WHERE id = @id
+-- ELSE
+--     SELECT id, apelido, nome, sobrenome, email, senha, sexo, datacad, nivel, msgs, nascdia, nascmes, nascano, nacionalidade, pais, estado, friendemail, fotos, site, lang, notificacao_sistema, flag_registering, scammer FROM usuarios WITH (NOLOCK) WHERE id = @id OR email = LOWER(@email) OR LOWER(apelido) = LOWER(@apelido)
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_delete] @id int AS
+-- BEGIN TRANSACTION
+-- DELETE FROM data WITH (ROWLOCK) WHERE u = @id
+-- DELETE FROM cobrancas WITH (ROWLOCK) WHERE id_usr = @id
+-- DELETE FROM usuarios WITH (ROWLOCK) WHERE id = @id
+-- DELETE FROM usuariosxsessoes WITH (ROWLOCK) WHERE id_usr = @id
+-- DELETE FROM usuariosxperfil WITH (ROWLOCK) WHERE id_usr = @id
+-- DELETE FROM usuariosxfavoritos WITH (ROWLOCK) WHERE id_usr = @id Or id_fav = @id
+-- DELETE FROM cobrancas_passadas WITH (ROWLOCK) WHERE id_usr = @id
+-- DELETE FROM calendario WITH (ROWLOCK) WHERE id_usr = @id
+-- DELETE FROM usuariosxbloqueados WITH (ROWLOCK) WHERE id_usr = @id Or id_bloq = @id
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_date_select] AS
+-- SELECT usuarios.apelido AS apelido, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.email AS email, usuarios.site AS site, usuarios.lang AS lang
+-- FROM usuarios WITH (NOLOCK) LEFT OUTER JOIN usuarios_x_datamailcheck WITH (NOLOCK) ON usuarios.email = usuarios_x_datamailcheck.email
+-- WHERE (usuarios.nascdia - Day(GetDate()) = 0) AND (usuarios.nascmes - Month(GetDate()) = 0) AND usuarios.email <> '' AND usuarios.email <> NULL AND usuarios.nivel <> 2 AND usuarios.nivel <> 3 AND usuarios.notificacao_datas_especiais >= 1 AND usuarios_x_datamailcheck.datamailcheck Is Null
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_date_login_select] AS
+-- BEGIN
+-- SELECT usuarios.apelido AS apelido, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.email AS email, usuariosxsessoes.datalast AS datalast, usuarios.site AS site, usuarios.lang AS lang
+-- FROM usuarios WITH (NOLOCK) LEFT OUTER JOIN usuarios_x_datamailcheck WITH (NOLOCK) ON usuarios.email = usuarios_x_datamailcheck.email, usuariosxsessoes WITH (NOLOCK)
+-- WHERE usuarios.id = usuariosxsessoes.id_usr AND usuarios.email <> '' AND usuarios.email <> NULL AND usuarios.nivel <> 2 AND usuarios.nivel <> 3 AND usuarios.notificacao_datas_especiais >= 1
+-- AND (DateDiff(d,usuariosxsessoes.datalast,GetDate()) = 60 Or DateDiff(d,usuariosxsessoes.datalast,GetDate()) = 120 Or DateDiff(d,usuariosxsessoes.datalast,GetDate()) = 180 Or DateDiff(d,usuariosxsessoes.datalast,GetDate()) = 360) AND usuarios_x_datamailcheck.datamailcheck Is Null
+-- END
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO
+-- CREATE PROCEDURE [aec_user_cpf_update] @id int, @cpf bigint AS
+-- BEGIN
+--     SET NOCOUNT ON;
+--     UPDATE usuarios WITH (ROWLOCK) SET cpf = @cpf WHERE id = @id
+-- END
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_cobranca_select] @id int AS
+-- SELECT cobrancas.id AS id, cobrancas.id_forma_pag AS id_forma_pag, cobrancas.status AS status, cobrancas.recorrencia AS recorrencia, cobrancas.flag_parcelada AS flag_parcelada, cobrancas.valor AS valor, cobrancas.moeda AS moeda, cobrancas.datainativa AS datainativa, cobrancas.datacad AS datacad, cobrancas.datanext AS datanext,
+-- usuarios.lang AS lang, usuarios.site AS site, usuarios.nivel AS nivel, usuarios.cpf AS cpf, usuarios.email AS email, usuarios.nome AS nome, usuarios.sobrenome AS sobrenome, usuarios.apelido AS apelido, usuarios.notificacao_sistema AS notificacao_sistema
+-- FROM cobrancas WITH (NOLOCK), usuarios WITH (NOLOCK)
+-- WHERE cobrancas.id_usr = @id AND cobrancas.id_usr = usuarios.id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_cobranca_delete] @id int AS
+-- BEGIN TRANSACTION
+-- DELETE FROM cobrancas WITH (ROWLOCK) WHERE id_usr = @id
+-- UPDATE usuarios WITH (ROWLOCK) SET nivel = 4 WHERE id = @id
+-- DELETE FROM cobrancas_passadas WHERE id_usr = @id
+-- COMMIT TRANSACTION
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_card_update] @id int, @tipo int, @num varchar(20), @month int, @year int, @security_code varchar(5), @titular varchar(50) AS
+-- UPDATE data
+-- SET b = @tipo, d = @num, m = @month, a = @year, c = @security_code, n = @titular
+-- WHERE u = @id
+-- GO
+-- SET ANSI_NULLS OFF
+-- GO
+-- SET QUOTED_IDENTIFIER OFF
+-- GO
+-- CREATE PROCEDURE [aec_user_card_insert] @id int, @tipo int, @num varchar(20), @month int, @year int, @adv_price money, @moeda smallint, @recorrencia int, @flag_parcelada int, @security_code varchar(5), @titular varchar(50) AS
+-- DELETE FROM data WHERE u = @id
+-- INSERT INTO data (u, b, d, m, a, c, n) VALUES (@id, @tipo, @num, @month, @year, @security_code, @titular)
+-- EXEC aec_cobrancas_atualiza_cobranca_mensal @id, @adv_price, @moeda, @recorrencia, 1, @flag_parcelada
+-- GO
+-- SET ANSI_NULLS ON
+-- GO
+-- SET QUOTED_IDENTIFIER ON
+-- GO

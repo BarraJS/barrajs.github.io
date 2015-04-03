@@ -1,6 +1,6 @@
-jQuery(document).ready(function($) { 
-	$(".scroll").click(function(event){		
-		event.preventDefault();
-		$('html,body').animate({scrollTop:$(this.hash).offset().top}, 800);
-	});
+$('a').click(function(){
+    $('html, body').animate({
+        scrollTop: $( $.attr(this, 'href') ).offset().top
+    }, 500);
+    return false;
 });

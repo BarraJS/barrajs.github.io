@@ -1,6 +1,6 @@
 //Ignoro arquivos da raiz
 
-js/
-css/
-image/
-index.html
+app/js/
+app/css/
+app/image/
+app/index.html

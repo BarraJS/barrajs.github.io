@@ -1,5 +1,5 @@
 //Ignoro arquivos da raiz
-
+node_modules/
 app/js/
 app/css/
 app/image/

@@ -1,6 +1,6 @@
 @import 'variables'
-	
-//header	
+
+//header
 header
 	background url(../image/banner.jpg)
 	background-size cover
@@ -14,8 +14,8 @@ header
 		top 0
 		//logo
 		.logo
-			column(1/6) 
-			h1 
+			column(1/6)
+			h1
 				space(0,0)
 				a
 					background url(../image/logoMin.png) no-repeat
@@ -24,7 +24,7 @@ header
 					size(49px,28px)
 					top 12px
 					position relative
-		//nav	
+		//nav
 		nav
 			column(5/6)
 			li
@@ -33,7 +33,7 @@ header
 					text-decoration: none;
 					font(16px,white,normal)
 					space(0,10px)
-	
+
 	.cont
 		size(100%,auto)
 		min-height 400px
@@ -42,11 +42,8 @@ header
 		margin-top 50px
 		padding-top 50px
 		h1
-			background url(../image/logo.png) no-repeat
-			size(399px,149px)
-			text-indent -999999px
 			margin 0 auto
-		a
+		.btn
 			background blue
 			font(27px,white,normal)
 			padding 10px  70px
@@ -60,11 +57,16 @@ header
 				background light-blue
 				border-bottom 6px solid blue
 				transition(0.5s)
+		@media(max-width: 480px)
+			img
+				max-width 280px
 		p
 			font(16px,white,normal)
 			text-align center
 			padding-left 100px
-		
-		
-	
+			@media(max-width:480px)
+				padding-left 0
+
+
+
 

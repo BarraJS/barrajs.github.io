@@ -43,4 +43,12 @@ gulp.task('uglify', function() {
     .pipe(gulp.dest('app/js/'))
 });
 
+// Watch
+gulp.task('watch', function(){
+  gulp.watch('app/dev/stylus/*.styl', ['stylus']);
+  gulp.watch('app/dev/index.html', ['minify-html']); 
+  gulp.watch('app/dev/image/**/*', ['imagemin']);
+  gulp.watch('app/dev/js/**', ['uglify']);
+});
+
 gulp.task('default', ['stylus', 'minify-html','imagemin','uglify']);

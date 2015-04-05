@@ -1,24 +1,26 @@
 @import 'variables'
-	
-//taks--**--
-.talks
+
+//talks and organizers--**--
+.talks, .organizers
 		background #f6f6f6
 		text-align center
 		space(0,10px)
-		ul li
-			display inline-table
-			space(0,10px)
-			.box
-				display table
-				background white
-				text-align center
-				space(0 auto,10px)
-				h3
-					space(0,0)
-					a
-						font(15px,blue,normal)
-				span
-					font(14px,dark-blue,normal)
+		ul
+			padding 0
+			li
+				display inline-table
+				space(0,10px)
+				.box
+					display table
+					background white
+					text-align center
+					space(0 auto,10px)
+					h3
+						space(0,0)
+						a
+							font(15px,blue,normal)
+					span
+						font(14px,dark-blue,normal)
 
 //horarios--**--
 .horarios
@@ -26,34 +28,47 @@
 	size(100%,auto)
 	font(15px,gray,normal)
 	text-align left
+	box-sizing border-box
+	position relative
 	//thead
 	thead
 		font(16px,blue,bold)
-		.th1
-			size(15%,auto)
-		.th2
-			size(25%,auto)
-		.th3
-			size(60%,auto)
 	tbody
 		tr:hover
 			background #FFFFDF !important
 		tr:nth-child(even)
 			background	white
-		tr:nth-child(odd) 
+		tr:nth-child(odd)
 			background #f6f6f6
 		.hrs
 			color blue
 		td
 			padding 15px 25px
+			@media(max-width: 480px)
+				padding 15px
+			.desc_box
+				font-weight bold
 			img
 				size(45px,auto)
 				border-radius 20px
 				position absolute
 			.desc h3
 				padding-left: 60px
+				margin-top 6px
 				font(15px,gray,normal)
-				
+
+@media(max-width: 480px)
+	.col-description
+		display none
+	.th1
+		width 50px
+	.th2
+		width auto
+
+@media(min-width: 480px)
+	.desc .desc_box
+		display none
+
 //maps--**--
 .maps
 	display inline-block
@@ -85,30 +100,14 @@
 	iframe
 		size(100%,400px)
 
-//sponsor/organizers--*--
-.sponsors,.organizers
+//sponsors--*--
+.sponsors
 	center()
-	ul li
-		display inline-table
-		text-decoration none
-		margin 0px 10px
-
-.organizers
-	background #f6f6f6
-	text-align center
-	space(0,10px)
-	ul li
-		display inline-table
-		.box
-			display table
-			background white
+	ul
+		padding 0
+		@media(max-width: 480px)
 			text-align center
-			space(0 auto,10px)
-			h3
-				space(0,0)
-				a
-					font(15px,blue,normal)
-				span
-					font(14px,dark-blue,normal)
-			
-			
+		li
+			display inline-table
+			text-decoration none
+			margin 0px 10px

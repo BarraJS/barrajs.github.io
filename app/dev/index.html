@@ -22,21 +22,27 @@
 				</div>
 				<nav>
 					<ul>
-						<li><a href="#sobre" title="sobre">sobre</a></li>
-						<li><a href="#talk" title="talks">talkers</a></li>
-						<li><a href="#programacao" title="programação">programação</a></li>
-						<li><a href="#localizacao" title="localização">localização</a></li>
-						<li><a href="#organizadores" title="parceiros">organizadores</a></li>
-						<li><a href="#patrocinadores" title="localização">parceiros</a></li>
+						<li><a href="#sobre" title="sobre">Sobre</a></li>
+						<li><a href="#talk" title="talks">Talkers</a></li>
+						<li><a href="#programacao" title="programação">Programação</a></li>
+						<li><a href="#localizacao" title="localização">Localização</a></li>
+						<li><a href="#organizadores" title="parceiros">Organizadores</a></li>
+						<li><a href="#patrocinadores" title="localização">Parceiros</a></li>
 					</ul>
 				</nav>
 			</div>
 		</div>
 		<div class="cont">
-			<h1><a href="#" title="Barra Js">Barra Js</a></h1>
-			<p>1º Meetup da Barra da Tijuca</p>
-			<p>Dia 11/04/2014 - 14:00 às 18:30</p>
-			<a href="http://www.meetup.com/barrajs/" target="_blank" title="inscreva-se agora">inscreva-se agora</a>
+			<div class="info">
+				<h1>
+					<a href="#" title="Barra Js">
+						<img src="image/logo.png" alt="Barra JS">
+					</a>
+				</h1>
+				<p>1º Meetup da Barra da Tijuca</p>
+				<p>Dia 11/04/2014 - 14:00 às 18:30</p>
+			</div>
+			<a class="btn" href="http://www.meetup.com/barrajs/" target="_blank" title="inscreva-se agora">inscreva-se agora</a>
 		</div>
 	</header>
 	<!--/header -->
@@ -45,7 +51,7 @@
 	<section id="sobre">
 		<article>
 			<div class="row">
-				<h2 class="title_box">o evento</h2>
+				<h2 class="title_box">O evento</h2>
 				<p class="descrip">
 						O BarraJS é um grupo de desenvolvedores que nasceu por um grupo do whatsapp com o intuito de propagar conhecimento e as novas técnicas para desenvolvimento web.
 						Abordamos especialmente assuntos voltado a Front-End e Back-End.
@@ -59,7 +65,7 @@
 		<section id="talk">
 			<article>
 				<div class="row">
-					<h2 class="title_box">talkers</h2>
+					<h2 class="title_box">Talkers</h2>
 					<ul>
 						<li>
 							<div class="box">
@@ -110,20 +116,20 @@
 	<section id="programacao">
 		<article>
 			<div class="row">
-				<h2 class="title_box">programação</h2>
+				<h2 class="title_box">Programação</h2>
 				<table class="horarios">
 							<thead>
 								<tr>
 									<th class="th1">Horário</th>
 									<th class="th2">Atividade</th>
-									<th class="th3">Descrição</th>
+									<th class="th3 col-description">Descrição</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
 									<td class="hrs">14:00</td>
 									<td>Check-in</td>
-									<td>--------</td>
+									<td class="col-description">--------</td>
 								</tr>
 
 								<tr>
@@ -132,11 +138,11 @@
 										<img src="image/pessoas/gabriel.jpg" class='foto' alt="">
 										<div class="desc">
 											<h3>Guilherme Gularte</h3>
+											<span class="desc_box">Realtime com Python e Angular.JS</span>
 										</div>
 									</td>
-									<td>
+									<td class="col-description">
 										<span class="desc_box">Realtime com Python e Angular.JS</span>
-
 										<p>Vamos entender os conceitos de uma aplicação web realtime e,
 										utilizando Tornado para o backend e Angular para para o client,
 										vamos construir uma aplicação de notificações realtime.</p>
@@ -149,12 +155,13 @@
 										<img src="image/pessoas/diego.jpg" class='foto' alt="">
 										<div class="desc">
 											<h3>Diego Ramos</h3>
+											<span class="desc_box">Prazer, JavaScript</span>
 										</div>
 									</td>
-									<td>
-										<span class="desc_box">Prazer, JavaScript</span>
+									<td class="col-description">
 										<p>
-											Nessa palestra iremos conhecer um pouco sobre a linguagem, veremos temas como: características, patterns, isolamento de escopo, OO e muito mais.
+											<span class="desc_box">Prazer, JavaScript</span>
+											<p>Nessa palestra iremos conhecer um pouco sobre a linguagem, veremos temas como: características, patterns, isolamento de escopo, OO e muito mais.</p>
 										</p>
 									</td>
 								</tr>
@@ -162,7 +169,7 @@
 								<tr>
 									<td class="hrs">16:00</td>
 									<td>Coffee-break</td>
-									<td>--------</td>
+									<td class="col-description">--------</td>
 								</tr>
 
 								<tr>
@@ -171,12 +178,13 @@
 										<img src="image/pessoas/felipe.jpg" class='foto' alt="">
 										<div class="desc">
 											<h3>Felipe Rodrigues</h3>
+											<span class="desc_box">Melhores Práticas com Javascript</span>
 										</div>
 									</td>
-									<td>
-										<span class="desc_box">Melhores Práticas com Javascript</span>
+									<td class="col-description">
 										<p>
-											Descubra uma nova sintaxe para condicionais, técnicas para melhorar e medir performance, como evitar as armadilhas do Javascript e como organizar seu código.
+											<span class="desc_box">Melhores Práticas com Javascript</span>
+											<p>Descubra uma nova sintaxe para condicionais, técnicas para melhorar e medir performance, como evitar as armadilhas do Javascript e como organizar seu código.</p>
 										</p>
 									</td>
 								</tr>
@@ -187,9 +195,10 @@
 										<img src="image/pessoas/willian.jpg" class='foto' alt="">
 										<div class="desc">
 											<h3>Willian Justen</h3>
+											<span class="desc_box">Simplesmente use SVG</span>
 										</div>
 									</td>
-									<td>
+									<td class="col-description">
 										<span class="desc_box">Simplesmente use SVG</span>
 										<p>Nesta talk irei falar um pouco sobre SVG e os motivos para você usá-lo a partir de agora.</p>
 									</td>
@@ -198,7 +207,7 @@
 								<tr>
 									<td class="hrs">18:15</td>
 									<td>Encerramento</td>
-									<td>--------</td>
+									<td class="col-description">--------</td>
 								</tr>
 							</tbody>
 						</table>
@@ -211,7 +220,7 @@
 	<div class="maps scroll" id="localizacao">
 		<div class="map-overlay" onClick="style.pointerEvents='none'; map_clicked=true;">
 			<div class="descMaps">
-				<h2>localização</h2>
+				<h2>Localização</h2>
 				<p>CEO Office - Av. João Cabral de Mello Neto, 850 - Barra da Tijuca, Rio de Janeiro</p>
 			</div>
 		</div>
@@ -224,7 +233,7 @@
 		<section id="organizadores">
 			<article>
 				<div class="row">
-					<h2 class="title_box">organizadores</h2>
+					<h2 class="title_box">Organizadores</h2>
 					<ul>
 						<li>
 							<div class="box">
@@ -271,7 +280,7 @@
 		<section id="patrocinadores">
 			<article>
 				<div class="row">
-					<h2 class="title_box">patrocinadores</h2>
+					<h2 class="title_box">Patrocinadores</h2>
 					<ul>
 						<li>
 							<a href="http://medigital.com.br/" title="Me Digital" target="_blank">

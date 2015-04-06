@@ -31,7 +31,7 @@ $ npm install --global gulp
 ```sh
 Na raiz do projeto: 
 
-$ npm install --save-dev gulp
+$ npm install --dev
 ```
 
 #### 5. Depois basta rodar o comando gulp.

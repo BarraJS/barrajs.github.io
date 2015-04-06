@@ -1,6 +1,9 @@
-//Ignoro arquivos da raiz
+#Ignorar arquivos da raiz
 node_modules/
 app/js/
 app/css/
 app/image/
 app/index.html
+
+#Webstorm fodler
+.idea/

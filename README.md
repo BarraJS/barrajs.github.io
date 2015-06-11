@@ -1,4 +1,4 @@
-[![Barra JS](http://barrajs.com.br/image/logoGit.png)](http://barrajs.com.br)
+[![Barra JS](http://barrajs.com.br/edition-1/image/logoGit.png)](http://barrajs.com.br)
 
 > Esse projeto foi desenvolvido para juntar desenvolvedores da Barra da Tijuca.
 
@@ -29,7 +29,7 @@ $ npm install --global gulp
 #### 4. É necessário instalar as dependências do projeto.
 
 ```sh
-Na raiz do projeto: 
+Na raiz do projeto:
 
 $ npm install --dev
 ```
@@ -37,10 +37,10 @@ $ npm install --dev
 #### 5. Depois basta rodar o comando gulp.
 
 ```sh
-Na raiz do projeto: 
+Na raiz do projeto:
 
 $ gulp
 ```
 #### 6. Faça suas alterações e logo após dê um push.
 
-#### 6. Mande-nos seu pull request que avaliaremos.
+#### 7. Mande-nos seu pull request que avaliaremos.

@@ -17,7 +17,6 @@
 // Header com logo e menu
 #header {
 	margin-top: -80px;
-
 	> .row {
 		border-top: 4px solid $secondary-color;
 		height: 80px;
@@ -29,5 +28,16 @@
 		text-align: center;
 		font-size: 0;
 		@include column(4/12);
+	}
+
+	// Header Fixo
+	&.header-fixed {
+		position: fixed;
+		top:0;
+		margin: 0;
+		margin-top: 0;
+		width: 100%;
+		z-index: 100;
+		@include prefix(transition, all .3s ease);
 	}
 }

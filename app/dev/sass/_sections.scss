@@ -1,0 +1,73 @@
+// Sections
+
+// Sobre
+#sobre {
+	padding: ($gutter-section * 2) 0 $gutter-section;
+
+	.icon {
+		text-align: center;
+		@include column(1/2);
+
+		.code {
+			display: block;
+			padding: $gutter-section 0;
+			font-size: 200px;
+			font-weight: 600;
+			color: $primary-color;
+		}
+	}
+
+	.content {
+		@include column(1/2);
+		p {
+			font-size: 22px;
+			max-width: 80%;
+			font-weight: 300;
+		}
+	}
+}
+
+// Aprenda - Palestre - Patrocine
+#learning {
+	padding: $gutter-section 0;
+
+	// Boxes
+	.box-info {
+		@include column(1/3);
+
+		.content {
+			float: left;
+		}
+
+		// Icones
+		&:before {
+			content:'';
+			float: left;
+			max-width: 20%;
+			margin-right: 10%;
+			display: block;
+			background-size: contain;
+			background-repeat: no-repeat;
+			@include size(83px,83px);
+		}
+
+		&.aprenda:before	{background-image: url('../images/icons/icon-aprenda.png');}
+		&.palestre:before 	{background-image: url('../images/icons/icon-palestre.png');}
+		&.patrocine:before 	{background-image: url('../images/icons/icon-patrocine.png');}
+
+		.content {
+			max-width: 55%;
+
+			h2 {
+				color: #2a2a2a;
+				font-size: 22px;
+				text-transform: uppercase;
+				font-weight: 800;
+			}
+
+			p {
+				font-size: 20px;
+			}
+		}
+	}
+}

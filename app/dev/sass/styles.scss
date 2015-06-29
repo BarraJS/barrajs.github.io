@@ -1,3 +1,6 @@
+//Font Awesome
+@import "http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css";
+
 // Settings
 @import "settings/reset";
 @import "settings/variables";
@@ -9,5 +12,7 @@
 
 // Layout
 @import "header";
+@import "nav";
 @import "layout";
+@import "sections";
 @import "footer";

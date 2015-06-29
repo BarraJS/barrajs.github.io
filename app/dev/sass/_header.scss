@@ -1,1 +1,32 @@
 // Header
+.intro-meetup {
+	background: $primary-color url('../images/bg-header.jpg') no-repeat center center;
+	background-size: cover;
+	text-align: center;
+	height: 100%;
+
+	.intro-meetup-title {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		margin: -100px 0 0 -252px;
+	}
+}
+
+// Header com logo e menu
+#header {
+	margin-top: -80px;
+
+	> .row {
+		border-top: 4px solid $secondary-color;
+		height: 80px;
+		background: $body-bg;
+	}
+
+	#logo-barrajs {
+		padding: 12px 0;
+		text-align: center;
+		font-size: 0;
+		@include column(4/12);
+	}
+}

@@ -94,3 +94,52 @@
         border: 1px solid transparent;
     }
 }
+
+// Bullets - Dots
+.slick-dots {
+	display: block;
+	text-align: center;
+
+	li {
+		display: inline-block;
+		font-size: 0;
+
+		button {
+			outline: 0;
+			cursor: pointer;
+			font-size: 0;
+			padding: 6px;
+			border: 0;
+			background: $dot-off;
+			margin: 0 3px;
+			@include prefix(transition, all .4s ease);
+			@include prefix(border-radius, 2px);
+		}
+
+		&.slick-active button {
+			background: $dot-on;
+		}
+	}
+}
+
+// Arrows
+.slick-prev,
+.slick-next {
+	position: absolute;
+	font-size: 0;
+	border: 0;
+	background: none;
+	outline: 0;
+	background: url('../images/slide-arrows.png') no-repeat;
+	@include size(17px, 28px);
+	display: block;
+	top: 50%;
+	margin-top: -14px;
+}
+.slick-prev {
+	left: 0;
+}
+.slick-next {
+	background-position: right;
+	right: 0;
+}

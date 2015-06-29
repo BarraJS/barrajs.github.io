@@ -168,6 +168,11 @@
 				color: #2a2a2a;
 			}
 
+			.title {
+				text-transform: none;
+				font-size: 22px;
+			}
+
 			.sub-title {
 				font-weight: 300;
 			}
@@ -184,6 +189,58 @@
 
 			&:hover {
 				@include prefix(box-shadow, 0 0 10px rgba(0,0,0,.2));
+			}
+		}
+	}
+}
+
+// Talkers - Palestrantes
+#talkers {
+	background: #e3dfdd;
+	padding: $gutter-section 0;
+
+	// Lista de palestrantes
+	.list-talkers {
+		@extend %clearfix;
+
+		.list-talkers-item {
+			padding: 35px;
+		}
+
+		// Foto
+		.talker-photo {
+			display: inline-block;
+			overflow: hidden;
+			float: left;
+			margin-right: $gutter * 2;
+			@include prefix(border-radius, 20px);
+		}
+
+		// Nome, talk, funcao e descricao
+		.talker-content {
+			.name, .work {
+				color: #2a2a2a;
+				margin-bottom: 5px;
+			}
+
+			// Nome do palestrante
+			.name {
+				font-size: 22px;
+				text-transform: none;
+			}
+
+			// Função - trabalho
+			.work {
+				font-weight: 300;
+			}
+
+			// Titulo da Palestra
+			.talk-title {
+				text-transform: uppercase;
+				font-weight: 800;
+				color: $primary-color;
+				margin-bottom: 10px;
+				display: block;
 			}
 		}
 	}

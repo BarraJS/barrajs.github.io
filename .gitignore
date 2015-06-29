@@ -1,4 +1,5 @@
 #Ignorar arquivos da raiz
+.DS_Store
 node_modules/
 app/js/
 app/css/

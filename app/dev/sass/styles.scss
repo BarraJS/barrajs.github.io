@@ -1,0 +1,13 @@
+// Settings
+@import "settings/reset";
+@import "settings/variables";
+@import "settings/mixins";
+
+// Vendor
+@import "vendor/jeet/index";
+@import "vendor/slick";
+
+// Layout
+@import "header";
+@import "layout";
+@import "footer";

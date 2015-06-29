@@ -4,6 +4,10 @@
 #sobre {
 	padding: ($gutter-section * 2) 0 $gutter-section;
 
+	h2 {
+		font-size: 48px;
+	}
+
 	.icon {
 		text-align: center;
 		@include column(1/2);
@@ -58,7 +62,7 @@
 		.content {
 			max-width: 55%;
 
-			h2 {
+			h3 {
 				color: #2a2a2a;
 				font-size: 22px;
 				text-transform: uppercase;

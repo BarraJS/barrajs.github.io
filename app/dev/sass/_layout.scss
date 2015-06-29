@@ -43,11 +43,11 @@ h1, h2, h3, h4 {
 	margin-bottom: 20px;
 	font-weight: 600;
 	color: $primary-color;
+	text-transform: uppercase;
 }
 
-h2 {
-	font-size: 48px;
-}
+h1 {font-size: 48px;}
+h2 {font-size: 30px;}
 
 p {
 	margin-bottom: 15px;

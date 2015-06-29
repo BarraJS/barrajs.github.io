@@ -1,14 +1,74 @@
 // Layout
+* {
+	@include prefix(box-sizing,border-box);
+}
 html, body {
 	height: 100%;
 }
 
 body {
-	background: #f2f2f2;
+	background: $body-bg;
 	color: #2a2a2a;
+	-webkit-font-smoothing: antialiased;
 	font:{
 		family: $font-main;
 		size: $font-size;
-		weight: 400
-	} 
+		weight: 400;
+	}
+}
+
+img {
+	max-width: 100%;
+}
+
+// Default Container
+.row {
+	max-width: 1200px;
+	margin: 0 auto;
+	@extend %clearfix;
+}
+
+a {
+	text-decoration: none;
+	color: $secondary-color;
+	@include prefix(transition, all .3s ease);
+
+	&:hover {
+		color: lighten($secondary-color, 10%);
+	}
+}
+
+// Type
+h1, h2, h3, h4 {
+	margin-bottom: 20px;
+	font-weight: 600;
+	color: $primary-color;
+}
+
+h2 {
+	font-size: 48px;
+}
+
+p {
+	margin-bottom: 15px;
+	line-height: 1.5em;
+}
+
+// Button
+.bt-arrow {
+	font-weight: 800;
+	text-transform: uppercase;
+	font-size: 18px;
+	color: #2a2a2a;
+
+	.fa {
+		vertical-align: top;
+		font-size: 11px;
+		border: 2px solid;
+		line-height: 16px;
+		text-align: center;
+		padding: 0 4px;
+		@include size(18px, 18px);
+		@include prefix(border-radius, 100px);
+	}
 }

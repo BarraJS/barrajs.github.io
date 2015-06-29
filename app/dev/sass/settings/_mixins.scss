@@ -21,3 +21,9 @@
 	$opacity-ie: $opacity * 100;
 	filter: alpha(opacity=$opacity-ie); //IE8
 }
+
+// Size
+@mixin size($w, $h) {
+	width: $w;
+	height: $h;
+}

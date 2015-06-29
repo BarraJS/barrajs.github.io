@@ -3,7 +3,16 @@
 // Colors
 $green: #67a78c;
 $red: #f0575a;
+$light-gray: #f2f2f2;
+
+$body-bg: $light-gray;
+$primary-color: $green;
+$secondary-color: $red;
 
 // Typography
 $font-main: 'Lato', sans-serif;
-$font-size: 14px;
+$font-size: 16px;
+
+// Spaces
+$gutter: 20px;
+$gutter-section: 50px;

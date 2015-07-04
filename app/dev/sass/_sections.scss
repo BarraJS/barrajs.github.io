@@ -245,3 +245,23 @@
 		}
 	}
 }
+
+// Manifesto
+#manifesto {
+	padding: $gutter-section;
+	font-size: 22px;
+
+	.content {
+		@include column(1/4);
+
+		&:first-of-type {
+			@include column(1/4, $offset: 1/4);
+		}
+
+		@include tablet() {
+				&, &:first-of-type {
+					@include column(1);
+				}
+		}
+	}
+}

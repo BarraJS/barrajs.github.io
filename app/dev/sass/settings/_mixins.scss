@@ -27,3 +27,16 @@
 	width: $w;
 	height: $h;
 }
+
+// Responsive
+@mixin tablet() {
+	@media screen and (max-width: $tablet-width) {
+		@content;
+	}
+}
+
+@mixin cell() {
+	@media screen and (max-width: $cell-width) {
+		@content;
+	}
+}

@@ -29,6 +29,7 @@ img {
 }
 
 a {
+	cursor: pointer;
 	text-decoration: none;
 	color: $secondary-color;
 	@include prefix(transition, all .3s ease);

@@ -214,6 +214,11 @@
 			float: left;
 			margin-right: $gutter * 2;
 			@include prefix(border-radius, 20px);
+
+			@include max-screen(960px) {
+				margin-right: $gutter;
+				max-width: 130px;
+			}
 		}
 
 		// Nome, talk, funcao e descricao

@@ -259,6 +259,10 @@
 				margin-right: $gutter;
 				max-width: 130px;
 			}
+
+			@include max-screen(400px) {
+				max-width: 80px;
+			}
 		}
 
 		// Nome, talk, funcao e descricao

@@ -28,9 +28,29 @@ BarraJS.slideTalkers = function() {
 	});
 };
 
+
+// Slide para Organizadores
+BarraJS.slideOrganizers = function() {
+		var organizers = $('#organizacao .row');
+		// Slick para criar slide
+		organizers.slick({
+			slidesToShow: 4,
+			slidesToScroll: 4,
+			infinite: true,
+			dots: true,
+			arrows: true,
+			responsive: [{
+				breakpoint: 569,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1
+				}
+			}]
+		});
+};
+
 // Modulo para ancoras na pagina
 BarraJS.anchorPoint = {
-
 	// Principal - Scroll da pagina
 	main : function(el) {
 		$('html, body').animate({
@@ -55,7 +75,6 @@ BarraJS.anchorPoint = {
 
 // Header Fixo
 BarraJS.fixedHeader = {
-
 	// Adicionar classe para fixar header
 	main : function(){
 		var header = $('#header'),
@@ -96,11 +115,11 @@ BarraJS.mapLocalization = function() {
 	map.controls[google.maps.ControlPosition.TOP_LEFT].push(legend);
 };
 
-
 // Load Scripts no domready
 $(document).ready(function(){
 	BarraJS.slideTalkers(); // Slide com Palestrantes
 	BarraJS.anchorPoint.init(); // Modulo para ancoras
+	BarraJS.slideOrganizers(); // Slide com Organizadores
 });
 
 // Load Scripts no winLoad

@@ -110,6 +110,12 @@
 		margin: ($gutter * 2) 0;
 		position: relative;
 
+		@include tablet {
+			padding: $gutter;
+			text-align: center;
+			line-height: 1.4em;
+		}
+
 		// Conteudo
 		.timeline-content {
 			padding: 20px 15px;
@@ -143,6 +149,10 @@
 				right: -285px;
 				top: -105px;
 			}
+
+			@include tablet {
+				display: none;
+			}
 		}
 
 		.timeline-item {
@@ -152,6 +162,12 @@
 			background: #f2f2f2;
 			border-top: 4px solid $secondary-color;
 			@include prefix(transition, all .2s ease);
+
+			@include tablet {
+				@include column(1/1);
+				margin: 10px 0;
+				width: 100%;
+			}
 
 			// Arrow
 			&:before {
@@ -180,6 +196,10 @@
 				bottom: -40px;
 				margin-left: -7px;
 				@include prefix(border-radius, 100px);
+
+				@include tablet {
+					display: none;
+				}
 			}
 
 			// Titulo e Subtitulo

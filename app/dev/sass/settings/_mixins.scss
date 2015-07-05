@@ -41,7 +41,7 @@
 	}
 }
 
-@mixin min-max-screen() {
+@mixin min-max-screen($min-width, $max-width) {
 	@media screen and (min-width: $min-width) and (max-width: $max-width) {
 		@content;
 	}

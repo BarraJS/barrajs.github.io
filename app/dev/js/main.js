@@ -74,11 +74,38 @@ BarraJS.fixedHeader = {
 	}
 };
 
+// Mapa de Localizacao
+BarraJS.mapLocalization = function() {
+	// Mapa
+	var mapCanvas = document.getElementById('map-canvas');
+	var mapOptions = {
+      center: new google.maps.LatLng(-22.9849097, -43.3592086),
+      zoom: 17,
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+	var map = new google.maps.Map(mapCanvas, mapOptions);
+
+	// Marker - pin
+	var marker = new google.maps.Marker({
+      position: mapOptions.center,
+      map: map
+  });
+
+	// Legenda
+	var legend = document.getElementById('map-legend');
+	map.controls[google.maps.ControlPosition.TOP_LEFT].push(legend);
+};
+
 
 // Load Scripts no domready
 $(document).ready(function(){
 	BarraJS.slideTalkers(); // Slide com Palestrantes
 	BarraJS.anchorPoint.init(); // Modulo para ancoras
+});
+
+// Load Scripts no winLoad
+$(window).load(function(){
+		BarraJS.mapLocalization(); // Mapa de Localizacao
 });
 
 // Load Scripts no scroll

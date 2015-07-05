@@ -265,3 +265,34 @@
 		}
 	}
 }
+
+// Localizacao
+#localizacao {
+	#map-canvas{
+		height: 400px;
+		width: 100%;
+		position: relative;
+	}
+
+	#map-legend {
+		margin: 30px;
+		padding: 10px;
+		font-size: 15px;
+		background: #fff;
+		max-width: 280px;
+		border-left: 4px solid $secondary-color;
+		@include prefix(box-shadow, 0 0 10px rgba(0,0,0,.3));
+
+		address {
+			display: block;
+			margin-bottom: 10px;
+
+			.date {
+				display: block;
+				font-weight: 600;
+				color: $secondary-color;
+			}
+		}
+
+	}
+}

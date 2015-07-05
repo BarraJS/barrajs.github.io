@@ -28,7 +28,6 @@ BarraJS.slideTalkers = function() {
 	});
 };
 
-
 // Slide para Organizadores
 BarraJS.slideOrganizers = function() {
 		var organizers = $('#organizacao .row');
@@ -100,6 +99,7 @@ BarraJS.mapLocalization = function() {
 	var mapOptions = {
       center: new google.maps.LatLng(-22.9849097, -43.3592086),
       zoom: 17,
+			scrollwheel: false,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 	var map = new google.maps.Map(mapCanvas, mapOptions);

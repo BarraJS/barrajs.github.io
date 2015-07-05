@@ -342,6 +342,16 @@
 				color: $secondary-color;
 			}
 		}
+		@include cell {
+			line-height: 1.3em;
+			margin: 20px;
+			h3 {
+				margin-bottom: 10px;
+			}
+			p {
+				display: none;
+			}
+		}
 	}
 }
 

@@ -335,3 +335,14 @@
 		}
 	}
 }
+
+// Patrocinadores
+#patrocinio {
+	padding-bottom: $gutter-section;
+	text-align: center;
+
+	.sponsor {
+		display: inline-block;
+		margin: 10px 5px;
+	}
+}

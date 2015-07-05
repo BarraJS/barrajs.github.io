@@ -1,1 +1,30 @@
 // Footer
+#footer {
+  background: $footer-color url('../images/bg-footer.jpg') center center no-repeat;
+  text-align: center;
+
+  .social-media {
+    padding: 30px;
+    display: block;
+
+    a {
+      font-size: 45px;
+      display: inline-block;
+      margin: 5px 10px;
+      color: $primary-color;
+
+      &:hover {
+        color: lighten($primary-color, 20%);
+      }
+    }
+  }
+
+  #copyright {
+    background: rgba(0,0,0,.5);
+    padding: 5px 0;
+    font-size: 15px;
+    font-weight: 800;
+    color: $primary-color;
+    text-transform: uppercase;
+  }
+}

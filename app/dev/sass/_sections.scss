@@ -330,6 +330,7 @@
 		background: #fff;
 		max-width: 280px;
 		border-left: 4px solid $secondary-color;
+		line-height: 1.3em;
 		@include prefix(box-shadow, 0 0 10px rgba(0,0,0,.3));
 
 		address {
@@ -343,7 +344,6 @@
 			}
 		}
 		@include cell {
-			line-height: 1.3em;
 			margin: 20px;
 			h3 {
 				margin-bottom: 10px;

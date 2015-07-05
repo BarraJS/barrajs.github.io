@@ -27,7 +27,11 @@
 		padding: 12px 0;
 		text-align: center;
 		font-size: 0;
-		@include column(4/12);
+		@include column(3/12);
+
+		@include max-screen(768px) {
+			@include column(1/1);
+		}
 	}
 
 	// Header Fixo

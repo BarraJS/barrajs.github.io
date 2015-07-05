@@ -1,10 +1,24 @@
 // Menu Navigation
 #nav {
-	@include column(8/12);
+	@include column(9/12);
+
+	@include min-max-screen(568px, 767px) {
+		background: $primary-color;
+		@include column(1/1);
+	}
+
+	@include max-screen(567px) {
+		display: none;
+	}
+
 	ul {
 		display: block;
 		text-align: right;
 		padding: 0 20px;
+
+		@include min-max-screen(568px, 768px) {
+			text-align: center;
+		}
 
 		.nav-item {
 			display: inline-block;
@@ -28,6 +42,15 @@
 				display: inline-block;
 				text-transform: uppercase;
 				position: relative;
+
+				@include min-max-screen(768px, 920px) {
+					padding: 35px 5px 27px;
+				}
+
+				@include min-max-screen(568px, 767px) {
+					padding: 15px 8px 15px;
+					color: #fff;
+				}
 			}
 
 			&:hover {

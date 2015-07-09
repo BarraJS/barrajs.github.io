@@ -252,7 +252,8 @@
 			display: inline-block;
 			overflow: hidden;
 			float: left;
-			margin-right: $gutter * 2;
+			max-width: 190px;
+			margin-right: $gutter * 1;
 			@include prefix(border-radius, 20px);
 
 			@include max-screen(960px) {

@@ -17,6 +17,54 @@
 			left: inherit;
 		}
 	}
+
+	// Inscreva-se
+	.inscreva-se {
+		position: absolute;
+		background: rgba(255,255,255,.2);
+		top: 70%;
+		left: 50%;
+		max-width: 520px;
+		margin-left: -240px;
+		font-size: 20px;
+		border: 2px solid $secondary-color;
+		padding: 5px;
+		font-weight: 600;
+		text-transform: uppercase;
+		@include prefix(border-radius, 5px);
+
+		@include cell {
+			margin: 10px;
+			left: 0;
+			right: 0;
+			top: 60%;
+		}
+
+		.date {
+			padding: 0 10px;
+		}
+
+	}
+
+	.bt-inscricao {
+		display: inline-block;
+		background: $secondary-color;
+		color: #fff;
+		padding: 15px 20px;
+		font-weight: 800;
+		@include prefix(border-radius, 5px);
+		@include prefix(transition, all .3s ease);
+
+		&:hover {
+			background: darken($secondary-color, 10%);
+		}
+
+		@include cell {
+			width: 100%;
+			display: block;
+			margin-top: 5px;
+		}
+	}
 }
 
 // Header com logo e menu

@@ -5,301 +5,384 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="Barra Js">
 	<meta name="keywords" content="Barra Js, Meetup ,JS ,Evento">
-	<meta name="author" content="Danilo Reis">
+	<meta name="author" content="Danilo Reis, Bruno Rodrigues, Tito, Diego Ramos">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Barra JS</title>
-	<link rel="stylesheet" href="css/style.css">
-	<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
-	<link rel="icon" type="image/png" href="image/favico.png">
+	<link rel="stylesheet" href="css/styles.css">
+	<link href='http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900' rel='stylesheet' type='text/css'>
+	<link rel="icon" type="image/png" href="images/favicon.png">
 </head>
 <body>
-	<!-- header -->
-	<header id="header">
-		<div class="barHeader">
-			<div class="row">
-				<div class="logo">
-					<h1><a href="#header" title="Barra Js">Barra Js</a></h1>
-				</div>
-				<nav>
-					<ul>
-						<li><a href="#sobre" title="sobre">Sobre</a></li>
-						<li><a href="#talk" title="talks">Talkers</a></li>
-						<li><a href="#programacao" title="programação">Programação</a></li>
-						<li><a href="#localizacao" title="localização">Localização</a></li>
-						<li><a href="#organizadores" title="parceiros">Organizadores</a></li>
-						<li><a href="#patrocinadores" title="localização">Parceiros</a></li>
-					</ul>
-				</nav>
-			</div>
+
+	<!-- Intro Meetp Barra.js -->
+	<div class="intro-meetup">
+		<h1 class="intro-meetup-title">
+			Barra.js
+			<img src="images/logo-meetup.png" alt="Barra.js Meetup" />
+		</h1>
+
+		<!-- Dia e botao de inscrição -->
+		<div class="inscreva-se">
+			<span class="date">Dia 25 de Julho de 2015 - às 8h</span>
+			<a data-target="#inscricao" class="anchor bt-inscricao" href="#inscricao">Inscreva-se</a>
 		</div>
-		<div class="cont">
-			<div class="info">
-				<h1>
-					<a href="#" title="Barra Js">
-						<img src="image/logo.png" alt="Barra JS">
-					</a>
-				</h1>
-				<p>1º Meetup da Barra da Tijuca</p>
-				<p>Dia 11/04/2014 - 14:00 às 18:30</p>
-			</div>
-			<a class="btn" href="http://www.meetup.com/barrajs/" target="_blank" title="inscreva-se agora">inscreva-se agora</a>
+
+	</div>
+
+	<!-- Header -->
+	<header id="header">
+		<div class="row">
+			<a href="/" id="logo-barrajs">
+				Barra.js
+				<img src="images/logo-barrajs.png" alt="Barra.js" />
+			</a>
+			<!-- Menu -->
+			<nav id="nav">
+				<ul>
+					<li class="nav-item"><a data-target="#sobre" class="anchor" href="#">Sobre</a></li>
+					<li class="nav-item"><a data-target="#programacao" class="anchor" href="#">Programação</a></li>
+					<li class="nav-item"><a data-target="#localizacao" class="anchor" href="#">Local</a></li>
+					<li class="nav-item"><a data-target="#manifesto" class="anchor" href="#">Manifesto</a></li>
+					<li class="nav-item"><a data-target="#organizacao" class="anchor" href="#">Organização</a></li>
+				</ul>
+			</nav>
 		</div>
 	</header>
-	<!--/header -->
 
-	<!-- about -->
+	<!-- O Grupo - Sobre -->
 	<section id="sobre">
-		<article>
-			<div class="row">
-				<h2 class="title_box">O evento</h2>
-				<p class="descrip">
-						O BarraJS é um grupo de desenvolvedores que nasceu por um grupo do whatsapp com o intuito de propagar conhecimento e as novas técnicas para desenvolvimento web.
-						Abordamos especialmente assuntos voltado a Front-End e Back-End.
-				</p>
+		<div class="row">
+			<div class="icon">
+				<span class="code">
+					&#60;&#47;&#62;
+				</span>
 			</div>
-		</article>
-	</section>
-	<!-- /about -->
-	<!-- taks -->
-	<div class="talks">
-		<section id="talk">
-			<article>
-				<div class="row">
-					<h2 class="title_box">Talkers</h2>
-					<ul>
-						<li>
-							<div class="box">
-							<img src="image/pessoas/gabriel.jpg" class='foto' alt="">
-							<h3>
-							<a href="https://github.com/gabrielfgularte" target="_blank" title="Gabriel Gularte">Gabriel Gularte</a>
-							</h3>
-							<span>Mentis</span>
-						</div>
-						</li>
 
-						<li>
-							<div class="box">
-							<img src="image/pessoas/diego.jpg" class='foto' alt="">
-							<h3>
-							<a href="https://github.com/rdiego26" target="_blank" title="Diego Ramos">Diego Ramos</a>
-							</h3>
-							<span>Bematech</span>
-						</div>
-						</li>
+			<div class="content">
+				<h2>O GRUPO</h2>
 
-						<li>
-							<div class="box">
-							<img src="image/pessoas/felipe.jpg" class='foto' alt="">
-							<h3>
-							<a href="https://github.com/felfiz"  target="_blank" title="Felipe Rodrigues">Felipe Rodrigues</a>
-							</h3>
-							<span>Mundi</span>
-						</div>
-						</li>
+				<p>O BarraJS é um grupo de desenvolvedores da Barra que nasceu em corredores de escritórios, mesas de bares, e por fim um grupo de whatsapp com o intuito de propagar conhecimento e as novas técnicas para desenvolvimento web.</p>
 
-						<li>
-							<div class="box">
-							<img src="image/pessoas/willian.jpg" class='foto' alt="">
-							<h3>
-								<a href="https://github.com/willianjusten" target="_blank" title="Willian Justen">Willian Justen</a>
-							</h3>
-							<span>Globo.com</span>
-						</div>
-						</li>
-					</ul>
-				</article>
-			</div>
-		</section>
-	</div>
-	<!--/taks -->
-	<!--programacao-->
-	<section id="programacao">
-		<article>
-			<div class="row">
-				<h2 class="title_box">Programação</h2>
-				<table class="horarios">
-							<thead>
-								<tr>
-									<th class="th1">Horário</th>
-									<th class="th2">Atividade</th>
-									<th class="th3 col-description">Descrição</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td class="hrs">14:00</td>
-									<td>Check-in</td>
-									<td class="col-description">--------</td>
-								</tr>
+				<p>De tanto falar decidimos nos reunir em meet-ups de vez em quando. Assim surgiram nossos eventos. Compartilhar conhecimento é o nosso principal objetivo.</p>
 
-								<tr>
-									<td>14:30</td>
-									<td>
-										<img src="image/pessoas/gabriel.jpg" class='foto' alt="">
-										<div class="desc">
-											<h3>Gabriel Gularte</h3>
-											<span class="desc_box">Realtime com Python e Angular.JS</span>
-										</div>
-									</td>
-									<td class="col-description">
-										<span class="desc_box">Realtime com Python e Angular.JS</span>
-										<p>Vamos entender os conceitos de uma aplicação web realtime e,
-										utilizando Tornado para o backend e Angular para para o client,
-										vamos construir uma aplicação de notificações realtime.</p>
-									</td>
-								</tr>
-
-								<tr>
-									<td>15:20</td>
-									<td>
-										<img src="image/pessoas/diego.jpg" class='foto' alt="">
-										<div class="desc">
-											<h3>Diego Ramos</h3>
-											<span class="desc_box">Prazer, JavaScript</span>
-										</div>
-									</td>
-									<td class="col-description">
-										<p>
-											<span class="desc_box">Prazer, JavaScript</span>
-											<p>Nessa palestra iremos conhecer um pouco sobre a linguagem, veremos temas como: características, patterns, isolamento de escopo, OO e muito mais.</p>
-										</p>
-									</td>
-								</tr>
-
-								<tr>
-									<td class="hrs">16:00</td>
-									<td>Coffee-break</td>
-									<td class="col-description">--------</td>
-								</tr>
-
-								<tr>
-									<td>16:40</td>
-									<td>
-										<img src="image/pessoas/felipe.jpg" class='foto' alt="">
-										<div class="desc">
-											<h3>Felipe Rodrigues</h3>
-											<span class="desc_box">Melhores Práticas com Javascript</span>
-										</div>
-									</td>
-									<td class="col-description">
-										<p>
-											<span class="desc_box">Melhores Práticas com Javascript</span>
-											<p>Descubra uma nova sintaxe para condicionais, técnicas para melhorar e medir performance, como evitar as armadilhas do Javascript e como organizar seu código.</p>
-										</p>
-									</td>
-								</tr>
-
-								<tr>
-									<td>17:20</td>
-									<td>
-										<img src="image/pessoas/willian.jpg" class='foto' alt="">
-										<div class="desc">
-											<h3>Willian Justen</h3>
-											<span class="desc_box">Simplesmente use SVG</span>
-										</div>
-									</td>
-									<td class="col-description">
-										<span class="desc_box">Simplesmente use SVG</span>
-										<p>Nesta talk irei falar um pouco sobre SVG e os motivos para você usá-lo a partir de agora.</p>
-									</td>
-								</tr>
-
-								<tr>
-									<td class="hrs">18:15</td>
-									<td>Encerramento</td>
-									<td class="col-description">--------</td>
-								</tr>
-							</tbody>
-						</table>
-			</div>
-		</article>
-	</section>
-	<!-- /programacao -->
-	<!-- maps -->
-		<!-- maps -->
-	<div class="maps scroll" id="localizacao">
-		<div class="map-overlay" onClick="style.pointerEvents='none'; map_clicked=true;">
-			<div class="descMaps">
-				<h2>Localização</h2>
-				<p>CEO Office - Av. João Cabral de Mello Neto, 850 - Barra da Tijuca, Rio de Janeiro</p>
+				<p>Chega junto! Seja pra falar, aprender ou até mesmo patrocinar, <strong>entre em contato!</strong></p>
 			</div>
 		</div>
-		<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com.br/maps?f=q&amp;source=s_q&amp;hl=pt-BR&amp;geocode=&amp;q=CEO+Corporate+Executive+Offices,+Barra+da+Tijuca,+Rio+de+Janeiro&amp;aq=0&amp;oq=CEO+Corporate+Executive+Offices,+Barra+da+Tijuca+Rio+de+Janeiro&amp;sll=-17.211387,-48.776206&amp;sspn=24.509902,43.286133&amp;ie=UTF8&amp;hq=CEO+Corporate+Executive+Offices,&amp;hnear=Barra+da+Tijuca,+Rio+de+Janeiro&amp;t=m&amp;ll=-22.984886,-43.359235&amp;spn=0.034067,0.014652&amp;output=embed&amp;scaleControl=false"></iframe>
-	</div>
-	<!-- /maps -->
-	<!-- /maps -->
-	<!-- organizadores -->
-	<div class="organizers">
-		<section id="organizadores">
-			<article>
-				<div class="row">
-					<h2 class="title_box">Organizadores</h2>
-					<ul>
-						<li>
-							<div class="box">
-							<img src="image/pessoas/danilo.jpg" class='foto' alt="">
-							<h3>
-								<a href="https://github.com/danilorb" target="_blank" title="Danilo Reis">Danilo Reis</a>
-							</h3>
-						</div>
-						</li>
-						<li>
-							<div class="box">
-							<img src="image/pessoas/diego.jpg" class='foto' alt="">
-							<h3>
-							<a href="https://github.com/rdiego26" target="_blank" title="Diego Ramos">Diego Ramos</a>
-							</h3>
-						</div>
-						</li>
+	</section>
 
-						<li>
-							<div class="box">
-							<img src="image/pessoas/gabriel.jpg" class='foto' alt="">
-							<h3>
-							<a href="https://github.com/gabrielfgularte" target="_blank" title="Gabriel Gularte">Gabriel Gularte</a>
-							</h3>
-						</div>
-						</li>
-						<li>
-							<div class="box">
-							<img src="image/pessoas/antonio.jpg" class='foto' alt="">
-							<h3>
-							<a href="https://github.com/AntPires" target="_blank" title="Antônio Pires">Antônio Pires</a>
-							</h3>
-						</div>
-						</li>
-
-					</ul>
+	<!-- Aprenda - Palestre - Patrocine -->
+	<section id="learning">
+		<div class="row">
+			<!-- Box Aprenda -->
+			<div class="box-info aprenda">
+				<!-- Conteudo -->
+				<div class="content">
+					<h3>Aprenda</h3>
+					<p>Venha ao próximo meetup e aprenda com alguns dos malucos do nosso grupo.</p>
+					<a href="http://even.tc/3-meetup-barra-js" class="bt-arrow" target="_blank">Inscreva-se <span class="fa fa-chevron-right"></span></a>
 				</div>
-			</article>
-		</section>
-	</div>
-	<!-- /organizadores -->
-	<!-- patrocinadores -->
-	<div class="sponsors">
-		<section id="patrocinadores">
-			<article>
-				<div class="row">
-					<h2 class="title_box">Patrocinadores</h2>
-					<ul>
-						<li>
-							<a href="http://medigital.com.br/" title="Me Digital" target="_blank">
-								<img src="image/patrocinador/medigital.jpg" alt="Me Digital" >
-							</a>
-						</li>
-						<li>
-							<a href="http://leolearning.com/" title="Leo Learning" target="_blank">
-								<img src="image/patrocinador/leo.jpg" alt="Leo Learning">
-							</a>
-						</li>
-					</ul>
-				</div>
-			</article>
-		</section>
-	</div>
-	<!-- /patrocinadores -->
+			</div>
 
-<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-<script src="js/function.js"></script>
+			<!-- Box Palestre -->
+			<div class="box-info palestre">
+				<!-- Conteudo -->
+				<div class="content">
+					<h3>Palestre</h3>
+					<p>Que tal poder passar o que você aprendeu em cursos, aulas ou até mesmo em meetups?</p>
+					<a href="mailto:daniloreisbarreto@globomail.com" class="bt-arrow">Inscreva-se <span class="fa fa-chevron-right"></span></a>
+				</div>
+			</div>
+
+			<!-- Box Patrocine -->
+			<div class="box-info patrocine">
+				<!-- Conteudo -->
+				<div class="content">
+					<h3>Patrocine</h3>
+					<p>Quer ajudar a comunidade de dev e ainda ganhar uma visibilidade extra?</p>
+					<a href="mailto:daniloreisbarreto@globomail.com" class="bt-arrow">Inscreva-se <span class="fa fa-chevron-right"></span></a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Programação -->
+	<section id="programacao">
+		<div class="row">
+			<h2 class="section-title">Programação</h2>
+
+			<!-- Timeline -->
+			<ul class="timeline">
+				<span class="line"></span>
+				<!-- Timeline Item -->
+				<li class="timeline-item">
+					<div class="timeline-content">
+						<h3 class="title">Chegada</h2>
+						<h4 class="sub-title">Não esqueça de trazer seu RG</h3>
+						<span class="time">08:00/08:30</span>
+						<!-- <p class="description">
+							Não esqueça de trazer seu RG para a cadastramento no prédio ao chegar.
+						</p> -->
+					</div>
+				</li>
+
+				<!-- Timeline Item -->
+				<li class="timeline-item">
+					<div class="timeline-content">
+						<h3 class="title">Coffee Break</h2>
+						<h4 class="sub-title">Hora de fazer Networking</h3>
+						<span class="time">08:30/09:00</span>
+						<!-- <p class="description">
+							Antes do evento começar, aproveite para tomar um café e fazer um ótimo networking.
+						</p> -->
+					</div>
+				</li>
+
+				<!-- Timeline Item -->
+				<li class="timeline-item">
+					<div class="timeline-content">
+						<h3 class="title">CSS Grid Layout</h2>
+						<h4 class="sub-title"> Afonso Pacifer</h3>
+						<span class="time">09:10/09:50</span>
+						<!-- <p class="description">
+							Em definição.
+						</p> -->
+					</div>
+				</li>
+
+				<!-- Timeline Item -->
+				<li class="timeline-item">
+					<div class="timeline-content">
+						<h3 class="title">Introd. à D3.js</h2>
+						<h4 class="sub-title">Dayany Espíndola</h3>
+						<span class="time">10:00/10:40</span>
+						<!-- <p class="description">
+							Em definição.
+						</p> -->
+					</div>
+				</li>
+
+				<!-- Timeline Item -->
+				<li class="timeline-item">
+					<div class="timeline-content">
+						<h3 class="title">React.js</h2>
+						<h4 class="sub-title">Darlene Medeiros</h3>
+						<span class="time">10:50/11:30</span>
+						<!-- <p class="description">
+							Em definição.
+						</p> -->
+					</div>
+				</li>
+
+				<!-- Timeline Item -->
+				<li class="timeline-item">
+					<div class="timeline-content">
+						<h3 class="title">The Amazing ES6</h2>
+						<h4 class="sub-title">Raphael Amorim</h3>
+						<span class="time">11:40/12:30</span>
+						<!-- <p class="description">
+							Vamos falar um pouco sobre ES6
+						</p> -->
+					</div>
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<!-- Talkers - Palestrantes -->
+	<section id="talkers">
+		<div class="row">
+			<h2 class="section-title">Talkers</h2>
+
+			<!-- Talkers -->
+			<ul class="list-talkers">
+				<li class="list-talkers-item">
+					<!-- Foto -->
+					<div class="talker-photo">
+						<img src="images/palestrantes/afonso-pacifer.jpg" alt="Foto - Palestrante: Afonso Pacifer" />
+					</div>
+
+					<!-- Nome, funcao, palestra e descricao -->
+					<div class="talker-content">
+						<h3 class="name">Afonso Pacifer</h3>
+						<h4 class="work">Front-End Developer</h4>
+						<span class="talk-title">CSS Grid Layout: De volta para o futuro.</span>
+						<p class="description">
+							Vamos viajar para o futuro com o novo módulo de CSS que nos permite criar Grids de forma nativa! Nada de bibliotecas ou frameworks aqui. Vamos aprender a criar nossas interfaces apenas com o bom e velho CSS, só que dessa vez, com novos superpoderes incríveis.
+						</p>
+					</div>
+				</li>
+
+				<li class="list-talkers-item">
+					<!-- Foto -->
+					<div class="talker-photo">
+						<img src="images/palestrantes/dayany-espindola.jpg" alt="Foto - Palestrante: Dayany Espíndola" />
+					</div>
+
+					<!-- Nome, funcao, palestra e descricao -->
+					<div class="talker-content">
+						<h3 class="name">Dayany Espíndola</h3>
+						<h4 class="work">Front-End Developer</h4>
+						<span class="talk-title">Introdução à D3.js</span>
+						<p class="description">
+							Nessa palestra vou falar sobre D3.js, uma biblioteca javascript com super poderes. Desde manipulação de tabelas até criação de gráficos interativos em SVG, tudo é possível com ela. Com uma introdução aos principais métodos e alguns exemplos básicos usando HTML, SVG e CSS vou mostrar como é simples a manipulação de documentos baseada em dados.
+						</p>
+					</div>
+				</li>
+
+				<li class="list-talkers-item">
+					<!-- Foto -->
+					<div class="talker-photo">
+						<img src="images/palestrantes/darlene-medeiros.jpg" alt="Foto - Palestrante: Fulano" />
+					</div>
+
+					<!-- Nome, funcao, palestra e descricao -->
+					<div class="talker-content">
+						<h3 class="name">Darlene Medeiros</h3>
+						<h4 class="work">Software Developer</h4>
+						<span class="talk-title">React is the new black</span>
+						<p class="description">
+							Por que todo mundo está falando de ReactJS? Aprenda os conceitos básicos da tecnologia mais quente dessa estação e entre na moda você também.
+						</p>
+					</div>
+				</li>
+
+				<li class="list-talkers-item">
+					<!-- Foto -->
+					<div class="talker-photo">
+						<img src="images/palestrantes/raphael-amorim.jpg" alt="Foto - Palestrante: Raphael Amorim" />
+					</div>
+
+					<!-- Nome, funcao, palestra e descricao -->
+					<div class="talker-content">
+						<h3 class="name">Raphael Amorim </h3>
+						<h4 class="work">Backend Nodejs Developer</h4>
+						<span class="talk-title">The Amazing ES6</span>
+						<p class="description">
+							Nos últimos anos o JavaScript quebrou barreiras e chegou em lugares inimagináveis; como no servidor, na robótica, jogos e em sistemas de alta complexidade. Sustituiu tecnologias legadas e com o tempo mostrou-se ser a linguagem do presente e do futuro. O ES6 vem para atender todas as demandas dos últimos anos, focando principalmente em problemas reais. A ideia da palestra é apresentar as principais novas funcionalidades, nova sintaxe, novos métodos e uma nova maneira de pensar em desenvolvimento com JavaScript daqui pra frente.
+						</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</section>
+
+	<!-- Manifesto -->
+	<section id="manifesto">
+		<div class="row">
+				<h2 class="section-title">Manifesto</h2>
+				<div class="content">
+					<p>
+						O nosso grupo surgiu da idéia e vontade de compartilhar o conhecimento
+						com a comunidade.
+					</p>
+					<p>
+						Aumentar o nível não só de conhecimentos técnicos quanto o real resultado
+						dos devs do nosso grupo é o principal objetivo e foco de todas as nossas
+						reuniões, meetups e até conversas do grupo no WhatsApp.
+					</p>
+				</div>
+
+				<div class="content">
+					<p>
+						Nenhum de nossos participantes, palestrantes, organizadores ou
+						eventuais patrocinadores está recebendo nada para executar seu
+						respectivo papel na comunidade.
+					</p>
+					<p>
+						Acreditamos firmamente no <strong>Open Source</strong>, então, caso ache algo que
+						possa ser consertado ou melhorado, não hesite. <strong>Obrigado </strong>! :)
+					</p>
+				</div>
+		</div>
+	</section>
+
+	<!-- Inscricao -->
+	<section id="inscricao">
+		<h2 class="section-title">Inscrição</h2>
+		<div class="row">
+			<iframe src="http://www.eventick.com.br/3-meetup-barra-js/embedded" frameborder="0" height="280px" width="100%" vspace="0" hspace="0" marginheight="5" marginwidth="5" scrolling="auto" allowtransparency="true"></iframe>
+		</div>
+	</section>
+
+	<!-- Localizacao -->
+	<section id="localizacao">
+		<div class="mapa">
+			<div id="map-canvas"></div>
+			<div id="map-legend">
+				<h3>CEO Corporate Executive Offices</h3>
+				<address>
+					Av. João Cabral de Melo Neto, 610 - Barra da Tijuca
+					<span class="date">25/07/2105 - 08:00 / 12:30</span>
+				</address>
+				<p>
+					O 3° Meetup BarraJS vai acontecer no dia 26 de Julho de 2015. Faça sua inscrição pelo <a href="http://even.tc/3-meetup-barra-js" title="Reserve sua vaga" target="_blank">Eventick.</a>
+				</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- Organizacao -->
+	<section id="organizacao">
+		<h2 class="section-title">Organização</h2>
+		<div class="row">
+			<div class="organizer">
+				<img src="images/organizacao/antonio-pires.jpg" alt="Antonio Pires" class="organizer-photo" />
+				<h3 class="organizer-name">Antonio Pires</h3>
+				<span class="organizer-function">UI Designer @Kindle</span>
+				<a target="_blank" href="http://github.com/antpires" class="organizer-link">@antpires</a>
+			</div>
+
+			<div class="organizer">
+				<img src="images/organizacao/bruno-rodrigues.jpg" alt="Bruno Rodrigues" class="organizer-photo" />
+				<h3 class="organizer-name">Bruno Rodrigues</h3>
+				<span class="organizer-function">Front-End Dev @MeDigital</span>
+				<a target="_blank" href="http://github.com/brunodsgn" class="organizer-link">@brunodsgn</a>
+			</div>
+
+			<div class="organizer">
+				<img src="images/organizacao/danilo-reis.jpg" alt="Danilo Reis" class="organizer-photo" />
+				<h3 class="organizer-name">Danilo Reis</h3>
+				<span class="organizer-function">Front-End Dev @LEO Brazil</span>
+				<a target="_blank" href="http://github.com/danilorb" class="organizer-link">@danilorb</a>
+			</div>
+
+			<div class="organizer">
+				<img src="images/organizacao/diego-ramos.jpg" alt="Diego Ramos" class="organizer-photo" />
+				<h3 class="organizer-name">Diego Ramos</h3>
+				<span class="organizer-function">Dev @Bematech</span>
+				<a target="_blank" href="http://github.com/rdiego26" class="organizer-link">@rdiego26</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- Patrocinio -->
+	<section id="patrocinio">
+		<h2 class="section-title">Patrocínio</h2>
+		<div class="row">
+			<img src="images/patrocinio/medigital.jpg" alt="Me Digital" class="sponsor" />
+			<img src="images/patrocinio/leo-brazil.jpg" alt="LEO Brazil" class="sponsor" />
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<footer id="footer">
+		<div class="row">
+			<span class="social-media">
+				<a target="_blank" href="https://www.facebook.com/barrajs" title="Facebook BarraJS" class="fa fa-facebook-square"></a>
+				<a target="_blank" href="http://github.com/barrajs" title="Github BarraJS" class="fa fa-github-alt"></a>
+				<a target="_blank" href="#" title="Youtube BarraJS" class="fa fa-youtube-play"></a>
+			</span>
+		</div>
+
+		<div id="copyright">
+			<div class="row">
+				<i class="fa fa-copyright"></i> BarraJS
+			</div>
+		</div>
+	</footer>
+
+	<!-- Script -->
+	<script src="https://maps.googleapis.com/maps/api/js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

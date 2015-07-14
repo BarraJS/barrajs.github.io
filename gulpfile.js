@@ -1,22 +1,25 @@
-// include the required packages. 
+// Include the required packages. 
 var gulp = require('gulp'),
-		stylus = require('gulp-stylus'),
+    sass = require('gulp-ruby-sass'),
 		minifyHTML = require('gulp-minify-html'),
 		imagemin = require('gulp-imagemin'),
-		plumber = require("gulp-plumber"),
+    concat = require('gulp-concat'),
+    plumber = require('gulp-plumber'),
 		uglify = require('gulp-uglify');
 
+// Paths
+var jsFiles = ['app/dev/js/vendor/jquery-1-11-3.js', 'app/dev/js/vendor/slick.js', 'app/dev/js/main.js'];
 
-//compress stylus
-gulp.task('stylus', function () {
-	gulp.src('app/dev/style.styl')
-		.pipe(plumber())
-		.pipe(stylus({
-			compress: true
-		}))
-		.pipe(gulp.dest('app/css/'));
+// Sass
+gulp.task('compile', function(){
+  return sass('app/dev/sass/styles.scss', {
+    style: 'compressed',
+    noCache: true
+  })
+  .pipe(gulp.dest('app/css/'))
 });
-//compress html
+
+// Compress HTML
 gulp.task('minify-html', function() {
   var opts = {
     conditionals: true,
@@ -28,27 +31,29 @@ gulp.task('minify-html', function() {
     .pipe(minifyHTML(opts))
     .pipe(gulp.dest('app/'));
 });
-//imagemin
-gulp.task('imagemin', function() {
-    return gulp.src('app/dev/image/**/*')
-        .pipe(plumber())
-        .pipe(imagemin({ optimizationLevel: 3, progressive: true}))
-        .pipe(gulp.dest('app/image/'));
+
+// Scripts JS
+gulp.task('jsmin', function(){
+  gulp.src(jsFiles)
+  .pipe(concat('js/main.js'))
+  .pipe(uglify())
+  .pipe(gulp.dest('app/'))
 });
 
-gulp.task('uglify', function() {
-  gulp.src('app/dev/js/**')
+// Images
+gulp.task('imagemin', function() {
+  return gulp.src('app/dev/images/**/*')
     .pipe(plumber())
-    .pipe(uglify())
-    .pipe(gulp.dest('app/js/'))
+    .pipe(imagemin({ optimizationLevel: 3, progressive: true}))
+    .pipe(gulp.dest('app/images/'));
 });
 
 // Watch
 gulp.task('watch', function(){
-  gulp.watch('app/dev/stylus/*.styl', ['stylus']);
   gulp.watch('app/dev/index.html', ['minify-html']); 
-  gulp.watch('app/dev/image/**/*', ['imagemin']);
-  gulp.watch('app/dev/js/**', ['uglify']);
+  gulp.watch('app/dev/sass/**/*', ['compile']); 
+  gulp.watch('app/dev/images/**/*', ['imagemin']);
+  gulp.watch('app/dev/js/**', ['jsmin']);
 });
 
-gulp.task('default', ['stylus', 'minify-html','imagemin','uglify']);
+gulp.task('default', ['minify-html','compile','imagemin','jsmin']);

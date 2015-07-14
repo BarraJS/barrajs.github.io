@@ -1,0 +1,100 @@
+// Header
+.intro-meetup {
+	background: $primary-color url('../images/bg-header.jpg') no-repeat center center;
+	background-size: cover;
+	text-align: center;
+	height: 100%;
+
+	.intro-meetup-title {
+		font-size: 0;
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		margin: -100px 0 0 -252px;
+
+		@include cell {
+			margin: -130px 20px 20px 20px;
+			left: inherit;
+		}
+	}
+
+	// Inscreva-se
+	.inscreva-se {
+		position: absolute;
+		background: rgba(255,255,255,.2);
+		top: 70%;
+		left: 50%;
+		max-width: 520px;
+		margin-left: -240px;
+		font-size: 20px;
+		border: 2px solid $secondary-color;
+		padding: 5px;
+		font-weight: 600;
+		text-transform: uppercase;
+		@include prefix(border-radius, 5px);
+
+		@include cell {
+			margin: 10px;
+			left: 0;
+			right: 0;
+			top: 60%;
+		}
+
+		.date {
+			padding: 0 10px;
+		}
+
+	}
+
+	.bt-inscricao {
+		display: inline-block;
+		background: $secondary-color;
+		color: #fff;
+		padding: 15px 20px;
+		font-weight: 800;
+		@include prefix(border-radius, 5px);
+		@include prefix(transition, all .3s ease);
+
+		&:hover {
+			background: darken($secondary-color, 10%);
+		}
+
+		@include cell {
+			width: 100%;
+			display: block;
+			margin-top: 5px;
+		}
+	}
+}
+
+// Header com logo e menu
+#header {
+	margin-top: -80px;
+	> .row {
+		border-top: 4px solid $secondary-color;
+		height: 80px;
+		background: $body-bg;
+	}
+
+	#logo-barrajs {
+		padding: 12px 0;
+		text-align: center;
+		font-size: 0;
+		@include column(3/12);
+
+		@include max-screen(768px) {
+			@include column(1/1);
+		}
+	}
+
+	// Header Fixo
+	&.header-fixed {
+		position: fixed;
+		top:0;
+		margin: 0;
+		margin-top: 0;
+		width: 100%;
+		z-index: 100;
+		@include prefix(transition, all .3s ease);
+	}
+}

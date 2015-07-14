@@ -1,0 +1,417 @@
+// Sections
+.section-title {
+	text-align: center;
+}
+// Sobre
+#sobre {
+	padding: ($gutter-section * 2) 0 $gutter-section;
+
+	h2 {
+		font-size: 48px;
+	}
+
+	.icon {
+		text-align: center;
+		@include column(1/2);
+
+		@include tablet {
+			display: none;
+		}
+
+		.code {
+			display: block;
+			padding: $gutter-section 0;
+			font-size: 250px;
+			font-weight: 600;
+			color: $primary-color;
+		}
+	}
+
+	.content {
+		@include column(1/2);
+
+		@include tablet {
+			text-align: center;
+			padding: 20px;
+			@include column(1);
+		}
+		p {
+			font-size: 22px;
+			max-width: 80%;
+			font-weight: 300;
+			@include tablet {
+				max-width: 100%;
+			}
+		}
+	}
+}
+
+// Aprenda - Palestre - Patrocine
+#learning {
+	padding: $gutter-section 0;
+
+	// Boxes
+	.box-info {
+		@include column(1/3);
+
+		@include tablet {
+			@include column(1/1);
+			margin: 20px 0;
+			padding: 20px;
+			border-bottom: 1px solid #e5e5e5;
+		}
+
+		.content {
+			float: left;
+		}
+
+		// Icones
+		&:before {
+			content:'';
+			float: left;
+			max-width: 20%;
+			margin-right: 10%;
+			display: block;
+			background-size: contain;
+			background-repeat: no-repeat;
+			@include size(83px,83px);
+		}
+
+		&.aprenda:before	{background-image: url('../images/icons/icon-aprenda.png');}
+		&.palestre:before 	{background-image: url('../images/icons/icon-palestre.png');}
+		&.patrocine:before 	{background-image: url('../images/icons/icon-patrocine.png');}
+
+		.content {
+			max-width: 55%;
+
+			h3 {
+				color: #2a2a2a;
+				font-size: 22px;
+				text-transform: uppercase;
+				font-weight: 800;
+			}
+
+			p {
+				font-size: 20px;
+			}
+		}
+	}
+}
+
+// Programacao
+#programacao {
+	background: #e3dfdd;
+	padding: $gutter-section 0;
+	overflow-x: hidden;
+
+	// Timeline
+	.timeline {
+		@extend %clearfix;
+		margin: ($gutter * 2) 0;
+		position: relative;
+
+		@include tablet {
+			padding: $gutter;
+			text-align: center;
+			line-height: 1.4em;
+		}
+
+		// Conteudo
+		.timeline-content {
+			padding: 20px 15px;
+		}
+
+		// Linha de marcação
+		.line {
+			height: 3px;
+			background: $primary-color;
+			width: 100%;
+			display: block;
+			position: absolute;
+			bottom: -33px;
+
+			&:before, &:after {
+				content: '';
+				position: absolute;
+				display: block;
+			}
+
+			&:before {
+				background: url('../images/timeline-rio-before.jpg') no-repeat;
+				@include size(418px, 133px);
+				left: -418px;
+				top: -129px;
+			}
+
+			&:after {
+				background: url('../images/timeline-rio-after.jpg') no-repeat;
+				@include size(285px, 109px);
+				right: -285px;
+				top: -105px;
+			}
+
+			@include tablet {
+				display: none;
+			}
+		}
+
+		.timeline-item {
+			cursor: default;
+			position: relative;
+			@include column(1/6);
+			background: #f2f2f2;
+			border-top: 4px solid $secondary-color;
+			@include prefix(transition, all .2s ease);
+
+			@include tablet {
+				@include column(1/1);
+				margin: 10px 0;
+				width: 100%;
+			}
+
+			// Arrow
+			&:before {
+				content:'';
+				width: 0px;
+				height: 0px;
+				position: absolute;
+				left: 50%;
+				bottom: -9px;
+				margin-left: -10px;
+
+				border-left: 10px solid transparent;
+				border-right: 10px solid transparent;
+				border-top: 10px solid #f2f2f2;
+			}
+
+			// Bullet
+			&:after {
+				content:'';
+				width: 12px;
+				height: 12px;
+				background: $primary-color;
+				border: 2px solid $secondary-color;
+				position: absolute;
+				left: 50%;
+				bottom: -40px;
+				margin-left: -7px;
+				@include prefix(border-radius, 100px);
+
+				@include tablet {
+					display: none;
+				}
+			}
+
+			// Titulo e Subtitulo
+			.title, .sub-title {
+				margin-bottom: 0;
+				color: #2a2a2a;
+			}
+
+			.title {
+				text-transform: none;
+				font-size: 22px;
+			}
+
+			.sub-title {
+				font-weight: 300;
+			}
+
+			// Hora
+			.time {
+				color: $secondary-color;
+				font-weight: 600;
+				font-size: 16px;
+				margin-bottom: 10px;
+				display: block;
+			}
+
+
+			&:hover {
+				@include prefix(box-shadow, 0 0 10px rgba(0,0,0,.2));
+			}
+		}
+	}
+}
+
+// Talkers - Palestrantes
+#talkers {
+	background: #e3dfdd;
+	padding: $gutter-section 0;
+
+	// Lista de palestrantes
+	.list-talkers {
+		@extend %clearfix;
+
+		.list-talkers-item {
+			padding: 35px;
+		}
+
+		// Foto
+		.talker-photo {
+			display: inline-block;
+			overflow: hidden;
+			float: left;
+			max-width: 190px;
+			margin-right: $gutter * 1;
+			@include prefix(border-radius, 20px);
+
+			@include max-screen(960px) {
+				margin-right: $gutter;
+				max-width: 130px;
+			}
+
+			@include max-screen(400px) {
+				max-width: 80px;
+			}
+		}
+
+		// Nome, talk, funcao e descricao
+		.talker-content {
+			.name, .work {
+				color: #2a2a2a;
+				margin-bottom: 5px;
+			}
+
+			// Nome do palestrante
+			.name {
+				font-size: 22px;
+				text-transform: none;
+			}
+
+			// Função - trabalho
+			.work {
+				font-weight: 300;
+			}
+
+			// Titulo da Palestra
+			.talk-title {
+				text-transform: uppercase;
+				font-weight: 800;
+				color: $primary-color;
+				margin-bottom: 10px;
+				display: block;
+			}
+		}
+	}
+}
+
+// Manifesto
+#manifesto {
+	padding: $gutter-section;
+	font-size: 22px;
+
+	.content {
+		@include column(1/4);
+
+		&:first-of-type {
+			@include column(1/4, $offset: 1/4);
+		}
+
+		@include tablet() {
+				&, &:first-of-type {
+					@include column(1);
+				}
+		}
+	}
+}
+
+// Localizacao
+#localizacao {
+	#map-canvas{
+		height: 400px;
+		width: 100%;
+		position: relative;
+	}
+
+	#map-legend {
+		margin: 30px;
+		padding: 10px;
+		font-size: 15px;
+		background: #fff;
+		max-width: 280px;
+		border-left: 4px solid $secondary-color;
+		line-height: 1.3em;
+		@include prefix(box-shadow, 0 0 10px rgba(0,0,0,.3));
+
+		address {
+			display: block;
+			margin-bottom: 10px;
+
+			.date {
+				display: block;
+				font-weight: 600;
+				color: $secondary-color;
+			}
+		}
+		@include cell {
+			margin: 20px;
+			h3 {
+				margin-bottom: 10px;
+			}
+			p {
+				display: none;
+			}
+		}
+	}
+}
+
+// Organizacao
+#organizacao {
+	padding: $gutter-section;
+
+	.organizer {
+		@include column(1/4);
+		line-height: 1.3em;
+		text-align: center;
+		margin: 30px 0;
+
+		// Tablet
+		@include tablet {
+			@include column(1/2);
+			margin-right: 1%;
+		}
+
+		@include cell {
+			margin: 0;
+		}
+
+		.organizer-name,
+		.organizer-function,
+		.organizer-link {
+			display: block;
+		}
+
+		.organizer-photo {
+			margin: 10px auto;
+			overflow: hidden;
+			@include prefix(border-radius, 10px);
+		}
+
+		.organizer-name {
+			color: #000;
+			margin-bottom: 0;
+			text-transform: none;
+		}
+	}
+}
+
+// Patrocinadores
+#patrocinio {
+	padding-bottom: $gutter-section;
+	text-align: center;
+
+	.sponsor {
+		display: inline-block;
+		margin: 10px 5px;
+	}
+}
+
+// Inscricao
+#inscricao {
+	padding: $gutter-section;
+
+	iframe {
+		padding: 20px 0;
+	}
+}

@@ -1,8 +1,9 @@
 #Ignorar arquivos da raiz
+.DS_Store
 node_modules/
 app/js/
 app/css/
-app/image/
+app/images/
 app/index.html
 
 #Webstorm fodler

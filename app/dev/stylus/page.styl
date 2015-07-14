@@ -1,0 +1,113 @@
+@import 'variables'
+
+//talks and organizers--**--
+.talks, .organizers
+		background #f6f6f6
+		text-align center
+		space(0,10px)
+		ul
+			padding 0
+			li
+				display inline-table
+				space(0,10px)
+				.box
+					display table
+					background white
+					text-align center
+					space(0 auto,10px)
+					h3
+						space(0,0)
+						a
+							font(15px,blue,normal)
+					span
+						font(14px,dark-blue,normal)
+
+//horarios--**--
+.horarios
+	margin-top	30px
+	size(100%,auto)
+	font(15px,gray,normal)
+	text-align left
+	box-sizing border-box
+	position relative
+	//thead
+	thead
+		font(16px,blue,bold)
+	tbody
+		tr:hover
+			background #FFFFDF !important
+		tr:nth-child(even)
+			background	white
+		tr:nth-child(odd)
+			background #f6f6f6
+		.hrs
+			color blue
+		td
+			padding 15px 25px
+			@media(max-width: 480px)
+				padding 15px
+			.desc_box
+				font-weight bold
+			img
+				size(45px,auto)
+				border-radius 20px
+				position absolute
+			.desc h3
+				padding-left: 60px
+				margin-top 6px
+				font(15px,gray,normal)
+
+@media(max-width: 480px)
+	.col-description
+		display none
+	.th1
+		width 50px
+	.th2
+		width auto
+
+@media(min-width: 480px)
+	.desc .desc_box
+		display none
+
+//maps--**--
+.maps
+	display inline-block
+	width 100%
+	position relative
+	.descMaps
+		background rgba(49,53,64,0.9)
+		width 400px
+		height auto
+		color #fff
+		position absolute
+		max-width 700px
+		text-align center
+		right 0
+		-webkit-transition all .25s
+		-o-transition all .25s
+		transition all .25s
+		top 20%
+	.map-overlay
+		background transparent
+		position relative
+		width 100%
+		height 400px
+		top 400px
+		margin-top -400px
+		color transparent
+		text-align center
+		cursor pointer
+	iframe
+		size(100%,400px)
+
+//sponsors--*--
+.sponsors
+	center()
+	ul
+		padding 0
+		@media(max-width: 480px)
+			text-align center
+		li
+			display inline-table
+			text-decoration none
+			margin 0px 10px

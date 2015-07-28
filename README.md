@@ -1,4 +1,4 @@
-[![Barra JS](http://barrajs.com.br/edition-1/image/logoGit.png)](http://barrajs.com.br)
+[![Barra JS](http://barrajs.com.br/images/logo-barrajs.png)](http://barrajs.com.br)
 
 > Esse projeto foi desenvolvido para juntar desenvolvedores da Barra da Tijuca.
 

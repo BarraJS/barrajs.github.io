@@ -1,0 +1,33 @@
+{
+  "name": "barrajs.github.io",
+  "version": "1.0.0",
+  "description": "BarraJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BarraJS/barrajs.github.io.git"
+  },
+  "keywords": [
+    "Barrajs",
+    "Meetup",
+    "Barra",
+    "JS"
+  ],
+  "author": "Danilo Reis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BarraJS/barrajs.github.io/issues"
+  },
+  "homepage": "https://github.com/BarraJS/barrajs.github.io#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-imagemin": "^3.0.1",
+    "gulp-jade": "^1.1.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-stylus": "^2.4.0",
+    "gulp-uglify": "^1.5.3"
+  }
+}
